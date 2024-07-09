@@ -2,32 +2,30 @@ class Solution {
 public:
     int findMaximizedCapital(int k, int w, vector<int>& profit, vector<int>& capital) 
     {
+        priority_queue<int>maxheap;
         int n= capital.size();
-        vector<pair<int,int>>vec;
+
+        //minheap storing cost, profit
+        priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>>minheap; 
+        int totalp=w;//initialized with w
+
         for(int i=0;i<n;i++)
         {
-            vec.push_back({capital[i],profit[i]});
+            minheap.push({capital[i],profit[i]});
         }
-        sort(vec.begin(),vec.end());
-
-        //max heap for storing profit based on capital
-        priority_queue<int>pq;
-        int totalp=w;
-        int j=0;
-
         while(k>0)
         {
-            while(j<n && vec[j].first<=totalp)
+            while(!minheap.empty() && minheap.top().first<= totalp)
             {
-                pq.push(vec[j].second);
-                j++;
+                maxheap.push(minheap.top().second);
+                minheap.pop();
             }
-            if(pq.size()==0)
+            if(maxheap.size()==0)
             {
                 break;
             }
-            totalp+= pq.top();
-            pq.pop();
+            totalp+= maxheap.top();
+            maxheap.pop();
             k--;
         }
         return totalp;
