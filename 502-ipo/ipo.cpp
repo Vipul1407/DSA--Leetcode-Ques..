@@ -11,7 +11,14 @@ public:
 
         for(int i=0;i<n;i++)
         {
-            minheap.push({capital[i],profit[i]});
+            if(capital[i]<=w)
+            {
+                maxheap.push(profit[i]);
+            }
+            else
+            {
+                minheap.push({capital[i],profit[i]});
+            }
         }
         while(k>0)
         {
