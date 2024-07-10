@@ -4,6 +4,25 @@ public:
     {
         int n= nums.size();
         sort(nums.begin(),nums.end());
+
+        int sum= nums[0]+nums[1]+nums[2];
+        if(n==3)
+        {
+            return sum;
+        }
+        //base cases to make code faster..
+        //since nums in sorted means agar abhi starting me hi sum bda aagya to mtlb 
+        //yhi closest h kyoki baad me to aur bda aaega
+        if(sum>=tar)
+        {
+            return sum;
+        }
+
+        if(nums[n-1]+nums[n-2]+nums[n-3]<=tar)
+        {
+            return nums[n-1]+nums[n-2]+nums[n-3];
+        }
+        
         int diff =INT_MAX;
         int ans= tar;
         //i==>fix
@@ -18,14 +37,8 @@ public:
             while(j<k)
             {
                 int sum= nums[i]+nums[j]+nums[k];
-                int currdiff= abs(tar-sum);
                 if(sum<tar)
                 {
-                    if(currdiff<diff)
-                    {
-                        diff= currdiff;
-                        ans= sum;
-                    }
                     j++;
                     while(j<k && nums[j]==nums[j-1])
                     {
@@ -34,11 +47,6 @@ public:
                 }
                 else if(sum>tar)
                 {
-                    if(currdiff<diff)
-                    {
-                        diff= currdiff;
-                        ans= sum;
-                    }
                     k--;
                     while(j<k && nums[k]==nums[k+1])
                     {
@@ -48,6 +56,11 @@ public:
                 else
                 {
                     return tar;
+                }
+                if(abs(tar-sum)<diff)
+                {
+                    diff= abs(tar-sum);
+                    ans= sum;
                 }
             }
         }
