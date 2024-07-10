@@ -18,11 +18,12 @@ public:
             while(j<k)
             {
                 int sum= nums[i]+nums[j]+nums[k];
+                int currdiff= abs(tar-sum);
                 if(sum<tar)
                 {
-                    if(abs(tar-sum)<diff)
+                    if(currdiff<diff)
                     {
-                        diff= abs(tar-sum);
+                        diff= currdiff;
                         ans= sum;
                     }
                     j++;
@@ -33,9 +34,9 @@ public:
                 }
                 else if(sum>tar)
                 {
-                    if(abs(tar-sum)<diff)
+                    if(currdiff<diff)
                     {
-                        diff= abs(tar-sum);
+                        diff= currdiff;
                         ans= sum;
                     }
                     k--;
