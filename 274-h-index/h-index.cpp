@@ -1,35 +1,25 @@
 class Solution {
 public:
-    bool possible(vector<int>& cit, int k)
-    {
-        int cnt=0;
-        for(auto i:cit)
-        {
-            if(i>=k)
-            {
-                cnt++;
-            }
-        }
-        return cnt>=k;
-    }
     int hIndex(vector<int>& cit) 
     {
-       int low= 0;
-       int high= cit.size();
-       int ans=0;
-       while(low<=high)
+        sort(cit.begin(),cit.end());
+        int cnt=0;
+        int ans=0;
+        int n=cit.size();
+        for(int i=n-1;i>=0;i--)
         {
-            int mid= (low+high)/2;
-            if(possible(cit,mid))
+            if(cit[i]<cnt+1)
             {
-                ans= mid;
-                low= mid+1;
+                ans=cnt;
+                break;
             }
-            else
-            {
-                high= mid-1;
-            }
-        } 
+            cnt++;
+        }
+        //to handle case when cit=[1] only
+        if(ans==0)
+        {
+            ans=cnt;
+        }
         return ans;
     }
 };
