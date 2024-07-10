@@ -1,35 +1,30 @@
 class Solution {
 public:
-    bool possible(vector<int>& cit, int k)
-    {
-        int cnt=0;
-        for(auto i:cit)
-        {
-            if(i>=k)
-            {
-                cnt++;
-            }
-        }
-        return cnt>=k;
-    }
     int hIndex(vector<int>& cit) 
     {
-        int low=0;
-        int high= cit.size();
-        int ans=0;
+        int n= cit.size();
+        int low= 0;
+        int high= n-1;//starting from n-1 
+        //otherwise will go out of bound
         while(low<=high)
         {
             int mid= (low+high)/2;
-            if(possible(cit,mid))
+            //since array is sorted so it means that
+            //we have n-mid papers with atleast n-mid citations so this will be our ans 
+            if(cit[mid]== n-mid)
             {
-                ans= mid;
-                low= mid+1;//to get max citation as ans
+                return n-mid;
             }
-            else
+            else if(cit[mid] > n-mid)
             {
                 high= mid-1;
             }
+            else
+            {
+                low= mid+1;
+            }
         }
-        return ans;
+        //if not find ans then return this
+        return n-low;
     }
 };
