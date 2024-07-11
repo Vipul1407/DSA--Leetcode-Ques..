@@ -3,33 +3,26 @@ public:
     string reverseParentheses(string s) 
     {
         stack<char>st;
-        int i=0;
-        int n= s.length();
-        while(i<n)
+        for(auto c:s)
         {
-            if(s[i]!=')')
+            if(c!=')')
             {
-                st.push(s[i]);
+                st.push(c);
             }
             else
             {
-                queue<char>q;
+                string temp="";
                 while(!st.empty() && st.top()!='(')
                 {
-                    q.push(st.top());
+                    temp+= st.top();
                     st.pop();
                 }
-                
                 st.pop();//to remove '('
-
-                while(!q.empty())
+                for(auto i:temp)
                 {
-                    st.push(q.front());
-                    q.pop();
+                    st.push(i);
                 }
             }
-            //in each iteration increase i
-            i++;
         }
         string ans="";
         while(!st.empty())
