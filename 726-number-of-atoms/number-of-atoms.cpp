@@ -1,74 +1,98 @@
-class Solution {
+class Solution 
+{
 public:
-    string countOfAtoms(string formula) {
-        stack<pair<string, int>> st;
-        int i, j, k;
-        for (i = 0; i < formula.size(); i++) {
-            char c = formula[i];
-            if (isupper(c)) {
-                string element = "";
-                element += c;
-                for (j = i + 1; j < formula.size(); j++) {
-                    c = formula[j];
-                    if (!islower(c))
-                        break;
-                    element += c;
-                }
 
+    string countOfAtoms(string formula) 
+    {
+        int n = formula.size();
+        int i, j, k;
+        vector<int> mulfactor(n, 1);
+        int mul = 1;
+        stack<int> st;
+        for (i = n - 1; i >= 0; i--)
+        {
+            char ch = formula[i];
+            if (ch == ')')
+            {
                 string sdigit = "";
-                for (k = j; k < formula.size(); k++) {
-                    c = formula[k];
-                    if (!isdigit(c))
+                for (int j = i + 1; j < n; j++)
+                {
+                    ch = formula[j];
+                    if (!isdigit(ch))
+                    {
                         break;
-                    sdigit += c;
+                    }
+                    sdigit += ch;
                 }
                 if (sdigit == "")
+                {
                     sdigit = "1";
-                int digit = stoi(sdigit);
-                st.push({element, digit});
-                i = k - 1;
-            } else if (c == '(') {
-                st.push({"(", -1});
-            } else if (c == ')') {
-                string sdigit = "";
-                for (j = i + 1; j < formula.size(); j++) {
-                    c = formula[j];
-                    if (!isdigit(c))
-                        break;
-                    sdigit += c;
                 }
-                if (sdigit == "")
-                    sdigit = "1";
                 int digit = stoi(sdigit);
-                vector<pair<string, int>> temp;
-                pair<string, int> op = {"(", -1};
-                while (st.top() != op) {
-                    pair<string, int> p = st.top();
-                    st.pop();
-                    temp.push_back({p.first, p.second * digit});
-                }
+                mul *= digit;
+                st.push(digit);
+            }
+            else if (ch == '(')
+            {
+                int digit = st.top();
                 st.pop();
-                while (temp.size() > 0) {
-                    st.push(temp.back());
-                    temp.pop_back();
+                mul /= digit;
+            }
+            mulfactor[i] = mul;
+        }
+
+        map<string, int> mp;
+        for (i = 0; i < n; i++)
+        {
+            char ch = formula[i];
+            if (isupper(ch)) // Check if it's an element
+            {
+                string element = "";
+                element += ch;
+                for (j = i + 1; j < n; j++)
+                {
+                    ch = formula[j];
+                    if (!islower(ch))
+                    {
+                        break;
+                    }
+                    element += ch;
                 }
-                i = j - 1;
+                string sdigit = "";
+                for (k = j; k < n; k++)
+                {
+                    ch = formula[k];
+                    if (!isdigit(ch))
+                    {
+                        break;
+                    }
+                    sdigit += ch;
+                }
+                if (sdigit == "")
+                {
+                    sdigit = "1";
+                }
+                int digit = stoi(sdigit);
+                mp[element] += digit * mulfactor[i];
+                i = k - 1;
+            }
+            else if (ch == '(' || ch == ')')
+            {
+                continue;
             }
         }
-        map<string, int> mp;
-        while (!st.empty()) {
-            pair<string, int> p = st.top();
-            st.pop();
-            mp[p.first] += p.second;
-        }
+
         string ans = "";
-        for (auto i : mp) {
-            string e = i.first;
-            string d = to_string(i.second);
-            if (d == "1")
-                d = "";
-            ans += e + d;
+        for (auto p : mp)
+        {
+            string element = p.first;
+            string sdigit = to_string(p.second);
+            if (sdigit == "1")
+            {
+                sdigit = "";
+            }
+            ans += element + sdigit;
         }
-        return ans;
+    return ans;
     }
 };
