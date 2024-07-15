@@ -27,6 +27,7 @@ public:
             if(mp.find(p)==mp.end())
             {
                 parent= new TreeNode(p);
+                mp[p]= parent;
             }
             else
             {
@@ -35,6 +36,7 @@ public:
             if(mp.find(c)==mp.end())
             {
                 child= new TreeNode(c);
+                mp[c]= child;
             }
             else
             {
@@ -48,8 +50,6 @@ public:
             {
                 parent->right= child;
             }
-            mp[p]= parent;
-            mp[c]= child;
             hasparent[c]=true;
         }
 
