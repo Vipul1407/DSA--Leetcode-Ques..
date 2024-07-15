@@ -1,37 +1,31 @@
-class Solution 
-{
+class Solution {
 public:
 
-    bool isprime(int num)
+    vector<int> closestPrimes(int left, int right) 
     {
-        int cnt = 0;
-        for (int i = 1; i * i <= num; i++)
+        //SIEVE OF ERATOSTHENES
+        vector<int>prime(right+1,1);
+        prime[0]=0;
+        prime[1]=0;
+        for(int i=2;i*i<=right;i++)
         {
-            if (num % i == 0)
+            if(prime[i]==1)
             {
-                cnt++;
-                if (num / i != i)
+                for(int j=i*i;j<=right;j+=i)
                 {
-                    cnt++;
-                }
-                if (cnt > 2)
-                {
-                    return false;
+                    prime[j]=0;
                 }
             }
         }
-        // becoz 1 is not a prime number
-        return cnt == 2;
-    }
-    vector<int> closestPrimes(int left, int right) 
-    {
+
+        //NOW GETTING FINAL ANS
         int prev=-1;
         int diff= INT_MAX;
         int l=-1;
         int r=-1;
         for(int i=left;i<=right;i++)
         {
-            if(isprime(i))
+            if(prime[i]==1)
             {
                 if(prev==-1)
                 {
@@ -41,9 +35,9 @@ public:
                 {
                     if(abs(i-prev)<diff)
                     {
+                        diff= abs(i-prev);
                         l=prev;
                         r=i;
-                        diff= abs(i-prev);
                     }
                     prev=i;
                 }
@@ -51,4 +45,4 @@ public:
         }
         return {l,r};
     }
-};
+};  
