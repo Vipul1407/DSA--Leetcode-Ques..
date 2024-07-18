@@ -1,33 +1,40 @@
 class Solution 
 {
 public:
-    //this will cnt that how many no. are less than or  equal to k
-    int less_than_k(int ele, int m, int n)
+    //this will cnt that how many no. are greater than or equal to k
+    bool func(int ele, int m, int n, int k)
     {
         int cnt=0;
         for(int i=1;i<=m;i++)
         {
             cnt+= min(ele/i, n);
+            if(cnt==0)
+            {
+                break;
+            }
         }
-        return cnt;
+        return cnt>=k;
     }
     int findKthNumber(int m, int n, int k) 
     {
         int l=1;
         int r=m*n;
+        int ans=0;
         while(l<=r)
         {
             int mid= (l+r)/2;
-            //will not check for equal as numbers can be repeatitive..
-            if(less_than_k(mid,m,n)<k)
+            //will not check for ==k (equal) as numbers can be repeatitive..
+            
+            if(func(mid,m,n,k))
             {
-                l= mid+1;
+                ans=mid;
+                r= mid-1;
             }
             else
             {
-                r= mid-1;
+                l= mid+1;
             }
         }
-        return l;
+        return ans;
     }
 };
