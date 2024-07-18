@@ -2,30 +2,42 @@ class Solution {
 public:
     int nthUglyNumber(int n) 
     {
-        vector<int>dp(n,0);
-        dp[0]=1;
-        int p2=0;
-        int p3=0;
-        int p5=0;
-        for(int i=1;i<n;i++)
+        //Min Heap
+        priority_queue<int,vector<int>,greater<int>>pq;
+        unordered_set<int>st;
+
+        //since 1 is a ugly number
+        pq.push(1);
+        st.insert(1);
+
+        int cnt=0;
+        //we have to find next n-1 elements as 1 we have already found
+        while(cnt<n-1)
         {
-            int a= dp[p2]*2;
-            int b= dp[p3]*3;
-            int c= dp[p5]*5;
-            dp[i]= min(a,min(b,c));
-            if(dp[i]==a)
+            long long top= pq.top();
+            pq.pop();
+            long long a= top*2;
+            long long b= top*3;
+            long long c= top*5;
+
+            //set me a ni h to dal de dono me
+            if(a<= INT_MAX && st.find(a)==st.end())
             {
-                p2++;
+                st.insert(a);
+                pq.push(a);
             }
-            if(dp[i]==b)
+            if(b<= INT_MAX && st.find(b)==st.end())
             {
-                p3++;
+                st.insert(b);
+                pq.push(b);
             }
-            if(dp[i]==c)
+            if(c<= INT_MAX && st.find(c)==st.end())
             {
-                p5++;
+                st.insert(c);
+                pq.push(c);
             }
+            cnt++;
         }
-        return dp[n-1];
+        return (int)pq.top();
     }
 };
