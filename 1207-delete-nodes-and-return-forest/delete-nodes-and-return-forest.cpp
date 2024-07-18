@@ -12,42 +12,50 @@
 class Solution 
 {
 public:
-
-    TreeNode* dfs(TreeNode* root, unordered_set<int>&st, vector<TreeNode*>&ans)
+    vector<TreeNode*>ans;
+    void dfs(TreeNode* root, unordered_set<int>&st, bool flag)
     {
         if(!root)
         {
-            return NULL;
+            return;
         }
-        root->left= dfs(root->left,st,ans);
-        root->right= dfs(root->right,st,ans);
         if(st.find(root->val)!=st.end())
         {
-            if(root->left)
-            {
-                ans.push_back(root->left);
-            }
-            if(root->right)
-            {
-                ans.push_back(root->right);
-            }
-            return NULL;
+            dfs(root->left,st,true);
+            dfs(root->right,st,true);
         }
         else
         {
-            return root;
+            if(flag)
+            {
+                ans.push_back(root);
+            }
+            TreeNode* leftnode= root->left;
+            if(root->left)
+            {
+                if(st.find(root->left->val)!=st.end())
+                {
+                    root->left=NULL;
+                }
+            }
+            TreeNode* rightnode= root->right;
+            if(root->right)
+            {
+                if(st.find(root->right->val)!=st.end())
+                {
+                    root->right=NULL;
+                }
+            }
+            dfs(leftnode,st,false);
+            dfs(rightnode,st,false);
         }
     }
     vector<TreeNode*> delNodes(TreeNode* root, vector<int>& del) 
     {
         unordered_set<int>st(del.begin(),del.end());
-        vector<TreeNode*>ans;
    
-        dfs(root,st,ans);
-        if(st.find(root->val)==st.end())
-        {
-            ans.push_back(root);
-        }
+        dfs(root,st,true);//initially true as we also needed root node if it is not in st
+        //(that will automatically handled by dfs function)
 
         return ans;
     }
