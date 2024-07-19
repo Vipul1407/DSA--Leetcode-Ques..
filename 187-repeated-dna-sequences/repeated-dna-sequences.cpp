@@ -7,21 +7,16 @@ public:
         {
             return {};
         }
-        unordered_set<string>st;
         unordered_map<string,int>mp;
+        vector<string>ans;
         for(int i=0;i<n;i++)
         {
             string str= s.substr(i,10);
-            if(mp[str]>0)
-            {
-                st.insert(str);
-            }
             mp[str]++;
-        }
-        vector<string>ans;
-        for(auto i:st)
-        {
-            ans.push_back(i);
+            if(mp[str]==2)
+            {
+                ans.push_back(str);
+            }
         }
         return ans;
     }
