@@ -5,7 +5,10 @@ public:
         int m= mat.size();//row
         int n= mat[0].size();//col
 
-        int rmin_max= INT_MIN;
+        vector<int>rowmin(m);
+        vector<int>colmax(n);
+        vector<int>ans;
+
         for(int i=0;i<m;i++)
         {
             int rmin= INT_MAX;
@@ -13,10 +16,9 @@ public:
             {
                 rmin= min(rmin, mat[i][j]);
             }
-            rmin_max= max(rmin_max, rmin);
+            rowmin[i]= rmin;
         }
 
-        int cmax_min= INT_MAX;
         for(int j=0;j<n;j++)
         {
             int cmax= INT_MIN;
@@ -24,16 +26,17 @@ public:
             {
                 cmax= max(cmax, mat[i][j]);
             }
-            cmax_min= min(cmax_min, cmax);
+            colmax[j]= cmax;
         }
 
-        if(rmin_max == cmax_min)
+        unordered_set<int>st(colmax.begin(),colmax.end());
+        for(auto i: rowmin)
         {
-            return {rmin_max};
+            if(st.find(i)!=st.end())
+            {
+                ans.push_back(i);
+            }
         }
-        else
-        {
-            return {};
-        }
+        return ans;
     }
 };
