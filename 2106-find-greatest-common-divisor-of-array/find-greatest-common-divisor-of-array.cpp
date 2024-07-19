@@ -15,6 +15,6 @@ public:
 
         //finding gcd of both numbers
         //a>b 
-        return gcd(a,b);
+        return gcd(b,a);
     }
 };
