@@ -6,7 +6,7 @@ public:
         string ans="";
         int n= str.length();
         int idx=-1;
-        //find index of greater element from right
+        //find index of greater element from right staring from n-2 index as n-1 has no element no right
         for(int i=n-2;i>=0;i--)
         {
             if(str[i]<str[i+1])
@@ -36,7 +36,7 @@ public:
         swap(str[idx],str[nextgreat]);
 
         //after swapping sort the remainging right side string
-        sort(str.begin()+idx+1, str.end());
+        reverse(str.begin()+idx+1, str.end());
 
         //converting back string to long long
         long long res= stoll(str);
