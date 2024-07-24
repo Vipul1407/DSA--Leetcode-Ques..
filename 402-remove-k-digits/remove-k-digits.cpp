@@ -5,7 +5,7 @@ public:
         stack<char>st;
         for(char i:num)
         {
-            while(!st.empty() && k>0 && (st.top()-'0')>(i-'0'))
+            while(!st.empty() && k>0 && st.top()>i)
             {
                 st.pop();
                 k--;
