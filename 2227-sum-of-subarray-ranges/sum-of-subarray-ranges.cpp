@@ -66,40 +66,25 @@ public:
         return pge;
     }
     
-    long long subarray_min(vector<int>& nums)
-    {
-        int n= nums.size();
-        long long ans=0;
-        vector<int>nse= nextsmall(nums);
-        vector<int>pse= prevsmall(nums);
-        for(int i=0;i<n;i++)
-        {
-            long long left= i-pse[i];
-            long long right= nse[i]-i;
-            ans+= left*right*nums[i];
-        }
-        return ans;
-    }
-
-
-    long long subarray_max(vector<int>&nums)
-    {
-        int n= nums.size();
-        long long ans=0;
-        vector<int>nge= nextgreat(nums);
-        vector<int>pge= prevgreat(nums);
-        for(int i=0;i<n;i++)
-        {
-            long long left= i-pge[i];
-            long long right= nge[i]-i;
-            ans+= left*right*nums[i];
-        }
-        return ans;
-    }
-
     long long subArrayRanges(vector<int>& nums) 
     {
-        long long ans= subarray_max(nums)- subarray_min(nums);
+        int n= nums.size();
+        vector<int>nse= nextsmall(nums);
+        vector<int>pse= prevsmall(nums);
+        vector<int>nge= nextgreat(nums);
+        vector<int>pge= prevgreat(nums);
+        long long ans=0;
+
+        for(int i=0;i<n;i++)
+        {
+            long long left= i- pse[i];
+            long long right= nse[i]-i;
+            ans-= left*right*nums[i];
+
+            left= i-pge[i];
+            right= nge[i]-i;
+            ans+= left*right*nums[i];
+        }
         return ans;
     }
 };
