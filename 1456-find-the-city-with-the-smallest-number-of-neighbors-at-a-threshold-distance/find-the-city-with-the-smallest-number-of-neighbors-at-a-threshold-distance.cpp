@@ -5,47 +5,47 @@ public:
         vector<pair<int,int>>adj[n];
         for(auto i:edges)
         {
-            int u= i[0];
-            int v= i[1];
-            int w= i[2];
-            adj[u].push_back({v,w});
-            adj[v].push_back({u,w});
+            adj[i[0]].push_back({i[1],i[2]});
+            adj[i[1]].push_back({i[0],i[2]});
         }
-        //MIN HEAP..
+        set<pair<int,int>>st;
         int city=0;
         int mincnt= n+1;
         for(int i=0;i<n;i++)
         {
             vector<int>dis(n,INT_MAX);
+            st.insert({0,i});
             dis[i]=0;
-            //distance, node
-            priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>>pq;
-            pq.push({0,i});
-            while(!pq.empty())
+            while(!st.empty())
             {
-                int d= pq.top().first;
-                int node= pq.top().second;
-                pq.pop();
-                for(auto it:adj[node])
+                auto top= *st.begin();
+                int d= top.first;
+                int node= top.second;
+                st.erase(top);
+                for(auto i:adj[node])
                 {
-                    int neigh= it.first;
-                    int wt= it.second;
+                    int neigh= i.first;
+                    int wt= i.second;
                     if(d+wt< dis[neigh])
                     {
+                        if(dis[neigh]!=INT_MAX)
+                        {
+                            st.erase({dis[neigh],neigh});
+                        }
                         dis[neigh]= d+wt;
-                        pq.push({dis[neigh],neigh});
+                        st.insert({dis[neigh],neigh});
                     }
                 }
             }
             int cnt=0;
-            for(int j=0;j<n;j++)
+            for(int i=0;i<n;i++)
             {
-                if(dis[j]<=td)
+                if(dis[i]<=td)
                 {
                     cnt++;
                 }
             }
-            if(cnt<=mincnt)
+            if(cnt<= mincnt)
             {
                 mincnt= cnt;
                 city= i;
