@@ -1,51 +1,40 @@
-// Approach 1 -> Take a middle element and find its leftSmallest and rightGreatest
-// or find its leftGreatest and rightSmallest  and directly multiply these and add in ans
-
-// TC= O(N * (2N)) ->> O[2* N^2] ->> O(N^2)
-
 class Solution {
 public:
-    int numTeams(vector<int>& rating) {
+    int numTeams(vector<int>& rating) 
+    {
         int n= rating.size();
-        
-        int ans= 0;
-        for(int i=1; i<n-1; i++)
+        int ans=0;
+        for(int i=1;i<n-1;i++)
         {
-            int leftSmallest= 0;
-            int leftGreatest= 0;
-            
-            // find leftGreatest, leftSmallest...
-            for(int j= i-1; j>=0; j--)
+            int curr= rating[i];
+            int smalleft=0;
+            int smallright=0;
+            int greatleft=0;
+            int greatright=0;
+            for(int j=0;j<i;j++)
             {
-                if(rating[j] < rating[i])
+                if(rating[j]<curr)
                 {
-                    leftSmallest++;
+                    smalleft++;
                 }
-                else
+                else if(rating[j]>curr)
                 {
-                    leftGreatest++;
+                    greatleft++;
                 }
             }
-          
-            // find rightGreatest, rightSmallest....
-            int rightSmallest= 0;
-            int rightGreatest= 0;
-
-            for(int j=i+1; j<n; j++)
+            for(int k=i+1;k<n;k++)
             {
-                if(rating[i] < rating[j])
+                if(rating[k]<curr)
                 {
-                    rightGreatest++;
+                    smallright++;
                 }
-                else
+                else if(rating[k]>curr)
                 {
-                    rightSmallest++;
+                    greatright++;
                 }
             }
-        
-        ans+= (leftSmallest* rightGreatest);
-        ans+= (leftGreatest* rightSmallest);
+            ans+= smalleft*greatright+ smallright*greatleft;
         }
-      return ans;  
+        return ans;
     }
 };
