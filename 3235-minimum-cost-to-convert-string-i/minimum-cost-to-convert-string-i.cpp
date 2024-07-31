@@ -14,7 +14,7 @@ public:
             {
                 for(int j=0;j<26;j++)
                 {
-                    if(dis[i][k]!=INT_MAX && dis[k][j]!=INT_MAX)
+                    if(i!=j && dis[i][k]!=INT_MAX && dis[k][j]!=INT_MAX)
                     {
                         dis[i][j]= min(dis[i][j], dis[i][k]+dis[k][j]);
                     }
