@@ -1,18 +1,21 @@
 class Solution {
 public:
-    int minimumDeletions(string s) {
-        int n = s.size();
-        int f[n + 1];
-        memset(f, 0, sizeof(f));
-        int b = 0;
-        for (int i = 1; i <= n; ++i) {
-            if (s[i - 1] == 'b') {
-                f[i] = f[i - 1];
-                ++b;
-            } else {
-                f[i] = min(f[i - 1] + 1, b);
+    int minimumDeletions(string s) 
+    {
+        stack<char>st;
+        int cnt=0;
+        for(auto i:s)
+        {
+            if(!st.empty() && i=='a' && st.top()=='b')
+            {
+                st.pop();
+                cnt++;
+            }
+            else
+            {
+                st.push(i);
             }
         }
-        return f[n];
+        return cnt;
     }
 };
