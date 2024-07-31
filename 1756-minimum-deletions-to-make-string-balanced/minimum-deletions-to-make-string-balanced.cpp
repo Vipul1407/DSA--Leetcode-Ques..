@@ -3,19 +3,23 @@ public:
     int minimumDeletions(string s) 
     {
         stack<char>st;
-        int cnt=0;
+        int ans=0;
+        int cb=0;
         for(auto i:s)
         {
-            if(!st.empty() && i=='a' && st.top()=='b')
+            if(i=='b')
             {
-                st.pop();
-                cnt++;
+                cb++;
             }
-            else
+            else if(i=='a')
             {
-                st.push(i);
+                if(cb>0)
+                {
+                    ans++;
+                    cb--;
+                }
             }
         }
-        return cnt;
+        return ans;
     }
 };
