@@ -3,29 +3,26 @@ public:
     #define MOD 1000000007
     int rangeSum(vector<int>& nums, int n, int left, int right) 
     {
-        //Min Heap
-        priority_queue<int,vector<int>,greater<int>>pq;
+        priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>>pq;
         for(int i=0;i<n;i++)
         {
-            int sum=0;
-            for(int j=i;j<n;j++)
-            {
-                sum= (sum+nums[j])%MOD;
-                pq.push(sum);
-            }
-        }
-
-        //min heap h isliye left-1 tk nikal lenge becoz hmko left-->right tk ka sum needed h
-        for(int i=0;i<left-1;i++)
-        {
-            pq.pop();
+            pq.push({nums[i],i});
         }
         int ans=0;
-        //left-->right(included) tk ka sum needed h 
-        for(int i=left;i<=right;i++)
+        for(int i=1;i<=right;i++)
         {
-            ans= (ans+pq.top())%MOD;
+            int sum= pq.top().first;
+            int idx= pq.top().second;
             pq.pop();
+            if(idx+1<n)
+            {
+                int newsum= (sum+nums[idx+1])%MOD;
+                pq.push({newsum,idx+1});
+            }
+            if(i>=left)
+            {
+                ans= (ans+sum)%MOD;
+            }
         }
         return ans;
     }
