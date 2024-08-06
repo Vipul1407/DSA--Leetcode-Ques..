@@ -2,38 +2,17 @@ class Solution {
 public:
     int minimumPushes(string word) 
     {
-        unordered_map<char,int>mp;
+        vector<int>vec(26,0);
         for(auto i:word)
         {
-            mp[i]++;
-        } 
-        vector<int>vec;
-        for(auto i:mp)
-        {
-            vec.push_back(i.second);
+            vec[i-'a']++;
         }
         sort(vec.rbegin(),vec.rend());
-        int cnt=0;
         int ans=0;
-        for(auto i:vec)
+        for(int i=0;i<26;i++)
         {
-            cnt++;
-            if(cnt<=8)
-            {
-                ans+= i;
-            }
-            else if(cnt<=16)
-            {
-                ans+= i*2;
-            }
-            else if(cnt<=24)
-            {
-                ans+= i*3;
-            }
-            else
-            {
-                ans+= i*4;
-            }
+            //adding 1 as index starting from
+            ans+= vec[i]*(1+i/8);
         }
         return ans;
     }
