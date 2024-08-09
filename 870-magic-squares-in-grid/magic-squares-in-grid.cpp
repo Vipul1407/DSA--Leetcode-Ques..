@@ -23,6 +23,18 @@ public:
         }
         //rowsum to set a measure for others..
         int sum= grid[r][c]+grid[r][c+1]+grid[r][c+2];
+
+        //diagonal checking..
+        if(grid[r][c]+grid[r+1][c+1]+grid[r+2][c+2]!=sum)
+        {
+            return false;
+        }
+        //anti-diagonal checking..
+        if(grid[r][c+2]+grid[r+1][c+1]+grid[r+2][c]!=sum)
+        {
+            return false;
+        }
+            
         for(int i=0;i<3;i++)
         {
             //rowsum checking..
@@ -35,17 +47,8 @@ public:
             {
                 return false;
             }
-            //diagonal checking..
-            if(grid[r][c]+grid[r+1][c+1]+grid[r+2][c+2]!=sum)
-            {
-                return false;
-            }
-            //anti-diagonal checking..
-            if(grid[r][c+2]+grid[r+1][c+1]+grid[r+2][c]!=sum)
-            {
-                return false;
-            }
         }
+        
         return true;
     }
     int numMagicSquaresInside(vector<vector<int>>& grid) 
