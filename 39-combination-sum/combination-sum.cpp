@@ -3,7 +3,7 @@ class Solution
 public:
 
     vector<vector<int>>ans;
-    void solve(int i, vector<int>& cand, int k, vector<int>vec)
+    void solve(int i, vector<int>& cand, int k, vector<int>&vec)
     {
         int n= cand.size();
         if(k==0)
