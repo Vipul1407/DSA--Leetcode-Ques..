@@ -18,7 +18,7 @@ public:
                     return false;
                 }
             }
-            else if(i==20)
+            else 
             {
                 //get change in 2 ways-:
                 //5+5+5 or 10+5
