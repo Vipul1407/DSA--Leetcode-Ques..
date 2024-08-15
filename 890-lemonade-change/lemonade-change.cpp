@@ -4,8 +4,6 @@ public:
     {
         int c5=0;
         int c10=0;
-        //no need to track this...
-        //int c20=0;
         for(auto i:bills)
         {
             if(i==5)
@@ -14,22 +12,20 @@ public:
             }
             else if(i==10)
             {
-                if(c5>0)
-                {
-                    c5--;
-                    c10++;
-                }
-                else
+                c10++;
+                if(--c5<0)
                 {
                     return false;
                 }
             }
             else if(i==20)
             {
-                if(c5>0 && c10>0)
+                //get change in 2 ways-:
+                //5+5+5 or 10+5
+                if(c10>0 && c5>0)
                 {
-                    c5--;
                     c10--;
+                    c5--;
                 }
                 else if(c5>=3)
                 {
@@ -41,7 +37,6 @@ public:
                 }
             }
         }
-
         return true;
     }
 };
