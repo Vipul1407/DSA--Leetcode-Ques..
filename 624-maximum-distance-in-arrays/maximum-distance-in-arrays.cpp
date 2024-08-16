@@ -1,18 +1,31 @@
-class Solution {
+class Solution
+{
 public:
-    int maxDistance(vector<vector<int>>& arrays) 
+    int maxDistance(vector<vector<int>> &arrays)
     {
-        int n= arrays.size();
-        int ans= INT_MIN;
-        int pmin= arrays[0].front();
-        int pmax= arrays[0].back();
-        for(int i=1;i<n;i++)
+        int n = arrays.size();
+        // min heap.. storing value, array index(to track which list)
+        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pqmin;
+        // max heap...
+        priority_queue<pair<int, int>> pqmax;
+        for (int i = 0; i < n; i++)
         {
-            ans= max(ans, arrays[i].back()-pmin);
-            ans= max(ans, pmax-arrays[i].front());
-            pmin= min(pmin, arrays[i].front());
-            pmax= max(pmax, arrays[i].back());
+            pqmin.push({arrays[i].front(), i});
+            pqmax.push({arrays[i].back(), i});
         }
-        return  ans;
+        auto [minval, minidx]= pqmin.top();
+        pqmin.pop();
+        auto [maxval, maxidx]= pqmax.top();
+        pqmax.pop();
+        int diff= abs(maxval-minval);
+
+        //if both are form same array..
+        if(minidx == maxidx)
+        {
+            int d1= abs(pqmax.top().first- minval);
+            int d2= abs(maxval-pqmin.top().first);
+            diff= max(d1,d2);
+        }
+        return diff;
     }
 };
