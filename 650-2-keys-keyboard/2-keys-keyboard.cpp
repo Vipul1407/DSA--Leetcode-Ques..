@@ -36,7 +36,7 @@ public:
         {
             return 0;
         }
-        vector<vector<int>>dp(n,vector<int>(n,-1));
+        vector<vector<int>>dp(1001,vector<int>(1001,-1));
         //add 1 in final ans as copy is req. as initially only 'A' in clipboard 
         //so we need to copy it to clipboard that takes 1 operation..
         return 1+rec(n,1,1,dp);
