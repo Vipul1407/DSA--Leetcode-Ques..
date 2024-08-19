@@ -10,7 +10,7 @@ public:
         }
         if(curr>n)
         {
-            return 1e9;
+            return 10000;
         }
         if(dp[curr][clip]!=-1)
         {
