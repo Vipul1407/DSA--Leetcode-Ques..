@@ -2,11 +2,12 @@ class Solution {
 public:
     vector<int> missingRolls(vector<int>& rolls, int mean, int n) 
     {
-        long long sum=0;
-        for(auto i:rolls)
-        {
-            sum+=i;
-        }
+        // long long sum=0;
+        // for(auto i:rolls)
+        // {
+        //     sum+=i;
+        // }
+        long long sum= accumulate(rolls.begin(),rolls.end(),0LL);
         int size= rolls.size();
         long long val= mean*(size+n)-sum;
         if(val> n*6 || val< n)
