@@ -14,22 +14,19 @@ public:
     {
         unordered_set<int>st(nums.begin(),nums.end());
         ListNode* dummy= new ListNode(-1);
-        dummy->next=head;
-        ListNode* prev= dummy;
-        ListNode* curr= head;
-        while(curr)
+
+        ListNode* curr= dummy;
+        ListNode* temp= head;
+        while(temp)
         {
-            if(st.find(curr->val)!=st.end())
+            if(st.find(temp->val)==st.end())
             {
-                prev->next= curr->next;
-                curr= curr->next;
-            }
-            else
-            {
-                prev=curr;
+                curr->next= temp;
                 curr=curr->next;
             }
+            temp=temp->next;
         }
+        curr->next=NULL;
         head=dummy->next;
         delete dummy;
         return head;
