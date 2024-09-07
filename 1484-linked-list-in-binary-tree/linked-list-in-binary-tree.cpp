@@ -21,31 +21,33 @@
  */
 class Solution {
 public:
-    bool solve(ListNode* head, TreeNode* root)
+    bool dfs(ListNode* head, ListNode*curr, TreeNode* root)
     {
-        //list khtm hogyi means true return krna h
-        if(!head)
+        if(!curr)
         {
             return true;
         }
-        //tree khtm hogya but list ni.. mtlb false return krna h
         if(!root)
         {
             return false;
         }
-    
-        if(root->val==head->val)
+        if(curr->val==root->val)
         {
-            return solve(head->next,root->right) || solve(head->next,root->left);
+            curr=curr->next;
         }
-        return false;
+        else if(head->val==root->val)
+        {
+            head=head->next;
+        }
+        else
+        {
+            curr=head;
+        }
+        return dfs(head,curr,root->left) || dfs(head,curr,root->right);
     }
     bool isSubPath(ListNode* head, TreeNode* root) 
     {
-        if(!root)
-        {
-            return false;
-        }
-        return solve(head,root) || isSubPath(head,root->right) || isSubPath(head,root->left);
+        ListNode* curr=head;
+        return dfs(head,curr,root);
     }
 };
