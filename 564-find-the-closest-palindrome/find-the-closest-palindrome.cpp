@@ -1,60 +1,57 @@
 class Solution {
 public:
-    string nearestPalindromic(string numberStr) {
-        long long number = stoll(numberStr);
-        
-        // Edge cases for small numbers
-        if (number <= 10) return to_string(number - 1);
-        if (number == 11) return "9";
-        
-        // Special case for 18-digit number with all 9s, thanks to dcodeDV for pointing this out
-        if (numberStr == "999999999999999999") {
-            return "1000000000000000001";
+    long solve(long half, bool iseven)
+    {
+        long num= half;
+        if(iseven == false)
+        {
+            //leaving middle as pivot only in case of odd
+            half/=10;
         }
-        
-        int length = numberStr.length();
-        long long leftHalf = stoll(numberStr.substr(0, (length + 1) / 2));
-        
-        vector<long long> palindromeCandidates(5);
-        palindromeCandidates[0] = generatePalindromeFromLeft(leftHalf - 1, length % 2 == 0);
-        palindromeCandidates[1] = generatePalindromeFromLeft(leftHalf, length % 2 == 0);
-        
-        // Handle potential overflow for leftHalf + 1
-        if (leftHalf < 999999999) {
-            palindromeCandidates[2] = generatePalindromeFromLeft(leftHalf + 1, length % 2 == 0);
-        } else {
-            palindromeCandidates[2] = stoll("1" + string(length - 1, '0') + "1");
+        while(half>0)
+        {
+            int digit= half%10;
+            num= (num*10)+digit;
+            half/=10;
         }
-        
-        palindromeCandidates[3] = pow(10, length - 1) - 1;
-        palindromeCandidates[4] = pow(10, length) + 1;
-        
-        long long nearestPalindrome = 0;
-        long long minDifference = LLONG_MAX;
-        
-        for (long long candidate : palindromeCandidates) {
-            if (candidate == number) continue;
-            long long difference = abs(candidate - number);
-            if (difference < minDifference || (difference == minDifference && candidate < nearestPalindrome)) {
-                minDifference = difference;
-                nearestPalindrome = candidate;
+        return num;
+    }
+    string nearestPalindromic(string s) 
+    {
+        int n=s.length();
+        int mid= n/2;
+        //agar even length h to mid tk length lenge 
+        int halflen= (n%2==0)? mid: (mid+1);
+        //agar odd length h to mid+1 tk length lenge
+        long half= stol(s.substr(0,halflen));
+        vector<long>res;
+        res.push_back(solve(half, n%2==0));
+        res.push_back(solve(half+1, n%2==0));
+        res.push_back(solve(half-1, n%2==0));
+        //to handle case of 101 ---> 10^2 -1= 99
+        res.push_back((long)pow(10,n-1)-1);
+        //to handle case of 999 ---> 10^3 +1= 1001
+        res.push_back((long)pow(10,n)+1);
+
+        long diff= INT_MAX;
+        long ans= INT_MAX;
+        long original= stol(s);
+        for(long i:res)
+        {
+            if(i==original)
+            {
+                continue;
+            }
+            if(abs(i-original)<diff)
+            {
+                diff= abs(i-original);
+                ans=i;
+            }
+            else if(abs(i-original)==diff)
+            {
+                ans= min(ans,i);
             }
         }
-        
-        return to_string(nearestPalindrome);
+        return to_string(ans);
     }
-
-private:
-    long long generatePalindromeFromLeft(long long leftHalf, bool isEvenLength) {
-        long long palindrome = leftHalf;
-        if (!isEvenLength) leftHalf /= 10;
-        while (leftHalf > 0) {
-            palindrome = palindrome * 10 + leftHalf % 10;
-            leftHalf /= 10;
-        }
-        return palindrome;
-    }
-};
-
-
-//https://leetcode.com/problems/find-the-closest-palindrome/submissions/1366449944/
+}; 
