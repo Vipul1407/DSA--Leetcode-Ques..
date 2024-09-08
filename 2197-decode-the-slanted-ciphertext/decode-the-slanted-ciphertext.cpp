@@ -18,18 +18,25 @@ public:
             }
         }
         string original="";
-        //traversing upto col length
-        for(int k=0;k<col;k++)
+        map<int,vector<char>>mp;
+        for(int i=0;i<row;i++)
         {
-            int i=0;
-            int j=k;
-            while(i<row && j<col)
+            for(int j=0;j<col;j++)
             {
-                original+= mat[i][j];
-                i++;
-                j++;
+                if(i-j<=0)
+                {
+                    mp[i-j].push_back(mat[i][j]);
+                }
             }
         }
+        for(auto i=mp.rbegin();i!=mp.rend();i++)
+        {
+            for(auto j:i->second)
+            {
+                original+=j;
+            }
+        }
+
         //to remove trailing spaces...
         while(!original.empty() && original.back()==' ')
         {
