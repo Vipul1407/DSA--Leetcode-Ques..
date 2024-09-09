@@ -1,72 +1,53 @@
-// union find class with size
-class UnionFind {
-    vector<int> root, Size;
-public:
-    int merge;
-    UnionFind(int N) : root(N), Size(N, 1), merge(0) {
-        iota(root.begin(), root.end(), 0);
-    }
-
-    int Find(int x) {
-        if (x == root[x]) return x;
-        return root[x] = Find(root[x]); // Path compression
-    }
-
-    bool Union(int x, int y) {
-        x = Find(x), y = Find(y);
-
-        if (x == y) return 0;
-
-        if (Size[x] > Size[y]) {
-            Size[x] += Size[y];
-            root[y] = x;
-        } 
-        else {
-            Size[y] += Size[x];
-            root[x] = y;
-        }
-        merge++;
-        return 1;
-    }
-};
 class Solution {
 public:
-    int r, c;
-    inline int idx(int i, int j){ return i*c+j; }
 
-    int countSubIslands(vector<vector<int>>& grid1, vector<vector<int>>& grid2) {
-        r=grid1.size(), c=grid1[0].size();
-        int N=r*c;
-        UnionFind G(N+1); // Put 1 more extra cell N as water
-        int cntLand=0;
-        for(int i=0; i<r; i++){
-            for(int j=0; j<c; j++){
-                int curr=idx(i, j), down=idx(i+1, j), right=idx(i, j+1);
-                bool g2=grid2[i][j]==1;
-                cntLand+=g2;
-                if(g2){
-                    //downward
-                    if (i+1<r && grid2[i+1][j])
-                        G.Union(curr, down);
-                    if (grid1[i][j]==0) //No sub-Island
-                        G.Union(curr, N);//connecting to water-cell N no sub-Island
-                    //rightward
-                    if (j+1<c && grid2[i][j+1])
-                        G.Union(curr, right);
+    bool dfs(int i,int j,vector<vector<int>>& grid1, vector<vector<int>>& grid2) 
+    {
+        int m= grid2.size();
+        int n= grid2[0].size();
+        //base cases..
+        //if we get any out of bound indexes means we have done our computations
+        if(i<0 || i>=m || j<0 || j>=n)
+        {
+            return true;
+        }
+        //if we get any water in grid2 means we are done with our computations
+        if(grid2[i][j]!=1)
+        {
+            return true;
+        }
+        grid2[i][j]=-1;//to mark it as visited block..
+
+        bool result= (grid1[i][j]==1);// grid1 must have water there..
+        result = dfs(i-1,j,grid1,grid2) && result ;//up
+        result = dfs(i,j+1,grid1,grid2) && result;//right
+        result = dfs(i+1,j,grid1,grid2) && result;//down
+        result = dfs(i,j-1,grid1,grid2) && result;//left
+        return result;
+    }
+    int countSubIslands(vector<vector<int>>& grid1, vector<vector<int>>& grid2) 
+    {
+        //Note that we have to check sub-islands in grid2
+        //Conditions-  
+        //1)grid2 check for horizontal and vertical blocks of 1 only
+        //2)grid2 wle hrr block p grid1 p bhi 1 hona chaiye agar ek bhi 0 hua to usko ni lenge
+        int m= grid2.size();
+        int n= grid2[0].size();
+        int cnt=0;
+        for(int i=0;i<m;i++)
+        {
+            for(int j=0;j<n;j++)
+            {
+                if(grid2[i][j]==1)
+                {
+                    if(dfs(i,j,grid1,grid2))
+                    {
+                        cnt++;
+                    }
+                    
                 }
-                
             }
         }
-    //    cout<<cntLand;
-        return cntLand-G.merge;
+        return cnt;
     }
 };
-
-
-auto init = []()
-{ 
-    ios::sync_with_stdio(0);
-    cin.tie(0);
-    cout.tie(0);
-    return 'c';
-}();
