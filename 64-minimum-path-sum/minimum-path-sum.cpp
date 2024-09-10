@@ -1,34 +1,27 @@
-class Solution 
-{
-public:
+class Solution {
+ public:
+  int minPathSum(vector<vector<int>>& grid) {
+    const int m = grid.size();
+    const int n = grid[0].size();
 
-    //More space optimized...
-    int minPathSum(vector<vector<int>>& grid) 
-    {
-        int n= grid[0].size();
-        int m= grid.size();
-        vector<int> curr(n+1,0);
-
-        for(int i=m-1;i>=0;i--)
-        {
-            for(int j=n-1;j>=0;j--)
-            {
-                if(i==m-1)
-                {
-                    curr[j]= grid[i][j]+ curr[j+1];
-                }
-                else if(j==n-1)
-                {
-                    curr[j]= grid[i][j]+ curr[j];
-                }
-                else
-                {
-                    curr[j]= grid[i][j]+ min(curr[j+1], curr[j]);
-                }
-            }
-        }
-        return curr[0];
+    // Update the first row
+    for (int j = 1; j < n; ++j) {
+      grid[0][j] += grid[0][j - 1];
     }
-    
-};
 
+    // Update the first column
+    for (int i = 1; i < m; ++i) {
+      grid[i][0] += grid[i - 1][0];
+    }
+
+    // Update the rest of the grid
+    for (int i = 1; i < m; ++i) {
+      for (int j = 1; j < n; ++j) {
+        grid[i][j] += min(grid[i - 1][j], grid[i][j - 1]);
+      }
+    }
+
+    // Return the bottom-right corner value which is the answer
+    return grid[m - 1][n - 1];
+  }
+};
