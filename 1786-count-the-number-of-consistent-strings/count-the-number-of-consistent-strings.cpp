@@ -2,17 +2,20 @@ class Solution {
 public:
     int countConsistentStrings(string allowed, vector<string>& words) 
     {
+        vector<int>vec(26,0);
         int cnt=0;
-        unordered_set<char>st(allowed.begin(),allowed.end());
+        for(auto i:allowed)
+        {
+            vec[i-'a']++;
+        }    
         int flag=0;
         for(auto i:words)
         {
             for(auto j:i)
             {
-                //char ni mila..
-                if(st.find(j)==st.end())
+                if(vec[j-'a']==0)
                 {
-                    flag= 1;
+                    flag=1;
                     break;
                 }
             }
@@ -21,7 +24,7 @@ public:
                 cnt++;
             }
             flag=0;
-        }    
+        }
         return cnt;
     }
 };
