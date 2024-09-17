@@ -5,7 +5,8 @@ public:
         vector<string>ans;
         unordered_map<string,int>mp;
         string form="";
-        for(auto i:s1)
+        string str= s1+" "+s2;
+        for(auto i:str)
         {
             if(i==' ')
             {
@@ -18,21 +19,7 @@ public:
             }
         }
         mp[form]++;
-        form="";
-        for(auto i:s2)
-        {
-            if(i==' ')
-            {
-                mp[form]++;
-                form="";
-            }
-            else
-            {
-                form+=i;
-            }
-        }
-        mp[form]++;
-        
+
         for(auto i:mp)
         {
             if(i.second==1)
