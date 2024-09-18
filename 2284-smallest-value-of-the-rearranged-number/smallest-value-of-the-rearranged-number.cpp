@@ -4,67 +4,52 @@ public:
     {
         if(num==0)
         {
-            return 0;
+            return 0;//becoz stoll will give error for 0
         }
-        //if + then sort in min form and if 0 present then place it and 2nd place
-        //if - then only thing is sort in max form
-        string str= to_string(num);
-        char pos='?';
-        if(!isdigit(str[0]))
-        {
-            if(str[0]=='-')
-            {
-                pos='-';//to denote it is negative
-            }
-        }
-        vector<char>vec;
+        bool neg= num<0? true:false;
         string ans="";
-        //if it is +ve number
-        if(pos=='?' || pos=='+')
+        if(neg)
         {
-            for(auto i:str)
+            //max heap..
+            priority_queue<int>pq;
+            num= abs(num);
+            while(num>0)
             {
-                if(isdigit(i))
-                {
-                    vec.push_back(i);
-                }
+                pq.push(num%10);
+                num/=10;
             }
-            sort(vec.begin(),vec.end());
-            if(pos=='+')
+            ans+='-';
+            while(pq.size())
             {
-                ans+='+';
+                ans+=to_string(pq.top());
+                pq.pop();
             }
+        }
+        else
+        {
+            //min heap..
+            priority_queue<int,vector<int>,greater<int>>pq;
+            while(num>0)
+            {
+                pq.push(num%10);
+                num/=10;
+            }
+            ans+='+';
             int cnt=0;
-            for(auto i:vec)
+            while(pq.size())
             {
-                if(i=='0' && (ans=="" || ans=="+"))
+                while(pq.top()==0 && ans=="+")
                 {
                     cnt++;
-                    continue;
+                    pq.pop();
                 }
-                ans+=i;
+                ans+=to_string(pq.top());
+                pq.pop();
                 while(cnt>0 && (ans!="" || ans!="+"))
                 {
                     ans+='0';
                     cnt--;
                 }
-            }
-        }
-        //is it is -ve number
-        else
-        {
-            for(auto i:str)
-            {
-                if(isdigit(i))
-                {
-                    vec.push_back(i);
-                }
-            }
-            sort(vec.rbegin(),vec.rend());
-            ans+='-';
-            for(auto i:vec)
-            {
-                ans+= i;
             }
         }
         return stoll(ans);
