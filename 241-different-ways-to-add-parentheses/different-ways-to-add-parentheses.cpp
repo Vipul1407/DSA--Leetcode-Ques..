@@ -2,6 +2,12 @@ class Solution {
 public:
     vector<int>solve(string exp)
     {
+        //storing string as key with its vector<int> so to avoid redundant calculations..
+        unordered_map<string,vector<int>>mp;
+        if(mp.find(exp)!=mp.end())
+        {
+            return mp[exp];
+        }
         vector<int>ans;
         for(int i=0;i<exp.length();i++)
         {
@@ -35,7 +41,8 @@ public:
         {
             ans.push_back(stoi(exp));
         }
-        return ans;
+        //return ans after storing it in mp..
+        return mp[exp]= ans;
     }
     vector<int> diffWaysToCompute(string exp) 
     {
