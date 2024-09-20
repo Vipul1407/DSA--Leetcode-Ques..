@@ -7,21 +7,23 @@ public:
         int n= s.length();
         string rev= s;
         reverse(rev.begin(),rev.end());
-        vector<vector<int>>dp(n+11,vector<int>(n+1,0));
+        vector<int>curr(n+1,0);
+        vector<int>next(n+1,0);
         for(int i=n-1;i>=0;i--)
         {
             for(int j=n-1;j>=0;j--)
             {
                 if(s[i]==rev[j])
                 {
-                    dp[i][j]= 1+dp[i+1][j+1];
+                    curr[j]= 1+next[j+1];
                 }
                 else
                 {
-                    dp[i][j]= max(dp[i+1][j],dp[i][j+1]);
+                    curr[j]= max(next[j],curr[j+1]);
                 }
             }
+            next=curr;
         }
-        return dp[0][0];
+        return next[0];
     }
 };
