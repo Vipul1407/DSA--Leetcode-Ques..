@@ -1,27 +1,31 @@
 class Solution {
 public:
-    int dp[51];
-    int solve(int idx, string& s, unordered_map<string, int>& mp){
-        if(idx >= s.length()){
+    int rec(int i,string s, unordered_set<string>&st, vector<int>&dp)
+    {
+        if(i>=s.length())
+        {
             return 0;
         }
-        if(dp[idx] != -1) return dp[idx];
-        int ans = INT_MAX;
-        string k = "";
-        for(int i = idx; i < s.length(); i++){
-            k.push_back(s[i]);
-            int count = ((mp[k]) ? 0 : k.length()) + solve(i + 1, s, mp);
-            ans = min(ans, count);
+        if(dp[i]!=-1)
+        {
+            return dp[i];
         }
-        return dp[idx] = ans;
+        int result= 1+ rec(i+1,s,st,dp);
+        for(int j=i;j<s.length();j++)
+        {
+            //forming a substring starting from i itself
+            string curr= s.substr(i,j-i+1);
+            if(st.find(curr)!=st.end())
+            {
+                result= min(result, rec(j+1,s,st,dp));
+            }
+        }
+        return dp[i]=result;
     }
-    
-    int minExtraChar(string s, vector<string>& dictionary) {
-        unordered_map<string, int> mp;
-        for (auto it : dictionary) {
-            mp[it]++;
-        }
-        memset(dp, -1, sizeof(dp));
-        return solve(0, s, mp);
+    int minExtraChar(string s, vector<string>& dict) 
+    {
+        unordered_set<string>st(dict.begin(),dict.end());
+        vector<int>dp(s.length()+1,-1);
+        return rec(0,s,st,dp);
     }
 };
