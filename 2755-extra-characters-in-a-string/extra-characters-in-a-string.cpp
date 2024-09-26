@@ -25,7 +25,7 @@ public:
     int minExtraChar(string s, vector<string>& dict) 
     {
         unordered_set<string>st(dict.begin(),dict.end());
-        vector<int>dp(s.length()+1,-1);
+        vector<int>dp(s.length(),-1);
         return rec(0,s,st,dp);
     }
 };
