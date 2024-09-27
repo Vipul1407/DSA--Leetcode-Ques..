@@ -3,24 +3,25 @@ public:
     MyCalendarTwo() {
         
     }
-    //declare it as global
-    map<int,int>mp;
-    bool book(int start, int end) 
+    vector<pair<int,int>>events;
+    vector<pair<int,int>>dbook;
+    bool book(int s, int e) 
     {
-        int sum=0;
-        mp[start]++;
-        mp[end]--;
-        for(auto i:mp)
+        for(pair<int,int>p: dbook)
         {
-            sum+= i.second;
-            //triple booking
-            if(sum>2)
+            if(s<p.second && e>p.first)
             {
-                mp[start]--;
-                mp[end]++;
-                return false;
+               return false;
             }
         }
+        for(pair<int,int>&p: events)
+        {
+            if(s<p.second && e>p.first)
+            {
+                dbook.push_back({max(p.first,s),min(p.second,e)});
+            }
+        }
+        events.push_back({s,e});
         return true;
     }
 };
