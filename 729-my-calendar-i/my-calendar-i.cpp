@@ -3,24 +3,17 @@ public:
     MyCalendar() {
         
     }
-    //declare it as global
-    map<int,int>mp;
-    bool book(int start, int end) 
+    vector<pair<int,int>>vec;
+    bool book(int s, int e) 
     {
-        mp[start]++;
-        mp[end]--;
-        int sum=0;
-        for(auto i:mp)
+        for(pair<int,int>p: vec)
         {
-            sum+= i.second;
-            if(sum>1)
+            if(s<p.second && e>p.first)
             {
-                //to not effect calculation of remaining elements
-                mp[start]--;
-                mp[end]++;
                 return false;
             }
         }
+        vec.push_back({s,e});
         return true;
     }
 };
