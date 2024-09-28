@@ -1,27 +1,69 @@
-class Solution {
+
+struct trienode
+{
+    //char d;
+    //bool isterminal;
+    trienode* children[10];
+};
+
+class Solution 
+{
 public:
-    int longestCommonPrefix(vector<int>& arr1, vector<int>& arr2) 
+    trienode* trie()
     {
-        unordered_set<int>st;
+        trienode* node= new trienode();
+        for(int i=0;i<10;i++)
+        {
+            node->children[i]=NULL;
+        }
+        return node;
+    };
+    void insert(int num, trienode* root)
+    {
+        trienode* child= root;
+        string str= to_string(num);
+        for(auto ch:str)
+        {
+            int idx= ch-'0';
+            if(child->children[idx]==NULL)
+            {
+                child->children[idx]= trie(); 
+            }
+            child= child->children[idx];
+        }
+    }
+    int search(int num, trienode* root)
+    {
+        trienode* child= root;
+        string str= to_string(num);
+        int len=0;
+        for(auto ch:str)
+        {
+            int idx= ch-'0';
+            if(child->children[idx])
+            {
+                len++;
+                child= child->children[idx];
+            }
+            else
+            {
+                break;
+            }
+        }
+        return len;
+    }
+    int longestCommonPrefix(vector<int>& arr1, vector<int>& arr2)
+    {
+        trienode* root= trie();
         for(auto i:arr1)
         {
-            //for eg. we have common prefix of 12345 and 123 we have to insert till 12345 and 12345/10= 1234 only becoz we already have numbers below this in set due to all prefixes of 123
-            while(st.find(i)==st.end() && i>0)
-            {
-                st.insert(i);
-                i/=10;
-            }
+            insert(i,root);
         }
-        int ans=0;
+        int res=0;
         for(auto i:arr2)
         {
-            while(st.find(i)==st.end() && i>0)
-            {
-                i/=10;
-            }
-            if(i>0)
-                ans= max(ans, static_cast<int>(log10(i))+1);
+            res= max(res,search(i,root));
         }
-        return ans;
+        return res;
     }
 };
