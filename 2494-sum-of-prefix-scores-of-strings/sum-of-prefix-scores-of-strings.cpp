@@ -1,155 +1,62 @@
-// Approach 2-> Using Trie with initialization
-
-// TC= O(N*d) where d -> avg length of each word..
-// SC= O(N*d)
-
-struct TrieNode{
-   int cnt;
-   TrieNode* children[26];
-   TrieNode(){
-      cnt= 0;
-      for(int i=0; i<26; i++){
-         children[i]= NULL;
-      }
-   }
+struct trienode{
+    //char d;
+    //bool isterminal;
+    int cnt=0;//to count prefix/length
+    trienode* children[26];//containing only lowercase 
 };
-
-class Solution {
+class Solution 
+{
 public:
-
-    void insert(string word, TrieNode* root)
+    trienode* trie()
     {
-        for(char ch: word)
-         {
-            int index= ch-'a';
-            if(!root->children[index])
+        trienode* node= new trienode();
+        for(int i=0;i<26;i++)
+        {
+            node->children[i]= NULL;
+        }
+        node->cnt=0;
+        return node;
+    }
+    void insert(string str,trienode*root)
+    {
+        trienode* child= root;
+        for(auto ch:str)
+        {
+            int idx= ch-'a';
+            if(child->children[idx]==NULL)
             {
-                root->children[index]= new TrieNode();
+                child->children[idx]= trie();
             }
-            
-            // move forward....
-            root= root->children[index];
-            root->cnt+= 1;
-         }
-    }
-
-    int getScores(string word, TrieNode* root)
-    {
-        int count= 0;
-        for(char ch: word)
-        {
-            int index= ch-'a';
-        
-            // move forward...
-            root= root->children[index];
-            count+= root->cnt;
+            child= child->children[idx];
+            child->cnt+=1;// Increment after moving to the correct child node
         }
-       return count; 
     }
-
-
-    vector<int> sumPrefixScores(vector<string>& words) {
+    int calc(string str, trienode*root)
+    {
+        trienode*child= root;
+        int ans=0;
+        for(auto ch:str)
+        {
+            int idx= ch-'a';
+            child= child->children[idx];
+            ans+= child->cnt;//add cnt to ans after moving to correct child
+        }
+        return ans;
+    }
+    //we have to count all prefixes of that number
+    vector<int> sumPrefixScores(vector<string>& words) 
+    {
+        trienode* root= trie();
+        for(auto i:words)
+        {
+            insert(i,root);
+        }
         int n= words.size();
-        
-        TrieNode* root= new TrieNode();
-        for(int i=0; i<n; i++)
+        vector<int>ans(n);
+        for(int i=0;i<n;i++)
         {
-           insert(words[i],root);
+            ans[i]=calc(words[i],root);
         }
-        
-        vector<int> ans(n);
-        for(int i=0; i<n; i++)
-        {
-           ans[i]= getScores(words[i],root);
-        }
-       return ans; 
+        return ans;
     }
 };
-
-
-
-
-
-
-
-
-
-
-
-
-// Approach 1-> Using Trie with separate func for initialization
-
-// TC= O(N*d) where d -> avg length of each word..
-// SC= O(N*d)
-
-/*
-
-struct TrieNode{
-   int cnt;
-   TrieNode* children[26];
-};
-
-class Solution {
-public:
-    
-    TrieNode* formTrieNode()
-    {
-        TrieNode* root= new TrieNode();
-        for(int i=0; i<26; i++)
-        {
-            root->children[i]= NULL;
-        }
-        root->cnt= 0;
-        return root;
-    }
-
-    void insert(string word, TrieNode* root)
-    {
-        for(char ch: word)
-         {
-            int index= ch-'a';
-            if(!root->children[index])
-            {
-                root->children[index]= formTrieNode();
-            }
-            
-            // move forward....
-            root= root->children[index];
-            root->cnt+= 1;
-         }
-    }
-
-    int getScores(string word, TrieNode* root)
-    {
-        int count= 0;
-        for(char ch: word)
-        {
-            int index= ch-'a';
-        
-            // move forward...
-            root= root->children[index];
-            count+= root->cnt;
-        }
-       return count; 
-    }
-
-
-    vector<int> sumPrefixScores(vector<string>& words) {
-        int n= words.size();
-        
-        TrieNode* root= new TrieNode();
-        for(int i=0; i<n; i++)
-        {
-           insert(words[i],root);
-        }
-        
-        vector<int> ans(n);
-        for(int i=0; i<n; i++)
-        {
-           ans[i]= getScores(words[i],root);
-        }
-       return ans; 
-    }
-};
-
-*/
