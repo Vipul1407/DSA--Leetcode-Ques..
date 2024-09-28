@@ -1,6 +1,6 @@
 <h2><a href="https://leetcode.com/problems/sum-of-prefix-scores-of-strings">Sum of Prefix Scores of Strings</a></h2> <img src='https://img.shields.io/badge/Difficulty-Hard-red' alt='Difficulty: Hard' /><hr><p>You are given an array <code>words</code> of size <code>n</code> consisting of <strong>non-empty</strong> strings.</p>
 
-<p>We define the <strong>score</strong> of a string <code>word</code> as the <strong>number</strong> of strings <code>words[i]</code> such that <code>word</code> is a <strong>prefix</strong> of <code>words[i]</code>.</p>
+<p>We define the <strong>score</strong> of a string <code>term</code> as the <strong>number</strong> of strings <code>words[i]</code> such that <code>term</code> is a <strong>prefix</strong> of <code>words[i]</code>.</p>
 
 <ul>
 	<li>For example, if <code>words = [&quot;a&quot;, &quot;ab&quot;, &quot;abc&quot;, &quot;cab&quot;]</code>, then the score of <code>&quot;ab&quot;</code> is <code>2</code>, since <code>&quot;ab&quot;</code> is a prefix of both <code>&quot;ab&quot;</code> and <code>&quot;abc&quot;</code>.</li>
