@@ -9,12 +9,16 @@ public:
         mp[0]=1;
         for(auto i:arr)
         {
+            sum+=i;
+            int remain= sum%p;
             //becoz numbers can be negative..
             //to avoid negative remainder we use this...
-            sum= (sum+(i%p)+p)%p;
-            int remain= sum%p;
+            if(remain<0)
+            {
+                remain= (remain%p)+p;
+            }
             ans+= mp[remain];
-            mp[sum]++;
+            mp[remain]++;
         }
         return ans;
     }
