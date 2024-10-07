@@ -5,27 +5,9 @@ public:
         stack<char>st;
         for(auto i:s)
         {
-            if(i=='D')
+            if(st.size() && ((i=='B' && st.top()=='A') || (i=='D' && st.top()=='C')))
             {
-                if(st.size() && st.top()=='C')
-                {
-                    st.pop();
-                }
-                else
-                {
-                    st.push(i);
-                }
-            }
-            else if(i=='B')
-            {
-                if(st.size() && st.top()=='A')
-                {
-                    st.pop();
-                }
-                else
-                {
-                    st.push(i);
-                }
+                st.pop();
             }
             else
             {
