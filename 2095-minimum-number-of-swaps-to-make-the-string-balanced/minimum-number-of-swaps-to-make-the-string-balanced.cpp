@@ -2,18 +2,18 @@ class Solution {
 public:
     int minSwaps(string s) 
     {
-        stack<int>st;
+        int openingb=0;//opening_bracket
         for(auto i:s)
         {
             if(i=='[')
             {
-                st.push(i);
+                openingb++;
             }
-            else if(!st.empty())
+            else if(openingb>0)
             {
-                st.pop();
+                openingb--;
             }
         }
-        return (1+st.size())/2;
+        return (1+openingb)/2;
     }
 };
