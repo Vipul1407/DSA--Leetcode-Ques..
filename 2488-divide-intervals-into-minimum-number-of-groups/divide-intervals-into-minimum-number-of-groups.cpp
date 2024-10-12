@@ -7,8 +7,7 @@ public:
         //min heap storing departure
         priority_queue<int,vector<int>,greater<int>>pq;
         sort(inter.begin(),inter.end());
-        int curr=0;
-
+        
         for(auto i:inter)
         {
             int arri= i[0];
@@ -17,12 +16,8 @@ public:
             {
                 pq.pop();
             }
-            else
-            {
-                curr++;
-            }
             pq.push(dep);
         }
-        return curr;
+        return pq.size();
     }
 };
