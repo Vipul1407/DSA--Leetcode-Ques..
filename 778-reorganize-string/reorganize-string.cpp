@@ -20,8 +20,17 @@ public:
             auto top= pq.top();
             pq.pop();
             int n= ans.size();
-            //cannot again reuse same char..
-            if(n>0 && ans[n-1]==top.second)
+            //can reuse same char..
+            if(n==0 || ans[n-1]!=top.second)
+            {
+                ans+= top.second;
+                if(top.first-1>0)
+                {
+                    pq.push({top.first-1,top.second});
+                }
+            }
+            //cannot use same char...
+            else
             {
                 if(pq.empty())
                 {
@@ -35,15 +44,6 @@ public:
                     pq.push({newtop.first-1, newtop.second});
                 }
                 pq.push(top);
-            }
-            //can again reuse same char...
-            else
-            {
-                ans+= top.second;
-                if(top.first-1>0)
-                {
-                    pq.push({top.first-1,top.second});
-                }
             }
         }
         return pq.empty()?ans:"";
