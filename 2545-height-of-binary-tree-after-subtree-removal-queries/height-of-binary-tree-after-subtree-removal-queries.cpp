@@ -1,53 +1,80 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
 class Solution {
 public:
-    // Array to store the maximum height of the tree after removing each node
-    int maxHeightAfterRemoval[100001];
-    int currentMaxHeight = 0;
+    int level[100001];//level of each node
+    int height[100001];//height of each node
+    pair<int,int>maxht[100001];//to store 2 max ht. at each level 
 
-    vector<int> treeQueries(TreeNode* root, vector<int>& queries) {
-        traverseLeftToRight(root, 0);
-        currentMaxHeight = 0;  // Reset for the second traversal
-        traverseRightToLeft(root, 0);
-
-        // Process queries and build the result vector
-        int queryCount = queries.size();
-        vector<int> queryResults(queryCount);
-        for (int i = 0; i < queryCount; i++) {
-            queryResults[i] = maxHeightAfterRemoval[queries[i]];
+    int fun(TreeNode* root, int lev)
+    {
+        if(!root)
+        {
+            return 0;
         }
-
-        return queryResults;
+        level[root->val]= lev;
+        height[root->val]= 1+max(fun(root->left,lev+1),fun(root->right,lev+1));
+        if(height[root->val]>maxht[lev].first)
+        {
+            maxht[lev].second= maxht[lev].first;
+            maxht[lev].first= height[root->val];
+        }
+        else if(height[root->val]>maxht[lev].second)
+        {
+            maxht[lev].second= height[root->val];
+        }
+        return height[root->val];
     }
-
-private:
-    // Left to right traversal
-    void traverseLeftToRight(TreeNode* node, int currentHeight) {
-        if (node == nullptr) return;
-
-        // Store the maximum height if this node were removed
-        maxHeightAfterRemoval[node->val] = currentMaxHeight;
-
-        // Update the current maximum height
-        currentMaxHeight = max(currentMaxHeight, currentHeight);
-
-        // Traverse left subtree first, then right
-        traverseLeftToRight(node->left, currentHeight + 1);
-        traverseLeftToRight(node->right, currentHeight + 1);
-    }
-
-    // Right to left traversal
-    void traverseRightToLeft(TreeNode* node, int currentHeight) {
-        if (node == nullptr) return;
-
-        // Update the maximum height if this node were removed
-        maxHeightAfterRemoval[node->val] =
-            max(maxHeightAfterRemoval[node->val], currentMaxHeight);
-
-        // Update the current maximum height
-        currentMaxHeight = max(currentHeight, currentMaxHeight);
-
-        // Traverse right subtree first, then left
-        traverseRightToLeft(node->right, currentHeight + 1);
-        traverseRightToLeft(node->left, currentHeight + 1);
+    vector<int> treeQueries(TreeNode* root, vector<int>& quer) 
+    {
+        vector<int>ans;
+        fun(root,0);//initial level=0
+        for(auto i:quer)
+        {
+            int L= level[i];//upper height from node at same level...
+            int H= maxht[L].first;//lower height from node at same level...
+            if(height[i]==maxht[L].first)
+            {
+                H= maxht[L].second;
+            }
+            ans.push_back(L+H-1);
+        }
+        return ans;
     }
 };
+
+/*
+// TLE
+// METHOD-1
+// TC=O(N^2)
+int height(TreeNode *root, int x)
+{
+    if (!root)
+    {
+        return 0;
+    }
+    if (root->val == x)
+    {
+        return 0;
+    }
+    return 1 + max(height(root->left, x), height(root->right, x));
+}
+vector<int> treeQueries(TreeNode *root, vector<int> &quer)
+{
+    vector<int> ans;
+    for (auto i : quer)
+    {
+        ans.push_back(height(root, i) - 1);
+    }
+    return ans;
+}
+*/
