@@ -15,14 +15,12 @@ public:
     }
     void solve(int i,string curr,vector<string>& arr,int &maxcnt)
     {
-        if(isunique(curr))
+        if(!isunique(curr))
         {
-            maxcnt= max((int)curr.size(),maxcnt);
+           return;
         }
-        else
-        {
-            return;//marking early return...
-        }
+        maxcnt= max((int)curr.size(),maxcnt);
+        
         for(int j=i;j<arr.size();j++)
         {
             solve(j+1,curr+arr[j],arr,maxcnt);
