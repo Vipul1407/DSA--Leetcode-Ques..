@@ -4,12 +4,12 @@ public:
     {
         string ans="";
         int n=s.size();
-        int cnt=1;
-        for(int i=1;i<n;i++)
+        int cnt=0;
+        for(auto c:s)
         {
-            if(s[i]==s[i-1])
+            if(ans=="" || ans.back()==c)
             {
-               cnt++;
+                cnt++;
             }
             else
             {
@@ -17,10 +17,9 @@ public:
             }
             if(cnt<=2)
             {
-                ans+=s[i-1];
+                ans+=c;
             }
         }
-        ans+=s.back();
         return ans;
     }
 };
