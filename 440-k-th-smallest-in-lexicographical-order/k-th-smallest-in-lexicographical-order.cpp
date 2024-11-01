@@ -1,34 +1,36 @@
 class Solution {
 public:
-
-    int Count(int n, long curr, long next) {
-        int count = 0;
-        while (curr <= n) {
-            count += next - curr;
-            curr *= 10;
-            next *= 10;
-            next = min((long)(n + 1), next);
+    int count(long long curr,long long next,int n)
+    {
+        int cnt=0;
+        while(curr<=n)
+        {
+            cnt+= (next-curr);
+            curr*=10;
+            next*=10;
+            next= min(next, (long long)n+1);
         }
-        return count;
+        return cnt;
     }
-
-    int findKthNumber(int n, int k) {
-        int curr = 1;  // Start with the first number lexicographically
-        k--;  // Since we start from the first, we need k-1 more steps
-
-        while (k > 0) {
-            int step = Count(n, curr, curr + 1);  // Count # between `curr` and the next lexicographical number
-            if (step <= k) {
-                // If there are fewer or equal steps than `k`, we can skip this subtree and go to the next sibling
+    int findKthNumber(int n, int k) 
+    {
+        int curr=1;
+        k--;
+        while(k>0)
+        {
+            int cnt= count(curr,curr+1,n);
+            //go to next prefix tree
+            if(cnt<=k)
+            {
                 curr++;
-                k -= step;
-            } else {
-                // Otherwise, we need to go deeper into the current subtree
-                curr *= 10;
-                k--;  // We're using the current number, so decrement `k`
+                k-=cnt;
+            }
+            else
+            {
+                curr*=10;
+                k--;
             }
         }
-
         return curr;
     }
 };
