@@ -1,25 +1,40 @@
 class Solution {
 public:
-    vector<int> decrypt(vector<int>& code, int k) {
-        int n=code.size();
-        vector<int> ans(n, 0);
-        if (k==0) return ans;
-        if (k>0){
-            int wsum=accumulate(code.begin()+1, code.begin()+k+1, 0);
-            ans[0]=wsum;
-            for(int l=1, r=k+1; l<n ; r++, l++){
-                wsum+=-code[l]+code[r%n];
-                ans[l]=wsum;
-            }
+    vector<int> decrypt(vector<int>& code, int k) 
+    {
+        int n= code.size();
+        vector<int>ans(n,0);
+        if(k==0)
+        {
             return ans;
         }
-        // k<0
-        k=-k;
-        int wsum=accumulate(code.end()-k , code.end(), 0);
-        ans[0]=wsum;
-        for(int r=0, l=n-k; r<n-1; r++, l++){
-            wsum+=-code[l%n]+code[r];
-            ans[r+1]=wsum;
+        int i=-1,j=-1;
+        //we are taking i at left and j at right ..(independent of k)
+        if(k>0)
+        {
+            //i start at 1 and j at k
+            i=1;
+            j=k;
+        }
+        else
+        {
+            //i start at -k (here k already negative) and j at -1 
+            //adding n in both to avoid out of bound index..
+            i=n+k;
+            j=n-1;
+        }
+        int sum=0;
+        for(int q=i;q<=j;q++)
+        {
+            sum+= code[q];
+        }
+        for(int k=0;k<n;k++)
+        {
+            ans[k]= sum;
+            sum-= code[i%n];//element at index=i ko minus kr..
+            sum+= code[(j+1)%n];//element at index=j+1 ko add kr..
+            i++;
+            j++;
         }
         return ans;
     }
