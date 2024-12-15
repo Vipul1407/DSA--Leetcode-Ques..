@@ -8,14 +8,7 @@ public:
         {
             return a[0]<b[0];
         }
-        else if(a[1]!=b[1])
-        {
-            return a[1]<b[1];
-        }
-        else
-        {
-            return a[2]>b[2];
-        }
+        return a[1]<b[1];
     }
     int binarys(vector<vector<int>>&events, int end)
     {
