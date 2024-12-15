@@ -1,25 +1,31 @@
 class Solution {
 public:
-    std::string addSpaces(std::string s, std::vector<int>& spaces) {
-        int n = s.length();
-        int m = spaces.size();
-        std::string newStr(n + m, ' '); // Allocate space for the result
-        int i = 0, idx = 0;
-
-        for (int spc : spaces) {
-            // Copy characters from the original string until the space index
-            while (i < spc) {
-                newStr[idx++] = s[i++];
+    string addSpaces(string s, vector<int>& spaces) 
+    {
+        int n= s.size();
+        int m= spaces.size();
+        int k=0;//to traverse on spaces
+        int i=0;//to traverse on s
+        string ans="";
+        while(i<n && k<m)
+        {
+            if(i!=spaces[k])
+            {
+                ans+= s[i];
             }
-            // Insert a space at the specified index
-            newStr[idx++] = ' ';
+            else
+            {
+                ans+=" ";
+                ans+=s[i];
+                k++;
+            }
+            i++;
         }
-
-        // Copy the remaining characters of the original string
-        while (i < n) {
-            newStr[idx++] = s[i++];
+        while(i<n)
+        {
+            ans+=s[i];
+            i++;
         }
-
-        return newStr;
+        return ans;
     }
 };
