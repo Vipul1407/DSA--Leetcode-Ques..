@@ -1,42 +1,63 @@
-class Solution {
+class Solution 
+{
 public:
-    int maxTwoEvents(vector<vector<int>>& events) {
-        int n = events.size();
-        
-        sort(events.begin(), events.end(), [](const vector<int>& a, const vector<int>& b) {
-            return a[0] < b[0];
-        });
-        
-        vector<int> suffixMax(n);
-        suffixMax[n - 1] = events[n - 1][2];
-        
-        for (int i = n - 2; i >= 0; --i) {
-            suffixMax[i] = max(events[i][2], suffixMax[i + 1]);
+    static bool cmp(const vector<int>&a, const vector<int>&b)
+    {
+        //sort by start time..
+        if(a[0]!=b[0])
+        {
+            return a[0]<b[0];
         }
-        
-        int maxSum = 0;
-        
-        for (int i = 0; i < n; ++i) {
-            int left = i + 1, right = n - 1;
-            int nextEventIndex = -1;
-            
-            while (left <= right) {
-                int mid = left + (right - left) / 2;
-                if (events[mid][0] > events[i][1]) {
-                    nextEventIndex = mid;
-                    right = mid - 1;
-                } else {
-                    left = mid + 1;
-                }
-            }
-            
-            if (nextEventIndex != -1) {
-                maxSum = max(maxSum, events[i][2] + suffixMax[nextEventIndex]);
-            }
-            
-            maxSum = max(maxSum, events[i][2]);
+        else if(a[1]!=b[1])
+        {
+            return a[1]<b[1];
         }
-        
-        return maxSum;
+        else
+        {
+            return a[2]>b[2];
+        }
+    }
+    int binarys(vector<vector<int>>&events, int end)
+    {
+        int l=0;
+        int r=events.size()-1;
+        int start=-1;
+        while(l<=r)
+        {
+            int mid= l+(r-l)/2;
+            if(events[mid][0]>end)
+            {
+                start= mid;
+                r= mid-1;
+            }
+            else
+            {
+                l=mid+1;
+            }
+        }
+        return start==-1? events.size():start;
+    }
+    int solve(vector<vector<int>>& events, int i, int cnt, vector<vector<int>>&dp)
+    {
+        if(cnt==2 || i>=events.size())
+        {
+            return 0;
+        }
+        if(dp[i][cnt]!=-1)
+        {
+            return dp[i][cnt];
+        }
+        int ubi= binarys(events,events[i][1]);
+        int take= events[i][2]+ solve(events,ubi,cnt+1,dp);
+        int notake= solve(events,i+1,cnt,dp);
+        return dp[i][cnt]= max(take,notake);
+    }
+    int maxTwoEvents(vector<vector<int>>& events) 
+    {
+        int n= events.size();
+        sort(events.begin(),events.end(),cmp);
+        int cnt=0;
+        vector<vector<int>>dp(n,vector<int>(2,-1));
+        return solve(events,0,cnt,dp);
     }
 };
