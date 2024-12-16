@@ -1,16 +1,39 @@
-class Solution {
+class Solution 
+{
 public:
-    static bool canChange(string& s, string& t) {
-        const int n=s.size();
-        for(int i=0, j=0; i<n || j<n; i++, j++){
-            while(i<n && s[i]=='_') i++;
-            while(j<n && t[j]=='_') j++;
-        //    cout<<i<<", "<<j<<endl;
-            char c=s[i];
-            if (c !=t[j]) return 0;
-            if (c =='L' && i<j) return 0;
-            if (c =='R' && i>j) return 0;
+    bool canChange(string str, string tar) 
+    {
+        int n= str.size();
+        int i=0;
+        int j=0;
+        while(i<n || j<n)
+        {
+            while(i<n && str[i]=='_')
+            {
+                i++;
+            }
+            while(j<n && tar[j]=='_')
+            {
+                j++;
+            }
+            if(i==n && j==n)
+            {
+                return true;
+            }
+            if(str[i]!=tar[j])
+            {
+                return false;
+            }
+            else if(str[i]=='L' && i<j)
+            {
+                return false;
+            }
+            else if(str[i]=='R' && i>j)
+            {
+                return false;
+            }
+            i++;j++;
         }
-        return 1;
+        return true;
     }
 };
