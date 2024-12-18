@@ -1,65 +1,57 @@
-// Hierholzer’s algorithm 
 class Solution {
 public:
-    unordered_map<int, vector<int>> adj;
-    unordered_map<int, int> deg;// net outdegree
-    inline void build_graph(vector<vector<int>>& pairs){
-        for(auto& edge: pairs){
-            int start=edge[0], end=edge[1];
-            adj[start].push_back(end);
-            deg[start]++;
-            deg[end]--;
+    //Hierholzer's Algorithm
+    vector<vector<int>> validArrangement(vector<vector<int>>& pairs) 
+    {
+        //starting pt. of euler graph is that where
+        //outdegree-indegree= 1
+        //ending point of euler graph is that where
+        //indegree- outdegree= 1
+        //euler graph can be traced only once..
+        unordered_map<int,vector<int>>mp;
+        unordered_map<int,int>degree;//storing outdegree-indegree
+        for(auto i:pairs)
+        {
+            mp[i[0]].push_back(i[1]);
+            degree[i[0]]++;
+            degree[i[1]]--;
         }
-    }
-
-    vector<int> rpath;
-    inline void euler(int i){
-        vector<int> stk={i};
-        while(!stk.empty()){
-            i = stk.back();
-            if(adj[i].empty()){
-                rpath.push_back(i);
-                stk.pop_back();
-            } 
-            else {
-                int j=adj[i].back();
-                adj[i].pop_back();
-                stk.push_back(j);
+        int start=pairs[0][0];//i case we do not have a start node take any node as start
+        for(auto i:degree)
+        {
+            if(i.second==1)
+            {
+                start= i.first;
+                break;
             }
         }
-    }
-
-    vector<vector<int>> validArrangement(vector<vector<int>>& pairs) {
-        const int e = pairs.size();
-        adj.reserve(e);
-        deg.reserve(e);
-    
-        build_graph(pairs);
-
-        int i0=deg.begin()->first;
-        //Find start vertex for Euler path 
-        for (auto& [v, d]: deg){
-            if (d == 1){
-                i0=v;
-                break;
-            } 
+        //applying BFS...
+        stack<int>st;
+        st.push(start);
+        vector<int>arr;//to store final result..
+        while(st.size())
+        {
+            int ele= st.top();
+            //we are popping neigh after pushing it in stack once..
+            if(!mp[ele].empty())
+            {
+                int neigh= mp[ele].back();
+                mp[ele].pop_back();
+                st.push(neigh);
+            }
+            //if we have nothing to push means we have reult stored in tack in reversed order..
+            else
+            {
+                arr.push_back(ele);
+                st.pop();
+            }
         }
-
-        euler(i0);
-
-        vector<vector<int>> ans;
-        ans.reserve(e);
-
-        for (int i=rpath.size()-2; i>=0; i--) 
-            ans.push_back({rpath[i+1], rpath[i]});
-
-        return ans;
+        vector<vector<int>> res;
+        int n= arr.size();
+        for(int i=n-1;i>0;i--)
+        {
+            res.push_back({arr[i],arr[i-1]});
+        }
+        return res;
     }
 };
-
-auto init = []() {
-    ios::sync_with_stdio(0);
-    cin.tie(0);
-    cout.tie(0);
-    return 'c';
-}();
