@@ -12,7 +12,7 @@
 class Solution {
 public:
     int cnt=0;
-    void solve(TreeNode* root, int &cnt)
+    void solve(TreeNode* root)
     {
         if(!root)
         {
@@ -64,8 +64,7 @@ public:
     }
     int minimumOperations(TreeNode* root) 
     {
-        int cnt=0;
-        solve(root,cnt);
+        solve(root);
         return cnt;
     }
 };
