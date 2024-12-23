@@ -3,6 +3,14 @@ public:
     int longestSubstring(string s, int k) 
     {
         int n= s.size();
+        if(n<k)
+        {
+            return 0;
+        }
+        if(k<=1)
+        {
+            return n;
+        }
         int ans=0;
         for(int i=0;i<n;i++)
         {
