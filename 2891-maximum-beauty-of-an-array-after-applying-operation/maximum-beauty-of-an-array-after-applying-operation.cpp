@@ -9,16 +9,16 @@ public:
             arr.push_back({i-k,i+k});
         }
         sort(arr.begin(),arr.end());
-        deque<int>dq;//we need to check only end of arr
+        queue<int>q;//we need to check only end of arr
         int maxbeauty=0;
         for(auto i:arr)
         {
-            while(dq.size() && dq.front()<i.first)
+            while(q.size() && q.front()<i.first)
             {
-                dq.pop_front();
+                q.pop();
             }
-            dq.push_back(i.second);
-            maxbeauty= max(maxbeauty, (int)dq.size());
+            q.push(i.second);
+            maxbeauty= max(maxbeauty, (int)q.size());
         }
         return maxbeauty;
     }
