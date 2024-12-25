@@ -9,19 +9,17 @@ public:
             arr.push_back({i-k,i+k});
         }
         sort(arr.begin(),arr.end());
-        int maxsize=0;
-        //find max overlapping interval
-        //we will use deque...
-        deque<pair<int,int>>dq;
-        for(auto &inter: arr)
+        deque<int>dq;//we need to check only end of arr
+        int maxbeauty=0;
+        for(auto i:arr)
         {
-            while(dq.size() && dq.front().second<inter.first)
+            while(dq.size() && dq.front()<i.first)
             {
                 dq.pop_front();
             }
-            dq.push_back(inter);
-            maxsize= max(maxsize, (int)dq.size());
+            dq.push_back(i.second);
+            maxbeauty= max(maxbeauty, (int)dq.size());
         }
-        return maxsize;
+        return maxbeauty;
     }
 };
