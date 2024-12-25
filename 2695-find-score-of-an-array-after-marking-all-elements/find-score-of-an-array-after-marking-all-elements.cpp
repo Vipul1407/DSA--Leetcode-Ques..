@@ -1,42 +1,33 @@
 class Solution {
 public:
-    long long findScore(vector<int>& nums) {
-        long long score = 0; // Change to long long to avoid overflow
-        int n = nums.size();
-        deque<int> q;
-
-        // Traverse through the array
-        for (int i = 0; i < n; i++) {
-            // If queue is not empty and the current number is greater than or equal to the last in queue
-            if (!q.empty() && nums[i] >= q.back()) {
-                bool skip = false;
-                // Process the elements in the queue
-                while (!q.empty()) {
-                    int add = q.back();
-                    q.pop_back();
-                    if (!skip) {
-                        score += add;
-                    }
-                    skip = !skip;
-                }
+    long long findScore(vector<int>& nums) 
+    {
+        int n= nums.size();
+        long long ans=0;
+        vector<int>vis(n,0);//to mark visited index..
+        vector<pair<int,int>>vec;
+        for(int i=0;i<n;i++)
+        {
+            vec.push_back({nums[i],i});
+        }
+        sort(vec.begin(),vec.end());
+        for(auto i:vec)
+        {
+            if(vis[i.second]==1)
+            {
                 continue;
             }
-
-            // Add current element to the queue
-            q.push_back(nums[i]);
-        }
-
-        // Final processing of remaining elements in the queue
-        bool skip = false;
-        while (!q.empty()) {
-            int add = q.back();
-            q.pop_back();
-            if (!skip) {
-                score += add;
+            ans+= i.first;
+            vis[i.second]=1;
+            if(i.second-1>=0)
+            {
+                vis[i.second-1]=1;
             }
-            skip = !skip;
+            if(i.second+1<n)
+            {
+                vis[i.second+1]=1;
+            }
         }
-
-        return score;
+        return ans;
     }
-};
+};   
