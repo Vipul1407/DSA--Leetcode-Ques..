@@ -1,22 +1,27 @@
 class Solution {
 public:
-    static int maximumBeauty(vector<int>& nums, int k) {
-        int freq[100001]={0};
-        int xMax=0, xMin=1e6;
-        for(int x: nums){
-            freq[x]++;
-            xMax=max(x, xMax);
-            xMin=min(x, xMin);
+    int maximumBeauty(vector<int>& nums, int k) 
+    {
+        int n= nums.size();
+        vector<pair<int,int>>arr;
+        for(auto i:nums)
+        {
+            arr.push_back({i-k,i+k});
         }
-        int cnt=0, maxCnt=0;
-        for(int l=xMin, r=xMin; r<=xMax; r++){
-            cnt+=freq[r];
-            while(r-l>2*k){
-                cnt-=freq[l];
-                l++;
+        sort(arr.begin(),arr.end());
+        int maxsize=0;
+        //find max overlapping interval
+        //we will use deque...
+        deque<pair<int,int>>dq;
+        for(auto &inter: arr)
+        {
+            while(dq.size() && dq.front().second<inter.first)
+            {
+                dq.pop_front();
             }
-            maxCnt=max(maxCnt, cnt);
+            dq.push_back(inter);
+            maxsize= max(maxsize, (int)dq.size());
         }
-        return maxCnt;
+        return maxsize;
     }
 };
