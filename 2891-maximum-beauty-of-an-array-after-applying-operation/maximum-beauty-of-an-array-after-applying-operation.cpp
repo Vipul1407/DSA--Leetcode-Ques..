@@ -1,25 +1,35 @@
 class Solution {
 public:
+    int binarys(vector<int>& nums,int idx,int k)
+    {
+        int val= nums[idx]+2*k;
+        int l= idx;
+        int r= nums.size()-1;
+        while(l<=r)
+        {
+            int mid= l+(r-l)/2;
+            if(nums[mid]<=val)
+            {
+                l= mid+1;//to get large stopping index
+            }
+            else 
+            {
+                r= mid-1;//to find valid index
+            }
+        }
+        return r-idx+1;//length of subsequence..
+    }
     int maximumBeauty(vector<int>& nums, int k) 
     {
+        //(x-k,x+k), (y-k,y+k)
+        //for overlapping--> y-k<=x+k --> (y<=x+2k)
+        sort(nums.begin(),nums.end());
+        int ans=0;
         int n= nums.size();
-        vector<pair<int,int>>arr;
-        for(auto i:nums)
+        for(int i=0;i<n;i++)
         {
-            arr.push_back({i-k,i+k});
+            ans= max(ans,binarys(nums,i,k));
         }
-        sort(arr.begin(),arr.end());
-        queue<int>q;//we need to check only end of arr
-        int maxbeauty=0;
-        for(auto i:arr)
-        {
-            while(q.size() && q.front()<i.first)
-            {
-                q.pop();
-            }
-            q.push(i.second);
-            maxbeauty= max(maxbeauty, (int)q.size());
-        }
-        return maxbeauty;
+        return ans;
     }
 };
