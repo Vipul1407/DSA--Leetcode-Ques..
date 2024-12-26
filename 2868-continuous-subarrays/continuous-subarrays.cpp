@@ -2,30 +2,42 @@ class Solution {
 public:
     long long continuousSubarrays(vector<int>& nums) 
     {
-        int n= nums.size();
-        priority_queue<pair<int,int>>maxheap;    
-        priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>>minheap;
+        //maintaing dequeues of indexes..
+        deque<int>maxq;
+        deque<int>minq;
         int i=0,j=0;
+        int n=nums.size();
         long long ans=0;
         while(j<n)
         {
-            minheap.push({nums[j],j});
-            maxheap.push({nums[j],j});
-            while(i<n && (maxheap.top().first-minheap.top().first)>2)
+            //maintaning min element index at back of maxq and min element index at back of minq...
+            while(maxq.size() && nums[maxq.back()]<=nums[j])
+            {
+                maxq.pop_back();
+            }
+            while(minq.size() && nums[minq.back()]>=nums[j])
+            {
+                minq.pop_back();
+            }
+            //pushing index...
+            minq.push_back(j);
+            maxq.push_back(j);
+            //shrinking window..
+            while(i<n && nums[maxq.front()]-nums[minq.front()]>2)
             {
                 i++;
-                while(!maxheap.empty() && maxheap.top().second<i)
+                if(minq.front()<i)
                 {
-                    maxheap.pop();
+                    minq.pop_front();
                 }
-                while(!minheap.empty() && minheap.top().second<i)
+                if(maxq.front()<i)
                 {
-                    minheap.pop();
+                    maxq.pop_front();
                 }
             }
-            ans+= j-i+1;
+            ans+=j-i+1;
             j++;
-        }  
-        return ans;  
+        }
+        return ans;
     }
 };
