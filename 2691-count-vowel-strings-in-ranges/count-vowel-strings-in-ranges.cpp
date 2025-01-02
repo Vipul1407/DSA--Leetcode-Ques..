@@ -10,23 +10,12 @@ public:
             char back= words[i].back();
             if((front=='a'||front=='e'||front=='i'||front=='o'||front=='u')&&(back=='a'||back=='e'||back=='i'||back=='o'||back=='u'))
             {
-                if(i==0)
-                {
-                    pref[i]=1;
-                }
-                else
-                {
-                    pref[i]= pref[i-1]+1;
-                }
+                pref[i]=1;
             }
-            else
-            {
-                if(i==0)
-                {
-                    continue;
-                }
-                pref[i]=pref[i-1];
-            }
+           if(i>0)
+           {
+                pref[i]+=pref[i-1];
+           }
         }
         vector<int>res;
         for(int i=0;i<quer.size();i++)
