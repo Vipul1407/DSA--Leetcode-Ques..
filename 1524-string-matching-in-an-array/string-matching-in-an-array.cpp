@@ -1,57 +1,28 @@
 class Solution {
 public:
-    bool issubstring(string &str1, string &str2)
-    {
-        int n= str1.size();
-        int m= str2.size();
-        //to find that is str2 substring of str1..
-        int i=0,j=0;
-        for(i=0;i<n;i++)
-        {
-            if(str1[i]==str2[j])
-            {
-                j++;
-                if(j==m)
-                {
-                    return true;
-                }
-            }
-            else
-            {
-                if(j>0)
-                {
-                    i-=j;
-                }
-                j=0;
-            }
-        }
-        return false;
-    }
     vector<string> stringMatching(vector<string>& words) 
     {
-        vector<string> vec;
-        unordered_set<string> st;
-        int n = words.size();
-        for (int i = 0; i < n; i++)
+        int n= words.size();
+        vector<string>ans;
+        unordered_set<string>st;
+        for(int i=0;i<n;i++)
         {
-            string str1 = words[i];
-            for (int j = 0; j < n; j++)
+            for(int j=0;j<n;j++)
             {
-                string str2 = words[j];
-                if (i == j)
+                if(i==j)
                 {
                     continue;
                 }
-                if (issubstring(str1, str2))
+                if(words[i].find(words[j])!=string::npos)
                 {
-                    st.insert(str2);
+                    st.insert(words[j]);
                 }
             }
         }
-        for (auto i : st)
+        for(auto i:st)
         {
-            vec.push_back(i);
+            ans.push_back(i);
         }
-        return vec;
+        return ans;
     }
 };
