@@ -6,17 +6,22 @@ public:
         int cnt=0;
         for(int i=0;i<n;i++)
         {
+            string sub= words[i];
             for(int j=i+1;j<n;j++)
             {
-                if(i==j)
+                string full= words[j]; 
+                if(sub.size()>full.size())
                 {
                     continue;
                 }
-                int l= words[j].find(words[i]);
-                int r= words[j].rfind(words[i]);
-                if(l==0 && (words[j].length()-words[i].length()==r))
+                bool pref= full.substr(0,sub.length())==sub;
+                if(pref)
                 {
-                    cnt++;
+                    bool suffix= full.substr(full.length()-sub.length(),sub.length())==sub;
+                    if(suffix==true)
+                    {
+                        cnt++;
+                    }
                 }
             }
         }
