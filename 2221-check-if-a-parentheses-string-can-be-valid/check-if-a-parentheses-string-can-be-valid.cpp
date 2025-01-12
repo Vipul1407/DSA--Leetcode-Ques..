@@ -1,6 +1,57 @@
 class Solution {
 public:
+    //METHOD-2
+    //SC=O(1)
+    //Without using Stack only variable..
     bool canBeValid(string s, string locked) 
+    {
+        int n= locked.size();
+        if(n%2==1)
+        {
+            return false;
+        }
+        //left to right------
+        int open=0;
+        for(int i=0;i<n;i++)
+        {
+            if(s[i]=='(' || locked[i]=='0')
+            {
+                open++;
+            }
+            else
+            {
+                open--;
+                if(open<0)
+                {
+                    return false;
+                }
+            }
+        }
+        //right to left-----
+        int close=0;
+        for(int i=n-1;i>=0;i--)
+        {
+            if(s[i]==')' || locked[i]=='0')
+            {
+                close++;
+            }
+            else
+            {
+                close--;
+                if(close<0)
+                {
+                    return false;
+                }
+            }
+        }
+        return open>=0 && close>=0;
+    }
+};
+/*
+// METHOD-1
+//TC,SC=O(N)
+//Using stack and vector..
+bool canBeValid(string s, string locked) 
     {
         int n= locked.size();
         if(n%2==1)
@@ -53,4 +104,4 @@ public:
         //if even no. of entries then return true 
         return flexible.size()%2==0;
     }
-};
+*/
