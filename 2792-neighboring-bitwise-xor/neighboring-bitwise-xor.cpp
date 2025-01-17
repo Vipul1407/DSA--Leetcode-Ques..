@@ -4,12 +4,16 @@ public:
     bool doesValidArrayExist(vector<int>& derived) 
     {
         int n= derived.size();
-        int xorv=derived[0];
-        for(int i=1;i<n;i++)
+        int cnt1= 0;
+        for(int i=0;i<n;i++)
         {
-            xorv^=derived[i];
+            if(derived[i]==1)
+            {
+                cnt1++;
+            }
         }
-        return xorv==0;
+        //if no. of 1's are even then xor=0 and will return true..
+        return cnt1%2==0;
     }
 };
 /*
@@ -24,5 +28,17 @@ bool doesValidArrayExist(vector<int> &derived)
         original[i] = derived[i - 1] ^ original[i - 1];
     }
     return original[0] ^ original[n - 1] == derived[n - 1];
+}
+//METHOD-2
+//BEATS 100%
+bool doesValidArrayExist(vector<int>& derived) 
+{
+    int n= derived.size();
+    int xorv=derived[0];
+    for(int i=1;i<n;i++)
+    {
+        xorv^=derived[i];
+    }
+    return xorv==0;
 }
 */
