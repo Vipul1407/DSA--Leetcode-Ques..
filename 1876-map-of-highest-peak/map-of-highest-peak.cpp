@@ -23,10 +23,10 @@ public:
             int x= q.front().first;
             int y= q.front().second;
             q.pop();
-            for(auto d:dir)
+            for(int d=0;d<4;d++)
             {
-                int dx= x+d[0];
-                int dy= y+d[1];
+                int dx= x+dir[d][0];
+                int dy= y+dir[d][1];
                 if(dx>=0 && dy>=0 && dx<m && dy<n)
                 {
                     if(ans[dx][dy]==-1)
