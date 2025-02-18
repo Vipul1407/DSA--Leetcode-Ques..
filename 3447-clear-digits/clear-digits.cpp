@@ -1,27 +1,30 @@
 class Solution {
 public:
-    //METHOD-3
-    //WITHOUT STACK..
+    //METHOD-4
+    //USING INPLACE REPLACEMENT..
+    //2 POINTERS..
     string clearDigits(string s) 
     {
         int n= s.size();
-        string str;
-        for(auto i:s)
+        int i=0;
+        int j=0;
+        while(i<n)
         {
-            if(isdigit(i))
+            if(isdigit(s[i]))
             {
-                while(str.size())
+                if(j>0)
                 {
-                    str.pop_back();
-                    break;
+                    j--;
                 }
             }
             else
             {
-                str.push_back(i);
+                s[j]=s[i];
+                j++;
             }
+            i++;
         }
-        return str;
+        return s.substr(0,j);
     }
 };
 
@@ -89,5 +92,29 @@ public:
             st.pop();
         }
         return ans;
+    }
+
+    //METHOD-3
+    //WITHOUT STACK..
+    string clearDigits(string s) 
+    {
+        int n= s.size();
+        string str;
+        for(auto i:s)
+        {
+            if(isdigit(i))
+            {
+                while(str.size())
+                {
+                    str.pop_back();
+                    break;
+                }
+            }
+            else
+            {
+                str.push_back(i);
+            }
+        }
+        return str;
     }
 */
