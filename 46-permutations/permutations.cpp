@@ -1,10 +1,10 @@
 class Solution {
 public:
-    //METHOD-2
+    //METHOD-3
     //USING BACKTRACKING LIKE Ques. Letter Tile Permutation..
-    void solve(int len, vector<int>curr, vector<int>& nums, vector<int>&used, vector<vector<int>>&ans)
+    void solve(vector<int>curr, vector<int>& nums, vector<int>&used, vector<vector<int>>&ans)
     {
-        if(len==nums.size())
+        if(curr.size()==nums.size())
         {
             ans.push_back(curr);
         }
@@ -16,7 +16,7 @@ public:
             }
             used[i]=1;
             curr.push_back(nums[i]);
-            solve(len+1,curr,nums,used,ans);
+            solve(curr,nums,used,ans);
             curr.pop_back();
             used[i]=0;
         }
@@ -27,7 +27,7 @@ public:
         vector<vector<int>>ans;
         vector<int>used(n,0);
         vector<int>curr;
-        solve(0,curr,nums,used,ans);
+        solve(curr,nums,used,ans);
         return ans;    
     }
 };
@@ -53,6 +53,38 @@ vector<vector<int>> permute(vector<int> &nums)
     //      ans.push_back(nums);
     //  }
     //  while(next_permutation(nums.begin(),nums.end()));
+    return ans;
+}
+
+// METHOD-2
+// BEATS 9%
+// USING BACKTRACKING LIKE Ques. Letter Tile Permutation..
+void solve(int len, vector<int> curr, vector<int> &nums, vector<int> &used, vector<vector<int>> &ans)
+{
+    if (len == nums.size())
+    {
+        ans.push_back(curr);
+    }
+    for (int i = 0; i < nums.size(); i++)
+    {
+        if (used[i] == 1)
+        {
+            continue;
+        }
+        used[i] = 1;
+        curr.push_back(nums[i]);
+        solve(len + 1, curr, nums, used, ans);
+        curr.pop_back();
+        used[i] = 0;
+    }
+}
+vector<vector<int>> permute(vector<int> &nums)
+{
+    int n = nums.size();
+    vector<vector<int>> ans;
+    vector<int> used(n, 0);
+    vector<int> curr;
+    solve(0, curr, nums, used, ans);
     return ans;
 }
 */
