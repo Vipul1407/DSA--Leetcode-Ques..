@@ -1,0 +1,23 @@
+class Solution {
+public:
+    vector<vector<int>> permute(vector<int>& nums) 
+    {
+        int n= nums.size();
+        vector<vector<int>>ans;
+        sort(nums.begin(),nums.end());
+
+        //using while loop.....
+        ans.push_back(nums);
+        while(next_permutation(nums.begin(),nums.end()))
+        {
+            ans.push_back(nums);
+        }
+        //using do while loop....
+        // do
+        // {
+        //     ans.push_back(nums);
+        // }
+        // while(next_permutation(nums.begin(),nums.end()));
+        return ans;
+    }
+};
