@@ -1,22 +1,32 @@
 class Solution {
 public:
-    vector<string> happy;
-
-    string getHappyString(int n, int k) {
-        string chars = "abc";
-        generateHappyString("", n, chars);
-        return k > happy.size() ? "" : happy[k - 1];
-    }
-
-    void generateHappyString(string path, int n, string &chars) {
-        if (path.length() == n) {
-            happy.push_back(path);
+    void solve(int &cnt, string str, string &ans, char prev, int n, int &k)
+    {
+        if(n==0)
+        {
+            cnt++;
+            if(cnt==k)
+            {
+                ans= str;
+            }
             return;
         }
-        for (char c : chars) {
-            if (path.empty() || path.back() != c) {
-                generateHappyString(path + c, n, chars);
+        for(char ch='a';ch<='c';ch++)
+        {
+            if(prev==ch)
+            {
+                continue;
             }
+            str.push_back(ch);
+            solve(cnt,str,ans,ch,n-1,k);
+            str.pop_back();
         }
+    }
+    string getHappyString(int n, int k) 
+    {
+        string ans;
+        int cnt=0;
+        solve(cnt,"",ans,'*',n,k);
+        return ans;
     }
 };
