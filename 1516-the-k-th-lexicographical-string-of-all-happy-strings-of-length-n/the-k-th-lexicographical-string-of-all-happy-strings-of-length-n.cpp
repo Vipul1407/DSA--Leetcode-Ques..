@@ -2,7 +2,7 @@ class Solution {
 public:
     // METHOD-1
     // BRUTE FORCE Using vector to store all the strings..
-    void solve(string &str, char prev, int n, vector<string>&vec)
+    void solve(string &str, int n, vector<string>&vec)
     {
         if(n==0)
         {
@@ -11,12 +11,12 @@ public:
         }
         for(char ch='a';ch<='c';ch++)
         {
-            if(prev==ch)
+            if(!str.empty() && str.back()==ch)
             {
                 continue;
             }
             str.push_back(ch);
-            solve(str,ch,n-1,vec);
+            solve(str,n-1,vec);
             str.pop_back();
         }
     }
@@ -24,7 +24,7 @@ public:
     {
         vector<string>vec;
         string str;
-        solve(str,'*',n,vec);
+        solve(str,n,vec);
         if(k>vec.size())
         {
             return "";
