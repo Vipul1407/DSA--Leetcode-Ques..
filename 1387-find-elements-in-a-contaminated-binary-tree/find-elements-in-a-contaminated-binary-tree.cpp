@@ -11,39 +11,26 @@
  */
 class FindElements {
 public:
-    //METHOD-1
-    //USING DFS..
-    TreeNode*root=NULL;
+    unordered_set<int>st;
     void dfs(TreeNode* root, int x)
     {
         if(!root)
         {
             return;
         }
-        root->val= x;
+        root->val=x;
+        st.insert(root->val);
         dfs(root->left,2*x+1);
         dfs(root->right,2*x+2);
     }
     FindElements(TreeNode* root) 
     {
-        this->root= root;
         dfs(root,0);
     }
-    bool search(TreeNode* root, int tar)
+    
+    bool find(int target) 
     {
-        if(!root)
-        {
-            return false;
-        }
-        if(root->val==tar)
-        {
-            return true;
-        }
-        return search(root->left,tar) || search(root->right,tar);
-    }
-    bool find(int tar) 
-    {
-        return search(root,tar);
+        return st.find(target)!=st.end();
     }
 };
 
