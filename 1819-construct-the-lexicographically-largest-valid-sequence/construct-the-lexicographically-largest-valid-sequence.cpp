@@ -1,14 +1,14 @@
 class Solution {
 public:
-    bool solve(int i,int n,vector<int>&ans,vector<int>used)
+    bool solve(int i, int n, vector<int>&used, vector<int>&ans)
     {
         if(i>=ans.size())
         {
             return true;
         }
-        if(ans[i]!=0)
+        if(ans[i]!=-1)
         {
-            return solve(i+1,n,ans,used);
+            return solve(i+1,n,used,ans);
         }
         for(int num=n;num>=1;num--)
         {
@@ -16,44 +16,38 @@ public:
             {
                 continue;
             }
-
-            //try..
-            ans[i]= num;
-            used[num]= 1;
-
-            //explore..
+            used[num]=1;
+            ans[i]=num;
             if(num==1)
             {
-                if(solve(i+1,n,ans,used))
+                if(solve(i+1,n,used,ans))
                 {
                     return true;
                 }
             }
             else
             {
-                int j= i+num;
-                if(j<ans.size() && ans[j]==0)
+                int j= ans[i]+i;
+                if(j<ans.size() && ans[j]==-1)
                 {
                     ans[j]= num;
-                    if(solve(i+1,n,ans,used))
+                    if(solve(i+1,n,used,ans))
                     {
                         return true;
                     }
-                    ans[j]= 0; 
-                }           
+                    ans[j]=-1;
+                }
             }
-            
-            //backtracking..
-            ans[i]= 0;
-            used[num]= 0;
+            used[num]=-1;
+            ans[i]=-1;
         }
         return false;
     }
     vector<int> constructDistancedSequence(int n) 
     {
-        vector<int>ans(2*n-1,0);
-        vector<int>used(n+1,0);
-        solve(0,n,ans,used);
+        vector<int>ans(2*n-1,-1);
+        vector<int>used(n+1,-1);
+        solve(0,n,used,ans);
         return ans;
     }
 };
