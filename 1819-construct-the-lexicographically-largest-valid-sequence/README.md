@@ -1,4 +1,4 @@
-<h2><a href="https://leetcode.com/problems/construct-the-lexicographically-largest-valid-sequence">Construct the Lexicographically Largest Valid Sequence</a></h2> <img src='https://img.shields.io/badge/Difficulty-Medium-orange' alt='Difficulty: Medium' /><hr><p>Given an integer <code>n</code>, find a sequence that satisfies all of the following:</p>
+<h2><a href="https://leetcode.com/problems/construct-the-lexicographically-largest-valid-sequence">Construct the Lexicographically Largest Valid Sequence</a></h2> <img src='https://img.shields.io/badge/Difficulty-Medium-orange' alt='Difficulty: Medium' /><hr><p>Given an integer <code>n</code>, find a sequence with elements in the range <code>[1, n]</code> that satisfies all of the following:</p>
 
 <ul>
 	<li>The integer <code>1</code> occurs once in the sequence.</li>
