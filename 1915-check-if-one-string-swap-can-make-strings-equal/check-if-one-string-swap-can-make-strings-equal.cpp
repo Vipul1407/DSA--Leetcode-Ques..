@@ -1,26 +1,35 @@
 class Solution {
 public:
-    bool areAlmostEqual(string s1, string s2) {
-        int i = -1, j = -1;
-        int cnt = 0;
-
-        for (int k = 0; k < s1.length(); k++) {
-            if (s1[k] != s2[k]) {
-                cnt++;
-                if (i == -1) {
-                    i = k;
-                } else if (j == -1) {
-                    j = k;
-                }
+    bool areAlmostEqual(string s1, string s2) 
+    {
+        if(s1==s2)
+        {
+            return true;
+        }
+        vector<int>v1(26,0);
+        vector<int>v2(26,0);
+        
+        int swapreq=0;
+        for(int i=0;i<s1.size();i++)
+        {
+            if(s1[i]!=s2[i])
+            {
+                swapreq++;
+            }
+            if(swapreq>2)
+            {
+                return false;
+            }
+            v1[s1[i]-'a']++;
+            v2[s2[i]-'a']++;
+        }
+        for(int i=0;i<26;i++)
+        {
+            if(v1[i]!=v2[i])
+            {
+                return false;
             }
         }
-
-        if (cnt == 0) {
-            return true;
-        } else if (cnt == 2 && s1[i] == s2[j] && s1[j] == s2[i]) {
-            return true;
-        }
-
-        return false;
+        return true;
     }
 };
