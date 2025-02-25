@@ -2,11 +2,12 @@ class Solution {
 public:
     unordered_map<int,vector<int>>adj;
     unordered_map<int,int>bobmap;
-    int aliceincome=INT_MIN;
-    bool dfsbob(int curr, int t, vector<bool>&vis)
+    int aliceincome= INT_MIN;
+
+    bool dfsbob(int curr, int t, vector<int>&vis)
     {
         vis[curr]= true;
-        bobmap[curr]= t;
+        bobmap[curr]=t;
         if(curr==0)
         {
             return true;
@@ -24,16 +25,17 @@ public:
         bobmap.erase(curr);
         return false;
     }
-    void dfsalice(int curr, int t,int income,vector<bool>&vis,vector<int>& amount)
+
+    void dfsalice(int curr, int t, int income, vector<int>&vis, vector<int>&amount)
     {
         vis[curr]= true;
-        if(bobmap.find(curr)==bobmap.end() || t< bobmap[curr])
+        if(bobmap.find(curr)==bobmap.end() || t<bobmap[curr])
         {
             income+= amount[curr];
         }
         else if(t==bobmap[curr])
         {
-            income+= (amount[curr]/2);
+            income+= amount[curr]/2;
         }
         //leaf node..
         if(adj[curr].size()==1 && curr!=0)
@@ -48,6 +50,7 @@ public:
             }
         }
     }
+
     int mostProfitablePath(vector<vector<int>>& edges, int bob, vector<int>& amount) 
     {
         int n= amount.size();
@@ -58,14 +61,11 @@ public:
             adj[u].push_back(v);
             adj[v].push_back(u);
         }
-        //dfs on bob to find time to reach 0
-
-        vector<bool>vis(n,false);
+        vector<int>vis(n,false);
         dfsbob(bob,0,vis);
 
-        int income=0;
-        vis.assign(n,false);
-        dfsalice(0,0,income,vis,amount);
+        vis.assign(n,false);//reinitalize vis vector..
+        dfsalice(0,0,0,vis,amount);
         return aliceincome;
     }
 };
