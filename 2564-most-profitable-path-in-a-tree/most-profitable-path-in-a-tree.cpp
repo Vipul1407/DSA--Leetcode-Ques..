@@ -1,17 +1,16 @@
 class Solution {
 public:
     unordered_map<int,vector<int>>adj;
-    unordered_map<int,int>bobmap;
+    unordered_map<int,int>mpbob;
     int aliceincome= INT_MIN;
-
-    bool dfsbob(int curr, int t, vector<int>&vis)
+    bool dfsbob(int curr,int t,vector<int>&vis)
     {
-        vis[curr]= true;
-        bobmap[curr]=t;
         if(curr==0)
         {
             return true;
         }
+        vis[curr]=1;
+        mpbob[curr]=t;
         for(auto &neigh: adj[curr])
         {
             if(!vis[neigh])
@@ -22,50 +21,58 @@ public:
                 }
             }
         }
-        bobmap.erase(curr);
+        mpbob.erase(curr);
         return false;
-    }
-
-    void dfsalice(int curr, int t, int income, vector<int>&vis, vector<int>&amount)
-    {
-        vis[curr]= true;
-        if(bobmap.find(curr)==bobmap.end() || t<bobmap[curr])
-        {
-            income+= amount[curr];
-        }
-        else if(t==bobmap[curr])
-        {
-            income+= amount[curr]/2;
-        }
-        //leaf node..
-        if(adj[curr].size()==1 && curr!=0)
-        {
-            aliceincome= max(aliceincome,income);
-        }
-        for(auto &neigh: adj[curr])
-        {
-            if(!vis[neigh])
-            {
-                dfsalice(neigh,t+1,income,vis,amount);
-            }
-        }
     }
 
     int mostProfitablePath(vector<vector<int>>& edges, int bob, vector<int>& amount) 
     {
         int n= amount.size();
-        for(vector<int>&edge: edges)
+        for(auto &edge:edges)
         {
             int u= edge[0];
             int v= edge[1];
             adj[u].push_back(v);
             adj[v].push_back(u);
         }
-        vector<int>vis(n,false);
+        vector<int>vis(n,0);
         dfsbob(bob,0,vis);
 
-        vis.assign(n,false);//reinitalize vis vector..
-        dfsalice(0,0,0,vis,amount);
+        vis.assign(n,0);
+
+        //BFS FOR ALICE----->
+        //{curr,t,income}
+        queue<vector<int>>q;
+        q.push({0,0,0});
+        while(!q.empty())
+        {
+            int curr= q.front()[0];
+            int t= q.front()[1];
+            int income= q.front()[2];
+
+            vis[curr]=1;
+            q.pop();
+            if(mpbob.find(curr)==mpbob.end() || t<mpbob[curr])
+            {
+                income+= amount[curr];
+            }
+            else if(t==mpbob[curr])
+            {
+                income+= amount[curr]/2;
+            }
+            //leaf node...
+            if(adj[curr].size()==1 && curr!=0)
+            {
+                aliceincome= max(aliceincome,income);
+            }
+            for(auto &neigh: adj[curr])
+            {
+                if(!vis[neigh])
+                {
+                    q.push({neigh,t+1,income});
+                }
+            }
+        }
         return aliceincome;
     }
 };
