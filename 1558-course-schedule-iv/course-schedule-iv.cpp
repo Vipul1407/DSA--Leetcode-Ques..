@@ -1,28 +1,58 @@
 class Solution {
 public:
-    vector<bool> checkIfPrerequisite(int numCourses, vector<vector<int>>& prerequisites, vector<vector<int>>& queries) {
-        // Step 1: Initialize the reachability map
-        unordered_map<int, unordered_set<int>> reachable;
-
-        // Step 2: Build direct reachability chains
-        for (auto& prereq : prerequisites) {
-            reachable[prereq[1]].insert(prereq[0]);
+    //METHOD-1
+    //USING TOPO SORT (BFS.. KAHN ALGO..)
+    vector<bool> checkIfPrerequisite(int n, vector<vector<int>>& prerequisite, vector<vector<int>>& queries) 
+    {
+        unordered_map<int,vector<int>>adj;
+        vector<int>indegree(n,0);
+        queue<int>q;
+        //to store prerequisite for each node..
+        vector<unordered_set<int>>pre(n);
+        for(auto i:prerequisite)
+        {
+            adj[i[0]].push_back(i[1]);
+            indegree[i[1]]++;
         }
-
-        // Step 3: Propagate reachability to account for indirect prerequisites
-        for (int i = 0; i < numCourses; ++i) {
-            for (int j = 0; j < numCourses; ++j) {
-                if (reachable[j].count(i)) {
-                    reachable[j].insert(reachable[i].begin(), reachable[i].end());
+        for(int i=0;i<n;i++)
+        {
+            if(indegree[i]==0)
+            {
+                q.push(i);
+            }
+        }
+        while (q.size())
+        {
+            auto i = q.front();
+            q.pop();
+            for (auto &neigh : adj[i])
+            {
+                //neigh se phle i hoga..
+                pre[neigh].insert(i);
+                //and jo bhi i ke pre me h vo sare neigh ke  bhi honge as acc. to ques..
+                for(auto &j: pre[i])
+                {
+                    pre[neigh].insert(j);
+                }
+                indegree[neigh]--;
+                if (indegree[neigh] == 0)
+                {
+                    q.push(neigh);
                 }
             }
         }
-
-        // Step 4: Answer the queries
-        vector<bool> result;
-        for (auto& query : queries) {
-            result.push_back(reachable[query[1]].count(query[0]) > 0);
+        vector<bool>ans;
+        for(auto &i:queries)
+        {
+            if(pre[i[1]].find(i[0]) != pre[i[1]].end())
+            {
+                ans.push_back(true);
+            }
+            else
+            {
+                ans.push_back(false);
+            }
         }
-        return result;
+        return ans;
     }
 };
