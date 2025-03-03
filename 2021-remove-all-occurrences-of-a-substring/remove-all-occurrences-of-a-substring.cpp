@@ -1,27 +1,19 @@
 class Solution {
 public:
-    // METHOD-2
-    // USING STRING INSTEAD OF STACK..
+    // METHOD-3
+    // BRUTE FORCE,,
     string removeOccurrences(string s, string part) 
     {
-        string temp;
-        int n= part.size();
-        for(auto i:s)
+        while(true)
         {
-            temp.push_back(i);
-            if(temp.size()>=n)
+            int idx= s.find(part);
+            if(idx==string::npos)
             {
-                int m= temp.size();
-                if(temp.back()==part.back())
-                {
-                    if(temp.substr(m-n)==part)
-                    {
-                        temp.erase(temp.end()-n,temp.end());
-                    }
-                }
+                break;
             }
+            s.erase(idx,part.length());
         }
-        return temp;
+        return s;
     }
 };
 /*
@@ -63,4 +55,28 @@ string removeOccurrences(string s, string part)
     reverse(str.begin(), str.end());
     return str;
 }
+
+    // METHOD-2
+    // USING STRING INSTEAD OF STACK..
+    string removeOccurrences(string s, string part) 
+    {
+        string temp;
+        int n= part.size();
+        for(auto i:s)
+        {
+            temp.push_back(i);
+            if(temp.size()>=n)
+            {
+                int m= temp.size();
+                if(temp.back()==part.back())
+                {
+                    if(temp.substr(m-n)==part)
+                    {
+                        temp.erase(temp.end()-n,temp.end());
+                    }
+                }
+            }
+        }
+        return temp;
+    }
 */
