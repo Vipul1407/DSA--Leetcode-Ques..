@@ -1,16 +1,23 @@
 class Solution {
 public:
-    int maxAscendingSum(vector<int>& nums) {
-        const int n=nums.size();
-        int maxSum=0, sum=nums[0];
-        for(int r=1; r<n; r++){
-            if (nums[r]>nums[r-1]) sum+=nums[r];
-            else{
-                maxSum=max(maxSum, sum);
-                sum=nums[r];
+    int maxAscendingSum(vector<int>& nums) 
+    {
+        int n= nums.size();
+        int k=0;
+        int ans=nums[0];
+        int sum= nums[0];
+        for(int i=1;i<n;i++)
+        {
+            if(nums[i]>nums[i-1])
+            {
+                sum+= nums[i];
+                ans = max(ans,sum);
+            }
+            else
+            {
+                sum= nums[i];
             }
         }
-        return max(maxSum, sum);
-        
+        return ans;
     }
 };
