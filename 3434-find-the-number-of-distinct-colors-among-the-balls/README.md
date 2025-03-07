@@ -1,8 +1,8 @@
 <h2><a href="https://leetcode.com/problems/find-the-number-of-distinct-colors-among-the-balls">Find the Number of Distinct Colors Among the Balls</a></h2> <img src='https://img.shields.io/badge/Difficulty-Medium-orange' alt='Difficulty: Medium' /><hr><p>You are given an integer <code>limit</code> and a 2D array <code>queries</code> of size <code>n x 2</code>.</p>
 
-<p>There are <code>limit + 1</code> balls with <strong>distinct</strong> labels in the range <code>[0, limit]</code>. Initially, all balls are uncolored. For every query in <code>queries</code> that is of the form <code>[x, y]</code>, you mark ball <code>x</code> with the color <code>y</code>. After each query, you need to find the number of <strong>distinct</strong> colors among the balls.</p>
+<p>There are <code>limit + 1</code> balls with <strong>distinct</strong> labels in the range <code>[0, limit]</code>. Initially, all balls are uncolored. For every query in <code>queries</code> that is of the form <code>[x, y]</code>, you mark ball <code>x</code> with the color <code>y</code>. After each query, you need to find the number of colors among the balls.</p>
 
-<p>Return an array <code>result</code> of length <code>n</code>, where <code>result[i]</code> denotes the number of distinct colors <em>after</em> <code>i<sup>th</sup></code> query.</p>
+<p>Return an array <code>result</code> of length <code>n</code>, where <code>result[i]</code> denotes the number of colors <em>after</em> <code>i<sup>th</sup></code> query.</p>
 
 <p><strong>Note</strong> that when answering a query, lack of a color <em>will not</em> be considered as a color.</p>
 
