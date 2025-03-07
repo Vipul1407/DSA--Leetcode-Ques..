@@ -1,29 +1,27 @@
 class Solution {
 public:
-    vector<int> queryResults(int lim, vector<vector<int>>& arr) 
+    vector<int> queryResults(int limit, vector<vector<int>>& quer) 
     {
-        unordered_map<int,int>mp;
-        unordered_map<int,int>np;
+        unordered_map<int,int>bc;// storing ball--color
+        unordered_map<int,int>mpcnt;//storing color--cnt
         vector<int>ans;
-        for(auto i:arr)
+        for(auto i:quer)
         {
-            int ball=i[0];
-            int col=i[1];
-            if(mp.count(ball))
+            int ball= i[0];
+            int color= i[1];
+            //ball phle se present h to uske prev color ka cnt minus kr..
+            if(bc.find(ball)!=bc.end())
             {
-                int existcol=mp[ball];
-                if(np[existcol]==1)
+                int prevcolor= bc[ball];
+                mpcnt[prevcolor]--;
+                if(mpcnt[prevcolor]==0)
                 {
-                    np.erase(existcol);
-                }
-                else
-                {
-                    np[existcol]--;
+                    mpcnt.erase(prevcolor);
                 }
             }
-            mp[ball]=col;
-            np[col]++;
-            ans.push_back(np.size());
+            bc[ball]= color;
+            mpcnt[color]++;
+            ans.push_back(mpcnt.size());
         }
         return ans;
     }
