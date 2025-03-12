@@ -1,23 +1,48 @@
 class Solution {
 public:
-    // METHOD-4
-    // USING DFS FORMING ADJ LIST...
-    void dfs(int i, unordered_map<int,vector<int>>&adj, vector<int>&vis)
+    // METHOD-5
+    // USING DISJOINT SET..(DSU)
+    int findupar(int u, vector<int>&parent)
     {
-        vis[i]=1;
-        for(auto &j:adj[i])
+        if(u==parent[u])
         {
-            if(!vis[j])
-            {
-                dfs(j,adj,vis);
-            }
-        } 
+            return u;
+        }
+        return parent[u]= findupar(parent[u],parent);
+    }
+    void unionbyrank(int u,int v,vector<int>&rank, vector<int>&parent)
+    {
+        int up_u= findupar(u,parent);
+        int up_v= findupar(v,parent);
+        if(up_u==up_v)
+        {
+            return;
+        }
+        //small wle to bde wle ke sath merge kro..
+        if(rank[up_u]<rank[up_v])
+        {
+            parent[up_u]= up_v;
+        }
+        else if(rank[up_u]>rank[up_v])
+        {
+            parent[up_v]= up_u;
+        }
+        //both have same rank..
+        else
+        {
+            rank[up_u]++;
+            parent[up_v]= up_u;
+        }
     }
     int findCircleNum(vector<vector<int>>& graph) 
     {
         int n= graph.size();
-        unordered_map<int,vector<int>>adj;
-        vector<int>vis(n,0);
+        vector<int>parent(n);
+        vector<int>rank(n,0);
+        for(int i=0;i<n;i++)
+        {
+            parent[i]=i;
+        }
         int cnt=0;
         for(int i=0;i<n;i++)
         {
@@ -25,17 +50,15 @@ public:
             {
                 if(graph[i][j]==1)
                 {
-                    adj[i].push_back(j);
-                    adj[j].push_back(i);
+                    unionbyrank(i,j,rank,parent);
                 }
             }
         }
         for(int i=0;i<n;i++)
         {
-            if(!vis[i])
+            if(parent[i]==i)
             {
                 cnt++;
-                dfs(i,adj,vis);
             }
         }
         return cnt;
@@ -164,4 +187,45 @@ int findCircleNum(vector<vector<int>> &graph)
     }
     return cnt;
 }
+
+// METHOD-4
+// USING DFS FORMING ADJ LIST...
+    void dfs(int i, unordered_map<int,vector<int>>&adj, vector<int>&vis)
+    {
+        vis[i]=1;
+        for(auto &j:adj[i])
+        {
+            if(!vis[j])
+            {
+                dfs(j,adj,vis);
+            }
+        } 
+    }
+    int findCircleNum(vector<vector<int>>& graph) 
+    {
+        int n= graph.size();
+        unordered_map<int,vector<int>>adj;
+        vector<int>vis(n,0);
+        int cnt=0;
+        for(int i=0;i<n;i++)
+        {
+            for(int j=0;j<n;j++)
+            {
+                if(graph[i][j]==1)
+                {
+                    adj[i].push_back(j);
+                    adj[j].push_back(i);
+                }
+            }
+        }
+        for(int i=0;i<n;i++)
+        {
+            if(!vis[i])
+            {
+                cnt++;
+                dfs(i,adj,vis);
+            }
+        }
+        return cnt;
+    }
 */
