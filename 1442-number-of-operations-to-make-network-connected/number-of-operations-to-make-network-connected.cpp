@@ -1,3 +1,49 @@
+class Solution {
+public:
+    //METHOD-2
+    //DFS..
+    //Same as No. of Island
+    void dfs(int i, unordered_map<int,vector<int>>&adj, vector<int>&vis)
+    {
+        vis[i]=1;
+        for(auto &j:adj[i])
+        {
+            if(!vis[j])
+            {
+                dfs(j,adj,vis);
+            }
+        }
+    }
+    int makeConnected(int n, vector<vector<int>>& conn) 
+    {
+        int edges= conn.size();
+        if(edges<n-1)
+        {
+            return -1;
+        }
+        int cnt=0;
+        unordered_map<int,vector<int>>adj;
+        for(auto i:conn)
+        {
+            adj[i[0]].push_back(i[1]);
+            adj[i[1]].push_back(i[0]);
+        }
+        vector<int>vis(n,0);
+        for(int i=0;i<n;i++)
+        {
+            if(!vis[i])
+            {
+                cnt++;
+                dfs(i,adj,vis);
+            }
+        }
+        return cnt-1;
+    }
+};
+/*
+// METHOD-1
+// DSU...
+
 class DSU
 {
     public:
@@ -74,3 +120,4 @@ public:
         return need-1;
     }
 };
+*/
