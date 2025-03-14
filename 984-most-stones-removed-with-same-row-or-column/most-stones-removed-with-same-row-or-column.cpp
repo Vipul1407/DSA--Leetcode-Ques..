@@ -1,32 +1,32 @@
 class Solution {
-private:
-    int connectedComponentCount = 0;
-
-    int findRepresentative(int element, vector<int>& setRepresentatives) {
-        if (setRepresentatives[element] == 0) {
-            setRepresentatives[element] = element;
-            connectedComponentCount++;
-        }
-        return setRepresentatives[element] == element ? element : 
-               (setRepresentatives[element] = findRepresentative(setRepresentatives[element], setRepresentatives));
-    }
-
-    void mergeComponents(int elementA, int elementB, vector<int>& setRepresentatives) {
-        int repA = findRepresentative(elementA, setRepresentatives);
-        int repB = findRepresentative(elementB, setRepresentatives);
-        if (repA != repB) {
-            setRepresentatives[repB] = repA;
-            connectedComponentCount--;
-        }
-    }
-
 public:
-    int removeStones(vector<vector<int>>& stonePositions) {
-        vector<int> setRepresentatives(20003, 0);
-        for (const auto& stonePosition : stonePositions) {
-            mergeComponents(stonePosition[0] + 1, stonePosition[1] + 10002, setRepresentatives);
+    void dfs(int i,vector<vector<int>>& stones, vector<int>&vis)
+    {
+        int n= stones.size();
+        vis[i]=1;
+        int x= stones[i][0];
+        int y= stones[i][1];
+        for(int j=0;j<n;j++)
+        {
+            if(!vis[j] && (stones[j][0]==x || stones[j][1]==y))
+            {
+                dfs(j,stones,vis);
+            }
         }
-        return stonePositions.size() - connectedComponentCount;
+    }
+    int removeStones(vector<vector<int>>& stones) 
+    {
+        int n= stones.size();
+        vector<int>vis(n,0);
+        int grp=0;
+        for(int i=0;i<n;i++)
+        {
+            if(!vis[i])
+            {
+                grp++;
+                dfs(i,stones,vis);
+            }
+        }
+        return n-grp;
     }
 };
-
