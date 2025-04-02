@@ -1,5 +1,31 @@
 class Solution {
 public:
+    //METHOD-2
+    //USING 1 VECTOR..
+    int trap(vector<int>& arr) 
+    {
+        int n= arr.size();
+        vector<int>rightmax(n,0);
+        rightmax[n-1]= arr[n-1];
+        for(int i=n-2;i>=0;i--)
+        {
+            rightmax[i]= max(rightmax[i+1],arr[i]);
+        }
+
+        int water=0;
+        int leftmax= arr[0];
+        for(int i=0;i<n;i++)
+        {
+            leftmax= max(leftmax,arr[i]);
+            if(arr[i]<leftmax && arr[i]<rightmax[i])
+            {
+                water+= min(leftmax,rightmax[i])-arr[i];
+            }
+        }
+        return water;
+    }
+};
+/*
     //METHOD-1
     //USING 2 VECTORS..
     int trap(vector<int>& arr) 
@@ -27,4 +53,4 @@ public:
         }
         return water;
     }
-};
+*/
