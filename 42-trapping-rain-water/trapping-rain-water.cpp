@@ -1,25 +1,29 @@
 class Solution {
 public:
-    //METHOD-2
-    //USING 1 VECTOR..
+    //METHOD-3
+    //SPACE OPTIMIZED..
+    //WITHOUT USING ANY VECTOR..
     int trap(vector<int>& arr) 
     {
         int n= arr.size();
-        vector<int>rightmax(n,0);
-        rightmax[n-1]= arr[n-1];
-        for(int i=n-2;i>=0;i--)
-        {
-            rightmax[i]= max(rightmax[i+1],arr[i]);
-        }
-
+        int l=0,r=n-1;
+        int leftmax=0;
+        int rightmax=0;
         int water=0;
-        int leftmax= arr[0];
-        for(int i=0;i<n;i++)
+    
+        while(l<r)
         {
-            leftmax= max(leftmax,arr[i]);
-            if(arr[i]<leftmax && arr[i]<rightmax[i])
+            leftmax= max(leftmax,arr[l]);
+            rightmax= max(rightmax,arr[r]);
+            if(leftmax<=rightmax)
             {
-                water+= min(leftmax,rightmax[i])-arr[i];
+                water+= leftmax-arr[l];
+                l++;
+            }
+            else
+            {
+                water+= rightmax-arr[r];
+                r--;
             }
         }
         return water;
@@ -49,6 +53,31 @@ public:
             if(arr[i]<leftmax[i] && arr[i]<rightmax[i])
             {
                 water+= min(leftmax[i],rightmax[i])-arr[i];
+            }
+        }
+        return water;
+    }
+
+    //METHOD-2
+    //USING 1 VECTOR..
+    int trap(vector<int>& arr) 
+    {
+        int n= arr.size();
+        vector<int>rightmax(n,0);
+        rightmax[n-1]= arr[n-1];
+        for(int i=n-2;i>=0;i--)
+        {
+            rightmax[i]= max(rightmax[i+1],arr[i]);
+        }
+
+        int water=0;
+        int leftmax= arr[0];
+        for(int i=0;i<n;i++)
+        {
+            leftmax= max(leftmax,arr[i]);
+            if(arr[i]<leftmax && arr[i]<rightmax[i])
+            {
+                water+= min(leftmax,rightmax[i])-arr[i];
             }
         }
         return water;
