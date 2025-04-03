@@ -1,25 +1,46 @@
 class Solution {
 public:
-    long long maximumTripletValue(vector<int>& nums) {
-        int n = nums.size();
-        vector<int> leftMax(n, 0), rightMax(n, 0);
+    //METHOD-2
+    //BETTER APPROACH USING 2 VECTORS PREFIXMAX, SUFFIXAMX..
+    long long maximumTripletValue(vector<int>& nums) 
+    {
+        int n= nums.size();
+        long long ans=0;
+        vector<int>leftmax(n,0);
+        vector<int>rightmax(n,0);
 
-        leftMax[0] = nums[0];
-        for (int i = 1; i < n; ++i) {
-            leftMax[i] = max(leftMax[i - 1], nums[i]);
+        for(int i=1;i<n;i++)
+        {
+            leftmax[i]= max(leftmax[i-1],nums[i-1]);
+        }    
+        for(int i=n-2;i>=0;i--)
+        {
+            rightmax[i]= max(rightmax[i+1],nums[i+1]);
         }
-
-        rightMax[n - 1] = nums[n - 1];
-        for (int k = n - 2; k >= 0; --k) {
-            rightMax[k] = max(rightMax[k + 1], nums[k]);
+        for(int i=1;i<n-1;i++)
+        {
+            ans= max(ans,(long long)(leftmax[i]-nums[i])*rightmax[i]);
         }
-
-        long long maxValue = 0;
-        for (int j = 1; j < n - 1; ++j) {
-            long long value = static_cast<long long>(leftMax[j - 1] - nums[j]) * rightMax[j + 1];
-            maxValue = max(maxValue, value);
-        }
-
-        return maxValue;
+        return ans;
     }
 };
+/*
+//METHOD-1
+    //BRUTE FORCE..
+    long long maximumTripletValue(vector<int>& nums) 
+    {
+        int n= nums.size();
+        long long ans=0;
+        for(int i=0;i<n;i++)
+        {
+            for(int j=i+1;j<n;j++)
+            {
+                for(int k=j+1;k<n;k++)
+                {
+                    ans= max(ans,(long long)(nums[i]-nums[j])*nums[k]);
+                }
+            }
+        }    
+        return ans;
+    }
+*/
