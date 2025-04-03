@@ -1,45 +1,44 @@
-#define ll long long
 class Solution {
 public:
+    #define ll long long
+    const int x= pow(10,9)+7;
     int countPaths(int n, vector<vector<int>>& roads) 
     {
-        //src=0
-        //dest=n-1
-        int x=pow(10,9)+7;
-        unordered_map<ll,vector<pair<ll,ll>>>adj;//node1,node2,wt
-        //0-->1 with wt.3
-        for(int i=0;i<roads.size();i++)
+        //min heap storing distance,node..
+        priority_queue<pair<ll,int>,vector<pair<ll,int>>,greater<pair<ll,int>>>pq;
+        vector<ll>dist(n,LLONG_MAX);
+        vector<int>cnt(n,0);
+        unordered_map<int,vector<pair<int,int>>>adj;
+        for(auto i:roads)
         {
-            adj[roads[i][0]].push_back({roads[i][1],roads[i][2]});
-            adj[roads[i][1]].push_back({roads[i][0],roads[i][2]});
+            adj[i[0]].push_back({i[1],i[2]});
+            adj[i[1]].push_back({i[0],i[2]});
         }
-        priority_queue<pair<ll,ll>,vector<pair<ll,ll>>,greater<pair<ll,ll>>>pq;
-        vector<ll>time(n,LONG_MAX);
-        vector<ll>ways(n,0);
-        time[0]=0;
-        ways[0]=1;
+        //assuming 0 is source..
         pq.push({0,0});
-        while(!pq.empty())
+        dist[0]=0;
+        cnt[0]=1;
+        while(pq.size())
         {
-            ll node=pq.top().second;
-            ll prevdis=pq.top().first;
+            int node= pq.top().second;
+            ll prevdis= pq.top().first;
             pq.pop();
-            for(auto it:adj[node])
+            for(auto i:adj[node])
             {
-                ll no=it.first;
-                ll wt=it.second;
-                if (prevdis + wt < time[no])
+                int no= i.first;
+                ll wt= i.second;
+                if(prevdis+wt < dist[no])
                 {
-                    time[no] = prevdis + wt;
-                    pq.push({time[no], no});
-                    ways[no] = ways[node]; // Update ways array
+                    dist[no]= prevdis+wt;
+                    pq.push({dist[no],no});
+                    cnt[no]= cnt[node];
                 }
-                else if (prevdis + wt == time[no])
+                else if(prevdis+wt == dist[no])
                 {
-                    ways[no] = (ways[no] + ways[node]) % x;
+                    cnt[no]= (cnt[no]+cnt[node])%x;
                 }
             }
         }
-        return ways[n-1]%x;//n-1 is dest 
+        return cnt[n-1]%x;
     }
 };
