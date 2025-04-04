@@ -1,27 +1,26 @@
 class Solution {
 public:
-    vector<int> partitionLabels(string& s) {
-        const int n=s.size();
-        array<pair<int, int>, 26> P;// (start, end)
-        P.fill({n, -1});
-        for(int i=0; i<n; i++){
-            int x=s[i]-'a';
-            P[x].first=min(i, P[x].first);
-            P[x].second=i;
-        } 
-
-        // Process the intervals
-        vector<int> pLen;
-        int start = 0, end = -1;
-        for (int i = 0; i < n; i++) {
-            int x = s[i] - 'a';
-            end = max(end, P[x].second);
-            if (i == end) {
-                pLen.push_back(end - start + 1);
-                start = i + 1;
-            }
+    vector<int> partitionLabels(string s) 
+    {
+        int n= s.size();
+        vector<int>ans;
+        vector<int>mp(26,-1);
+        for(int i=0;i<n;i++)
+        {
+            mp[s[i]-'a']=i;
         }
-        return pLen;
+        int i=0;
+        while(i<n)
+        {
+            int start=i;
+            int j=i;
+            while(i<=j)
+            {
+                j= max(j,mp[s[i]-'a']);
+                i++;
+            }
+            ans.push_back(j-start+1);
+        }   
+        return ans;
     }
-   
 };
