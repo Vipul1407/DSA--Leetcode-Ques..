@@ -11,35 +11,6 @@
  */
 class Solution {
 public:
-    //METHOD-2
-    //1 PASS not storing height in mp and not using maxdepth
-    pair<int,TreeNode*> LCA(TreeNode* root)
-    {
-        if(!root)
-        {
-            return {0,NULL};
-        }
-        auto left= LCA(root->left);
-        auto right= LCA(root->right);
-        if(left.first>right.first)
-        {
-            return {left.first+1,left.second};
-        }
-        else if(right.first>left.first)
-        {
-            return {right.first+1,right.second};
-        }
-        else
-        {
-            return {left.first+1,root};
-        }
-    }
-    TreeNode* lcaDeepestLeaves(TreeNode* root) 
-    {
-        return LCA(root).second;
-    }
-};
-/*
     //METHOD-1
     //2 PASS storing height in mp and using maxdepth
     
@@ -86,5 +57,35 @@ public:
         unordered_map<int,int>mp;
         calculate_height(root,0,mp);
         return LCA(root,mp);
+    }
+};
+/*
+    //METHOD-2
+    //1 PASS not storing height in mp and not using maxdepth
+
+    pair<int,TreeNode*> LCA(TreeNode* root)
+    {
+        if(!root)
+        {
+            return {0,NULL};
+        }
+        auto left= LCA(root->left);
+        auto right= LCA(root->right);
+        if(left.first>right.first)
+        {
+            return {left.first+1,left.second};
+        }
+        else if(right.first>left.first)
+        {
+            return {right.first+1,right.second};
+        }
+        else
+        {
+            return {left.first+1,root};
+        }
+    }
+    TreeNode* lcaDeepestLeaves(TreeNode* root) 
+    {
+        return LCA(root).second;
     }
 */
