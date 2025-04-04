@@ -11,8 +11,38 @@
  */
 class Solution {
 public:
+    //METHOD-2
+    //1PASS ONLY returning pair of <TreeNode*,int> without using map
+    pair<int,TreeNode*>LCA(TreeNode* root, int d)
+    {
+        if(!root)
+        {
+            return {0,NULL};
+        }
+        auto left= LCA(root->left,d+1);
+        auto right= LCA(root->right,d+1);
+        if(left.first>right.first)
+        {
+            return {left.first+1,left.second};
+        }
+        else if(right.first>left.first)
+        {
+            return {right.first+1,right.second};
+        }
+        else
+        {
+            return {right.first+1,root};
+        }
+    }
+    TreeNode* subtreeWithAllDeepest(TreeNode* root) 
+    {
+        return LCA(root,0).second;
+    }
+};
+/*
     //METHOD-1
-    //2PASS + maxdepth variable
+    //2PASS + unordered_map + maxdepth variable
+
     void calculate_height(TreeNode* root, unordered_map<int,int>&mp, int d, int &maxdepth)
     {
         if(!root)
@@ -56,4 +86,4 @@ public:
         calculate_height(root,mp,0,maxdepth);
         return LCA(root,mp,maxdepth);
     }
-};
+*/
