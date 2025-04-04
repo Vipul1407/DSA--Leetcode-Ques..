@@ -9,6 +9,43 @@
  */
 class Solution {
 public:
+    //METHOD-2
+    //STRING IN VECTORS..
+    bool store(TreeNode* root, TreeNode* p, vector<int>&v)
+    {
+        if(!root)
+        {
+            return false;
+        }
+        v.push_back(root->val);
+        if(root==p)
+        {
+            return true;
+        }
+        if(store(root->left,p,v) || store(root->right,p,v))
+        {
+            return true;
+        }
+        v.pop_back();
+        return false;
+    }
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) 
+    {
+        vector<int>v1;
+        vector<int>v2;
+        store(root,p,v1);
+        store(root,q,v2);
+        int i=0;
+        while(i<v1.size() && i<v2.size() && v1[i]==v2[i])
+        {
+            i++;
+        }
+        return new TreeNode(v1[i-1]);
+    }
+};
+/*
+    //METHOD-1
+    //OPTIMIZED..
     TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) 
     {
         if(root==NULL || root==p || root==q)
@@ -30,4 +67,4 @@ public:
             return root;
         }
     }
-};
+*/
