@@ -1,22 +1,21 @@
 class Solution {
 public:
-    // METHOD-2
-    // SLIDING WINDOW..
+    // METHOD-3
+    // SLIDING WINDOW OPTIMIZED..
     int maxFrequency(vector<int>& nums, int k) 
     {
         int n = nums.size();
         sort(nums.begin(), nums.end());
         long currsum= 0;
-        int ans=0;
-        int l=0;
+        int ans=0,l=0;
         for(int r=0;r<n;r++)
         {
             long tar= nums[r];
             currsum+= nums[r];
-            while((r-l+1)*tar-currsum>k)
+            //if is used as e get consition false then no need to shrink upto full size as we need max size window..
+            if((r-l+1)*tar-currsum>k)
             {
-                currsum-= nums[l];
-                l++;
+                currsum-=nums[l++];
             }
             ans= max(ans,r-l+1);
         }
@@ -64,6 +63,29 @@ public:
         for (int i = 0; i < n; i++)
         {
             ans = max(ans, solve(nums, prefsum, k, i));
+        }
+        return ans;
+    }
+
+    // METHOD-2
+    // SLIDING WINDOW..
+    int maxFrequency(vector<int>& nums, int k) 
+    {
+        int n = nums.size();
+        sort(nums.begin(), nums.end());
+        long currsum= 0;
+        int ans=0;
+        int l=0;
+        for(int r=0;r<n;r++)
+        {
+            long tar= nums[r];
+            currsum+= nums[r];
+            while((r-l+1)*tar-currsum>k)
+            {
+                currsum-= nums[l];
+                l++;
+            }
+            ans= max(ans,r-l+1);
         }
         return ans;
     }
