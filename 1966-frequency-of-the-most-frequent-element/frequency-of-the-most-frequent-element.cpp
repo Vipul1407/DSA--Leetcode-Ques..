@@ -1,5 +1,29 @@
 class Solution {
 public:
+    // METHOD-2
+    // SLIDING WINDOW..
+    int maxFrequency(vector<int>& nums, int k) 
+    {
+        int n = nums.size();
+        sort(nums.begin(), nums.end());
+        long currsum= 0;
+        int ans=0;
+        int l=0;
+        for(int r=0;r<n;r++)
+        {
+            long tar= nums[r];
+            currsum+= nums[r];
+            while((r-l+1)*tar-currsum>k)
+            {
+                currsum-= nums[l];
+                l++;
+            }
+            ans= max(ans,r-l+1);
+        }
+        return ans;
+    }
+};
+/*
     // METHOD-1
     // BINARY SEARCH..
     int solve(vector<int> &nums, vector<long> &prefsum, int k, int i)
@@ -43,4 +67,4 @@ public:
         }
         return ans;
     }
-};
+*/
