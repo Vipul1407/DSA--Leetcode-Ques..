@@ -1,31 +1,29 @@
-class Solution 
-{
+class Solution {
 public:
-
     int countDays(int days, vector<vector<int>>& meet) 
     {
-        int n=meet.size();
-        //first merge intervals
+        int n= meet.size();
         sort(meet.begin(),meet.end());
-        int cnt=0;
-        int start=meet[0][0];
-        int end=meet[0][1];
-        //start from i=1
+        int prevend= meet[0][1];
+        int ans= meet[0][0]-1;
         for(int i=1;i<n;i++)
         {
-            if(meet[i][0]>end)
+            int start= meet[i][0];
+            int end= meet[i][1];
+            if(start>prevend)
             {
-               cnt+=end-start+1;
-               start=meet[i][0];
-               end=meet[i][1];
+                ans+= start-prevend-1;
+                prevend= end;
             }
             else
             {
-                end=max(end,meet[i][1]);
+                prevend= max(prevend,end);
             }
         }
-        //adding last interval
-        cnt+=end-start+1;
-        return days-cnt;
+        if(prevend<days)
+        {
+            ans+= days-prevend;
+        }
+        return ans;
     }
 };
