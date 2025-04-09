@@ -1,45 +1,44 @@
 class Solution {
 public:
-    void bfs(int node,vector<vector<int>> &adj,vector<int> &comp,vector<bool> &vis){
-        queue<int> q;
-        q.push(node);
-        vis[node]=true;
-
-        while(!q.empty()){
-            int n=q.front();
-            q.pop();
-            comp.push_back(n);
-            for(auto it:adj[n]){
-                if(!vis[it]){
-                    q.push(it);
-                    vis[it]=true;
-                }
+    //CONNECTED COMPONENT IS THAT WHICH CONTAINS EDGE B/W EVERY CONNECTED NODE IN GRAPH..
+    //METHOD-1
+    //DFS..
+    void dfs(int i,unordered_map<int,vector<int>>&adj, vector<int>&vis, int &v, int &e)
+    {
+        vis[i]=1;
+        v++;
+        e+= adj[i].size();
+        for(auto j:adj[i])
+        {
+            if(!vis[j])
+            {
+                dfs(j,adj,vis,v,e);
             }
         }
     }
-    int countCompleteComponents(int n, vector<vector<int>>& edges) {
-        vector<vector<int>> adj(n);
-        for(auto it:edges){
-            adj[it[0]].push_back(it[1]);
-            adj[it[1]].push_back(it[0]);
+    int countCompleteComponents(int n, vector<vector<int>>& edges) 
+    {
+        unordered_map<int,vector<int>>adj;
+        for(auto i:edges)
+        {
+            adj[i[0]].push_back(i[1]);
+            adj[i[1]].push_back(i[0]);
         }
-        int ans=0;
-        vector<bool> vis(n,false);
-        for(int i=0;i<n;i++){
-
-            if(!vis[i]){
-                vector<int> comp;
-                bfs(i,adj,comp,vis);
-                bool iscomp=true;
-                for(auto it: comp){
-                    if(adj[it].size()!=comp.size()-1){
-                        iscomp=false;
-                        break;
-                    }
+        vector<int>vis(n,0);
+        int cnt=0;
+        for(int i=0;i<n;i++)
+        {
+            if(!vis[i])
+            {
+                int v=0;
+                int e=0;
+                dfs(i,adj,vis,v,e);
+                if(e== v*(v-1))
+                {
+                    cnt++;
                 }
-                if(iscomp)ans++;
             }
         }
-        return ans;
+        return cnt;
     }
 };
