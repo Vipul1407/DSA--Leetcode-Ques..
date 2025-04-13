@@ -2,8 +2,8 @@ class Solution {
 public:
     //METHOD-3
     //OPTIMIZED APPROACH..
-    //TC= O(N^3 * LOG(unique quadruple))
-    //SC= O(unique quadruple)
+    //TC= O(N^3)
+    //SC= O(1)
     vector<vector<int>> fourSum(vector<int>& nums, int tar) 
     {
         int n= nums.size();
