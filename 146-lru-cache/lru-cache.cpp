@@ -3,23 +3,21 @@ public:
     class node
     {
         public:
-        int key;
-        int val;
-        node* next;
+        int key,val;
         node* prev;
+        node* next;
         node(int key,int val)
         {
-            this->val=val;
-            this->key=key;
-            next= NULL;
-            prev= NULL;
+            this->key= key;
+            this->val= val;
+            prev=NULL;
+            next=NULL;
         }
     };
-
-    node  *head= new node(-1,-1);
-    node  *tail= new node(-1,-1);
     int cap;
     unordered_map<int,node*>mp;
+    node* head= new node(-1,-1);
+    node* tail= new node(-1,-1);
 
     LRUCache(int capacity) 
     {
@@ -31,8 +29,8 @@ public:
     void addnode(node* newnode)
     {
         node* temp= head->next;
-        newnode->next= temp;
-        newnode->prev= head;
+        newnode->next=temp;
+        newnode->prev=head;
         head->next= newnode;
         temp->prev= newnode;
     }
@@ -50,13 +48,11 @@ public:
         if(mp.find(key)!=mp.end())
         {
             node* node= mp[key];
-            mp.erase(key);
             int val= node->val;
-
             deletenode(node);
+            mp.erase(key);
             addnode(node);
             mp[key]= head->next;
-
             return val;
         }
         return -1;
