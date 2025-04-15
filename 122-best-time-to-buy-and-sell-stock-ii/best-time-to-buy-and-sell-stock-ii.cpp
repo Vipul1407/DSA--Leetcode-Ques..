@@ -1,11 +1,12 @@
 class Solution {
 public:
-    //METHOD-3
-    //BUA..
+    //METHOD-4
+    //SPACE OPTIMIZED..
     int maxProfit(vector<int>& nums) 
     {
         int n= nums.size();
-        vector<vector<int>>dp(n+1,vector<int>(2,0));
+        vector<int>next(2,0);
+        vector<int>curr(2,0);
         for(int i=n-1;i>=0;i--)
         {
             int profit=0;
@@ -13,20 +14,21 @@ public:
             {
                 if(canbuy==1)
                 {
-                    int buy= -nums[i]+dp[i+1][0];
-                    int skip= dp[i+1][1];
+                    int buy= -nums[i]+next[0];
+                    int skip= next[1];
                     profit= max(buy,skip);
                 }
                 else
                 {
-                    int sell= nums[i]+dp[i+1][1];
-                    int skip= dp[i+1][0];
+                    int sell= nums[i]+next[1];
+                    int skip= next[0];
                     profit= max(sell,skip);
                 }
-                dp[i][canbuy]= profit;
+                curr[canbuy]= profit;
             }
+            next= curr;
         }
-        return dp[0][1];
+        return next[1];
     }
 };
 /*
@@ -91,5 +93,34 @@ public:
         int n= nums.size();
         vector<vector<int>>dp(n,vector<int>(2,-1));
         return tda(0,1,nums,dp);
+    }
+
+    //METHOD-3
+    //BUA..
+    int maxProfit(vector<int>& nums) 
+    {
+        int n= nums.size();
+        vector<vector<int>>dp(n+1,vector<int>(2,0));
+        for(int i=n-1;i>=0;i--)
+        {
+            int profit=0;
+            for(int canbuy=0;canbuy<=1;canbuy++)
+            {
+                if(canbuy==1)
+                {
+                    int buy= -nums[i]+dp[i+1][0];
+                    int skip= dp[i+1][1];
+                    profit= max(buy,skip);
+                }
+                else
+                {
+                    int sell= nums[i]+dp[i+1][1];
+                    int skip= dp[i+1][0];
+                    profit= max(sell,skip);
+                }
+                dp[i][canbuy]= profit;
+            }
+        }
+        return dp[0][1];
     }
 */
