@@ -1,5 +1,6 @@
 class Solution {
 public:
+    //OPTIMIZED...
     int subarraySum(vector<int>& nums, int k) 
     {
         unordered_map<int,int>mp;
@@ -8,7 +9,7 @@ public:
         int ans=0;
         for(auto i:nums)
         {
-            sum+=i;
+            sum+= i;
             ans+= mp[sum-k];
             mp[sum]++;
         }
