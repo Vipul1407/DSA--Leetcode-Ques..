@@ -1,5 +1,6 @@
 class Solution {
 public:
+    //METHOD-3
     //lower bound gives smallest idx of >=x
     int lb(int i,int ele,vector<int>& nums)
     {
@@ -59,3 +60,40 @@ public:
         return ans;
     }
 };
+/*
+    //METHOD-2
+    //OPTIMIZED USING LOWER, UPPER BOUND..
+    //TC= O(NLOGN)
+    long long countFairPairs(vector<int>& arr, int lower, int upper) 
+    {
+        int n= arr.size();
+        sort(arr.begin(),arr.end());
+        long long cnt=0;
+        for(int i=0;i<n;i++)
+        {
+            int lb= lower_bound(arr.begin()+i+1,arr.end(),lower-arr[i])- arr.begin();
+            int ub= upper_bound(arr.begin()+i+1,arr.end(),upper-arr[i])- arr.begin();
+            cnt+= ub-lb;
+        }
+        return cnt;
+    }
+
+//METHOD-1
+// BRUTE FORCE..
+long long countFairPairs(vector<int> &arr, int lower, int upper)
+{
+    int n = arr.size();
+    int cnt = 0;
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = i + 1; j < n; j++)
+        {
+            if (arr[i] + arr[j] >= lower && arr[i] + arr[j] <= upper)
+            {
+                cnt++;
+            }
+        }
+    }
+    return cnt;
+}
+*/
