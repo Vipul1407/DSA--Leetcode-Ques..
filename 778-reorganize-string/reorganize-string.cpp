@@ -1,51 +1,46 @@
 class Solution {
 public:
+    //TC= O(NLOGN)
     string reorganizeString(string s) 
     {
+        int n= s.size();
+        priority_queue<pair<int,char>>pq;
         vector<int>vec(26,0);
         for(auto i:s)
         {
             vec[i-'a']++;
+            if(vec[i-'a'] > (n+1)/2)
+            {
+                return "";
+            }
         }
-        priority_queue<pair<int,char>>pq;
         for(int i=0;i<26;i++)
         {
             if(vec[i]>0)
                 pq.push({vec[i],i+'a'});
         }
         string ans="";
-        //same logic as LONGEST HAPPY STRING QUES..
-        while(pq.size())
+        while(pq.size()>=2)
         {
-            auto top= pq.top();
+            auto ele1= pq.top();
             pq.pop();
-            int n= ans.size();
-            //can reuse same char..
-            if(n==0 || ans[n-1]!=top.second)
+            auto ele2= pq.top();
+            pq.pop();
+            ans+= ele1.second;
+            ans+= ele2.second;
+            if(ele1.first>1)
             {
-                ans+= top.second;
-                if(top.first-1>0)
-                {
-                    pq.push({top.first-1,top.second});
-                }
+                pq.push({ele1.first-1,ele1.second});
             }
-            //cannot use same char...
-            else
+            if(ele2.first>1)
             {
-                if(pq.empty())
-                {
-                    return "";
-                }
-                auto newtop= pq.top();
-                pq.pop();
-                ans+= newtop.second;
-                if(newtop.first-1>0)
-                {
-                    pq.push({newtop.first-1, newtop.second});
-                }
-                pq.push(top);
+                pq.push({ele2.first-1,ele2.second});
             }
         }
-        return pq.empty()?ans:"";
+        if(!pq.empty())
+        {
+            ans+= pq.top().second;
+        }
+        return ans;
     }
 };
