@@ -1,11 +1,12 @@
 class Solution {
 public:
-    // METHOD-3
-    // BUA..
+    // METHOD-4
+    // SPACE OPTIMIZED..
     int maxProfit(int k, vector<int> &arr)
     {
         int n = arr.size();
-        vector<vector<vector<int>>> dp(n + 1, vector<vector<int>>(2, vector<int>(k+1, 0)));
+        vector<vector<int>> curr(2, vector<int>(k+1, 0));
+        vector<vector<int>> next(2, vector<int>(k+1, 0));
         // i=0 ,canbuy=1 and limit=2 initially..
         int profit = 0;
         for (int i = n - 1; i >= 0; i--)
@@ -16,21 +17,22 @@ public:
                 {
                     if (canbuy)
                     {
-                        int buy = -arr[i] + dp[i + 1][0][limit];
-                        int skip = dp[i + 1][1][limit];
+                        int buy = -arr[i] + next[0][limit];
+                        int skip = next[1][limit];
                         profit = max(buy, skip);
                     }
                     else
                     {
-                        int sell = arr[i] + dp[i + 1][1][limit - 1];
-                        int skip = dp[i + 1][0][limit];
+                        int sell = arr[i] + next[1][limit - 1];
+                        int skip = next[0][limit];
                         profit = max(sell, skip);
                     }
-                    dp[i][canbuy][limit] = profit;
+                    curr[canbuy][limit] = profit;
                 }
             }
+            next = curr;
         }
-        return dp[0][1][k];
+        return curr[1][k];
     }
 };
 /*
