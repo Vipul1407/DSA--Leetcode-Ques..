@@ -1,6 +1,74 @@
 class Solution {
 public:
     //USING TRANSACTION METHOD NUMBER....
+    // METHOD-3
+    // BUA..
+    int maxProfit(int k, vector<int> &arr)
+    {
+        int n = arr.size();
+        vector<vector<int>>dp(n+1,vector<int>(2*k+1,0));
+        int profit=0;
+        // i=0 ,trans=0 initially..
+        //trans= 2k base case handled by intializing dp to 0
+        for(int  i=n-1;i>=0;i--)
+        {
+            for(int trans=2*k-1;trans>=0;trans--)
+            {
+                if (trans%2==0)
+                {
+                    int buy = -arr[i] + dp[i+1][trans+1];
+                    int skip = dp[i+1][trans];
+                    profit = max(buy, skip);
+                }
+                else
+                {
+                    int sell = arr[i] + dp[i+1][trans+1];
+                    int skip = dp[i+1][trans];
+                    profit = max(sell, skip);
+                }
+                dp[i][trans]=profit;
+            }
+        }
+        return dp[0][0];
+    }
+};
+//USING TRANSACTION METHOD NUMBER....
+/*
+    // METHOD-1
+    // RECUSIVE..
+    int rec(int i, vector<int> &arr, int trans)
+    {
+        if (i >= arr.size())
+        {
+            return 0;
+        }
+        if(trans==2*k)
+        {
+            return 0;
+        }
+        int profit = 0;
+        if (trans%2==0)
+        {
+            int buy = -arr[i] + rec(i + 1, arr, trans+1);
+            int skip = rec(i + 1, arr, trans);
+            profit = max(buy, skip);
+        }
+        else
+        {
+            int sell = arr[i] + rec(i + 1, arr, trans+1);
+            int skip = rec(i + 1, arr, trans);
+            profit = max(sell, skip);
+        }
+        return profit;
+    }
+    int maxProfit(int k, vector<int> &arr)
+    {
+        int n = arr.size();
+        // i=0 ,trans=0 initially..
+        return rec(0, arr, 0);
+    }
+
+    //USING TRANSACTION METHOD NUMBER....
     // METHOD-2
     // TDA..
     int tda(int i, int trans, int k, vector<int> &arr, vector<vector<int>> &dp)
@@ -38,42 +106,6 @@ public:
         vector<vector<int>>dp(n,vector<int>(2*k,-1));
         // i=0 ,trans=0 initially..
         return tda(0,0,k,arr,dp);
-    }
-};
-//USING TRANSACTION METHOD NUMBER....
-/*
-    // METHOD-1
-    // RECUSIVE..
-    int rec(int i, vector<int> &arr, int trans)
-    {
-        if (i >= arr.size())
-        {
-            return 0;
-        }
-        if(trans==2*k)
-        {
-            return 0;
-        }
-        int profit = 0;
-        if (trans%2==0)
-        {
-            int buy = -arr[i] + rec(i + 1, arr, trans+1);
-            int skip = rec(i + 1, arr, trans);
-            profit = max(buy, skip);
-        }
-        else
-        {
-            int sell = arr[i] + rec(i + 1, arr, trans+1);
-            int skip = rec(i + 1, arr, trans);
-            profit = max(sell, skip);
-        }
-        return profit;
-    }
-    int maxProfit(int k, vector<int> &arr)
-    {
-        int n = arr.size();
-        // i=0 ,trans=0 initially..
-        return rec(0, arr, 0);
     }
 */
 
