@@ -1,12 +1,14 @@
 class Solution {
 public:
 
-    // METHOD-3
-    // BUA..
+    // METHOD-4
+    // SPACE OPTIMIZED..
     int maxProfit(vector<int> &nums)
     {
         int n = nums.size();
-        vector<vector<int>> dp(n + 2, vector<int>(2, 0));
+        vector<int>curr(2, 0);
+        vector<int>next1(2, 0);
+        vector<int>next2(2, 0);
         for (int i = n - 1; i >= 0; i--)
         {
             int profit = 0;
@@ -14,21 +16,23 @@ public:
             {
                 if (canbuy == 1)
                 {
-                    int buy = -nums[i] + dp[i + 1][0];
-                    int skip = dp[i + 1][1];
+                    int buy = -nums[i] + next1[0];
+                    int skip = next1[1];
                     profit = max(buy, skip);
                 }
                 else
                 {
                     //add 1 day cooldown period..
-                    int sell = nums[i] + dp[i + 2][1];
-                    int skip = dp[i + 1][0];
+                    int sell = nums[i] + next2[1];
+                    int skip = next1[0];
                     profit = max(sell, skip);
                 }
-                dp[i][canbuy] = profit;
+                curr[canbuy] = profit;
             }
+            next2=next1;
+            next1= curr;
         }
-        return dp[0][1];
+        return curr[1];
     }
 };
 /*
@@ -96,5 +100,35 @@ public:
         int n = nums.size();
         vector<vector<int>> dp(n, vector<int>(2, -1));
         return tda(0, 1, nums, dp);
+    }
+
+    // METHOD-3
+    // BUA..
+    int maxProfit(vector<int> &nums)
+    {
+        int n = nums.size();
+        vector<vector<int>> dp(n + 2, vector<int>(2, 0));
+        for (int i = n - 1; i >= 0; i--)
+        {
+            int profit = 0;
+            for (int canbuy = 0; canbuy <= 1; canbuy++)
+            {
+                if (canbuy == 1)
+                {
+                    int buy = -nums[i] + dp[i + 1][0];
+                    int skip = dp[i + 1][1];
+                    profit = max(buy, skip);
+                }
+                else
+                {
+                    //add 1 day cooldown period..
+                    int sell = nums[i] + dp[i + 2][1];
+                    int skip = dp[i + 1][0];
+                    profit = max(sell, skip);
+                }
+                dp[i][canbuy] = profit;
+            }
+        }
+        return dp[0][1];
     }
 */
