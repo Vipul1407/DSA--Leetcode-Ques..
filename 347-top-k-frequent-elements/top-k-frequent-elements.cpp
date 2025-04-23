@@ -1,31 +1,35 @@
 class Solution {
 public:
-    //METHOD-3
-    //Using Priority queue (MIN HEAP..)
-    //TC= O(NLOGK).. Somewhat better than others..
+    //METHOD-4
+    //Using Bucket Sort
+    //TC= O(N).. MOST OPTIMIZED..
     vector<int> topKFrequent(vector<int>& nums, int k) 
     {
+        int n= nums.size();
         vector<int>ans;
+        //Normal case we store freq at each index(element)
+        //But here we will store vector of elements having at each index(denoting freq)
+        vector<vector<int>>bucket(n+1);
         unordered_map<int,int>mp;
         for(auto i:nums)
         {
             mp[i]++;
         }
-        //min heap of size k only.. storing freq,element
-        priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>>pq;
         for(auto i:mp)
         {
-            pq.push({i.second,i.first});
-            while(pq.size()>k)
-            {
-                pq.pop();
-            }
+            bucket[i.second].push_back(i.first);
         }
-        while(pq.size())
+        for(int i=n;i>=0;i--)
         {
-            auto ele= pq.top();
-            pq.pop();
-            ans.push_back(ele.second);
+            for(auto j:bucket[i])
+            {
+                if(k==0)
+                {
+                    return ans;
+                }
+                ans.push_back(j);
+                k--;
+            }
         }
         return ans;
     }
@@ -89,6 +93,36 @@ vector<int> topKFrequent(vector<int> &nums, int k)
     while (pq.size() && k--)
     {
         auto ele = pq.top();
+        pq.pop();
+        ans.push_back(ele.second);
+    }
+    return ans;
+}
+
+//METHOD-3
+//Using Priority queue (MIN HEAP..)
+//TC= O(NLOGK).. Somewhat better than others..
+vector<int> topKFrequent(vector<int>& nums, int k) 
+{
+    vector<int>ans;
+    unordered_map<int,int>mp;
+    for(auto i:nums)
+    {
+        mp[i]++;
+    }
+    //min heap of size k only.. storing freq,element
+    priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>>pq;
+    for(auto i:mp)
+    {
+        pq.push({i.second,i.first});
+        while(pq.size()>k)
+        {
+            pq.pop();
+        }
+    }
+    while(pq.size())
+    {
+        auto ele= pq.top();
         pq.pop();
         ans.push_back(ele.second);
     }
