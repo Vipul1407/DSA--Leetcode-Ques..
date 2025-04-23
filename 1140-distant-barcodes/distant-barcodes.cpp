@@ -1,5 +1,53 @@
 class Solution {
 public:
+    //METHOD-2
+    //TC=O(N)
+    //Without using heap..
+    vector<int> rearrangeBarcodes(vector<int>& barcode) 
+    {
+        int n= barcode.size();
+        unordered_map<int,int>mp;
+        int maxfreq=1;
+        int ch=1;
+        for(auto i:barcode)
+        {
+            mp[i]++;
+            //not possible case..
+            // if(mp[i]> (n+1)/2)
+            // {
+            //     return {};
+            // }
+            if(mp[i]> maxfreq)
+            {
+                maxfreq= mp[i];
+                ch= i;
+            }
+        }
+        vector<int>ans(n,0);
+        int j=0;
+        while(j<n && maxfreq--)
+        {
+            ans[j]= ch;
+            j+=2;
+        }
+        mp[ch]=0;
+
+        for(auto &i:mp)
+        {
+            while(i.second--)
+            {
+                if(j>=n)
+                {
+                    j=1;
+                }
+                ans[j]= i.first;
+                j+=2;
+            }
+        }
+        return ans;
+    }
+}; 
+/*
     //METHOD-1
     //USING PRIORITY QUEUE..
     //TC= O(NLOGN)
@@ -44,4 +92,4 @@ public:
         }
         return ans;
     }
-}; 
+*/
