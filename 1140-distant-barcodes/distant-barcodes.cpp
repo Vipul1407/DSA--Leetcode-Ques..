@@ -1,29 +1,29 @@
 class Solution {
 public:
-    //METHOD-2
+    //METHOD-3
     //TC=O(N)
     //Without using heap..
     vector<int> rearrangeBarcodes(vector<int>& barcode) 
     {
         int n= barcode.size();
-        unordered_map<int,int>mp;
-        int maxfreq=1;
+        vector<int>mp(10001,0);
         int ch=1;
+        vector<int>ans(n,0);
+        int maxfreq=1;
         for(auto i:barcode)
         {
             mp[i]++;
             //not possible case..
-            // if(mp[i]> (n+1)/2)
+            // if(mp[i]>(n+1)/2)
             // {
             //     return {};
             // }
-            if(mp[i]> maxfreq)
+            if(mp[i]>maxfreq)
             {
                 maxfreq= mp[i];
                 ch= i;
             }
         }
-        vector<int>ans(n,0);
         int j=0;
         while(j<n && maxfreq--)
         {
@@ -31,17 +31,19 @@ public:
             j+=2;
         }
         mp[ch]=0;
-
-        for(auto &i:mp)
+        for(int i=1;i<=10000;i++)
         {
-            while(i.second--)
+            if(mp[i]>0)
             {
-                if(j>=n)
+                while(mp[i]--)
                 {
-                    j=1;
+                    if(j>=n)
+                    {
+                        j=1;
+                    }
+                    ans[j]= i;
+                    j+=2;
                 }
-                ans[j]= i.first;
-                j+=2;
             }
         }
         return ans;
@@ -89,6 +91,53 @@ public:
         if(!pq.empty())
         {
             ans.push_back(pq.top().second);
+        }
+        return ans;
+    }
+
+        //METHOD-2
+    //TC=O(N)
+    //Without using heap..
+    vector<int> rearrangeBarcodes(vector<int>& barcode) 
+    {
+        int n= barcode.size();
+        unordered_map<int,int>mp;
+        int maxfreq=1;
+        int ch=1;
+        for(auto i:barcode)
+        {
+            mp[i]++;
+            //not possible case..
+            // if(mp[i]> (n+1)/2)
+            // {
+            //     return {};
+            // }
+            if(mp[i]> maxfreq)
+            {
+                maxfreq= mp[i];
+                ch= i;
+            }
+        }
+        vector<int>ans(n,0);
+        int j=0;
+        while(j<n && maxfreq--)
+        {
+            ans[j]= ch;
+            j+=2;
+        }
+        mp[ch]=0;
+
+        for(auto &i:mp)
+        {
+            while(i.second--)
+            {
+                if(j>=n)
+                {
+                    j=1;
+                }
+                ans[j]= i.first;
+                j+=2;
+            }
         }
         return ans;
     }
