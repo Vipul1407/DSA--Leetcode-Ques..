@@ -1,28 +1,19 @@
 class Solution {
 public:
-    //METHOD-2
+    //METHOD-3
     string reverseWords(string str) 
     {
         int n= str.size();
-        string ans="";
-        string temp="";
-        for(int i=0;i<n;i++)
+        int start=0;
+        for(int i=0;i<=n;i++)
         {
-            if(str[i]==' ')
+            if(i==n || str[i]==' ')
             {
-                reverse(temp.begin(),temp.end());
-                ans+= temp;
-                ans+=' ';
-                temp="";
-            }
-            else
-            {
-                temp+= str[i];
+                reverse(str.begin()+start,str.begin()+i);
+                start= i+1;
             }
         }
-        reverse(temp.begin(),temp.end());
-        ans+= temp;
-        return ans;
+        return str;
     }
 };
 /*
@@ -48,6 +39,31 @@ public:
             reverse(temp.begin(),temp.end());
             ans+= temp;
         }
+        return ans;
+    }
+
+    //METHOD-2
+    string reverseWords(string str) 
+    {
+        int n= str.size();
+        string ans="";
+        string temp="";
+        for(int i=0;i<n;i++)
+        {
+            if(str[i]==' ')
+            {
+                reverse(temp.begin(),temp.end());
+                ans+= temp;
+                ans+=' ';
+                temp="";
+            }
+            else
+            {
+                temp+= str[i];
+            }
+        }
+        reverse(temp.begin(),temp.end());
+        ans+= temp;
         return ans;
     }
 */
