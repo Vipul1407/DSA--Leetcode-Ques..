@@ -1,5 +1,33 @@
 class Solution {
 public:
+    //METHOD-2
+    string reverseWords(string str) 
+    {
+        int n= str.size();
+        string ans="";
+        string temp="";
+        for(int i=0;i<n;i++)
+        {
+            if(str[i]==' ')
+            {
+                reverse(temp.begin(),temp.end());
+                ans+= temp;
+                ans+=' ';
+                temp="";
+            }
+            else
+            {
+                temp+= str[i];
+            }
+        }
+        reverse(temp.begin(),temp.end());
+        ans+= temp;
+        return ans;
+    }
+};
+/*
+    //METHOD-1
+    //Using StringStream..
     string reverseWords(string str) 
     {
         int n= str.size();
@@ -22,4 +50,4 @@ public:
         }
         return ans;
     }
-};
+*/
