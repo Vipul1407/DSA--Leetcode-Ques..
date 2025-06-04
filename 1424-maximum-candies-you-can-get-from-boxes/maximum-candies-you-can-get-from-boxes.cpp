@@ -1,23 +1,45 @@
 class Solution {
 public:
-    int maxCandies(vector<int>& vis, vector<int>& candies, vector<vector<int>>& keys, vector<vector<int>>& containedBoxes, vector<int>& initialBoxes) {
-        bool foundOpenable = true;
-        int totalCandies = 0;
-        while (!initialBoxes.empty() && foundOpenable) {
-            foundOpenable = false;
-            vector<int> nextBoxes;
-            for (int boxId : initialBoxes) {
-                if (vis[boxId]) {
-                    foundOpenable = true;
-                    nextBoxes.insert(end(nextBoxes), begin(containedBoxes[boxId]), end(containedBoxes[boxId]));
-                    for (int keyId : keys[boxId]) vis[keyId] = 1;
-                    totalCandies += candies[boxId];
-                } else {
-                    nextBoxes.push_back(boxId);
-                }
-            }
-            swap(initialBoxes, nextBoxes);
+    //METHOD-1
+    //DFS..
+    int dfs(int box,vector<int>& status, vector<int>& candies, vector<vector<int>>& keys, vector<vector<int>>& contain, unordered_set<int>&st, unordered_set<int>&vis)
+    {
+        //if already visited then continue..
+        if(vis.count(box))
+        {
+            return 0;
         }
-        return totalCandies;
+        if(status[box]==0)
+        {
+            st.insert(box);
+            return 0;
+        }
+        
+        int ans= candies[box];
+        vis.insert(box);//mark as visited..
+        for(int &b: contain[box])
+        {
+            ans+= dfs(b,status,candies,keys,contain,st,vis);
+        }
+        for(int &boxkey: keys[box])
+        {
+            status[boxkey]=1;
+            if(st.count(boxkey))
+            {
+                ans+= dfs(boxkey,status,candies,keys,contain,st,vis);
+            }
+        }
+        return ans;
+    }
+    int maxCandies(vector<int>& status, vector<int>& candies, vector<vector<int>>& keys, vector<vector<int>>& contain, vector<int>& initial) 
+    {
+        int ans=0;
+        unordered_set<int>st;
+        unordered_set<int>vis;
+        for(auto box:initial)
+        {
+            ans+= dfs(box,status,candies,keys,contain,st,vis);
+        }
+        return ans;
     }
 };
