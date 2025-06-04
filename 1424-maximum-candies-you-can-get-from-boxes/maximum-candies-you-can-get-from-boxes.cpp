@@ -1,5 +1,60 @@
 class Solution {
 public:
+    //METHOD-2
+    //BFS..
+    int maxCandies(vector<int>& status, vector<int>& candies, vector<vector<int>>& keys, vector<vector<int>>& contain, vector<int>& initial) 
+    {
+        unordered_set<int>st;
+        unordered_set<int>vis;
+        int ans=0;
+        queue<int>q;
+        for(int &box: initial)
+        {
+            if(status[box]==1)
+            {
+                q.push(box);
+            }
+            else
+            {
+                st.insert(box);
+            }
+        }
+        while(q.size())
+        {
+            int box= q.front();
+            q.pop();
+            if(vis.count(box))
+            {
+                continue;
+            }
+            vis.insert(box);
+            ans+= candies[box];
+
+            for(int&b: contain[box])
+            {
+                if(!vis.count(b) && status[b]==1)
+                {
+                    q.push(b);
+                }
+                else
+                {
+                    st.insert(b);
+                }
+            }
+
+            for(int &it: keys[box])
+            {
+                status[it]=1;
+                if(!vis.count(it) && st.count(it))
+                {
+                    q.push(it);
+                }
+            }
+        }
+        return ans;
+    }
+};
+/*
     //METHOD-1
     //DFS..
     int dfs(int box,vector<int>& status, vector<int>& candies, vector<vector<int>>& keys, vector<vector<int>>& contain, unordered_set<int>&st, unordered_set<int>&vis)
@@ -42,4 +97,4 @@ public:
         }
         return ans;
     }
-};
+*/
