@@ -1,10 +1,22 @@
 class Solution {
 public:
-    string answerString(string word, int numFriends) {
-        if (numFriends == 1) return word;
-        string res = "";
-        for (int i = 0 ; i < word.size() ; i++) 
-            res = max(res, word.substr(i, word.length() - numFriends + 1));
-        return res;
+    //METHOD-1
+    //TC= O(N^2)
+    //SC= O(1)
+    string answerString(string word, int friends) 
+    {
+        if(friends==1)
+        {
+            return word;
+        }
+        int n= word.size();
+        int maxlen= n- friends+1;
+        string ans="";
+        for(int i=0;i<n;i++)
+        {
+            int maxtake= min(n-i,maxlen);
+            ans= max(ans,word.substr(i,maxtake));
+        }
+        return ans;
     }
 };
