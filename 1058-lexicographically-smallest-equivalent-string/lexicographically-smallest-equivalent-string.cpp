@@ -1,25 +1,35 @@
 class Solution {
 public:
     //METHOD-2
-    //DFS..   return typ is char.
+    //BFS..
     //TC= O(M* (E+V))
-    char dfs(char ch, unordered_map<int,vector<int>>&adj, vector<int>&vis)
+    char bfs(char ch, unordered_map<char,vector<char>>&adj)
     {
-        vis[ch-'a']=1;//mark as visted;
         char mini= ch;
-        for(auto i:adj[ch])
+        queue<char>q;
+        q.push(ch);
+        vector<int>vis(26,0);
+        //vis[ch-'a']=1;
+        while(!q.empty())
         {
-            if(vis[i-'a']==0)
+            auto top= q.front();
+            q.pop();
+            for(auto i:adj[top])
             {
-                mini= min(mini, dfs(i,adj,vis));
+                if(vis[i-'a']==0)
+                {
+                    mini= min(mini,i);
+                    vis[i-'a']=1;
+                    q.push(i);
+                }
             }
         }
         return mini;
     }
     string smallestEquivalentString(string s1, string s2, string base) 
     {
-        unordered_map<int,vector<int>>adj;
         int n= s1.size();
+        unordered_map<char,vector<char>>adj;
         for(int i=0;i<n;i++)
         {
             adj[s1[i]].push_back(s2[i]);
@@ -28,48 +38,81 @@ public:
         string ans="";
         for(auto i:base)
         {
-            vector<int>vis(26,0);
-            ans+= dfs(i,adj,vis);
+            ans+= bfs(i,adj);
         }
         return ans;
     }
 };
 /*
-    //METHOD-1
-    //DFS..   return type is void.
-    //TC= O(M* (E+V))
-    void dfs(char ch, unordered_map<int,vector<int>>&adj, char &mini, vector<int>&vis)
+    // METHOD-1
+    // DFS..   return type is void.
+    // TC= O(M* (E+V))
+    void dfs(char ch, unordered_map<int, vector<int>> &adj, char &mini, vector<int> &vis)
     {
-        if(vis[ch-'a']==1)
+        if (vis[ch - 'a'] == 1)
         {
             return;
         }
-        vis[ch-'a']=1;//mark as visted;
-        mini= min(mini,ch);//update min elment...
-        for(auto i:adj[ch])
+        vis[ch - 'a'] = 1;    // mark as visted;
+        mini = min(mini, ch); // update min elment...
+        for (auto i : adj[ch])
         {
-            if(vis[i-'a']==0)
+            if (vis[i - 'a'] == 0)
             {
-                dfs(i,adj,mini,vis);
+                dfs(i, adj, mini, vis);
             }
         }
     }
-    string smallestEquivalentString(string s1, string s2, string base) 
+    string smallestEquivalentString(string s1, string s2, string base)
     {
-        unordered_map<int,vector<int>>adj;
-        int n= s1.size();
-        for(int i=0;i<n;i++)
+        unordered_map<int, vector<int>> adj;
+        int n = s1.size();
+        for (int i = 0; i < n; i++)
         {
             adj[s1[i]].push_back(s2[i]);
             adj[s2[i]].push_back(s1[i]);
         }
-        string ans="";
-        for(auto i:base)
+        string ans = "";
+        for (auto i : base)
         {
-            char mini= i;
-            vector<int>vis(26,0);
-            dfs(i,adj,mini,vis);
-            ans+= mini;
+            char mini = i;
+            vector<int> vis(26, 0);
+            dfs(i, adj, mini, vis);
+            ans += mini;
+        }
+        return ans;
+    }
+
+    // METHOD-2
+    // DFS..   return typ is char.
+    // TC= O(M* (E+V))
+    char dfs(char ch, unordered_map<int, vector<int>> &adj, vector<int> &vis)
+    {
+        vis[ch - 'a'] = 1; // mark as visted;
+        char mini = ch;
+        for (auto i : adj[ch])
+        {
+            if (vis[i - 'a'] == 0)
+            {
+                mini = min(mini, dfs(i, adj, vis));
+            }
+        }
+        return mini;
+    }
+    string smallestEquivalentString(string s1, string s2, string base)
+    {
+        unordered_map<int, vector<int>> adj;
+        int n = s1.size();
+        for (int i = 0; i < n; i++)
+        {
+            adj[s1[i]].push_back(s2[i]);
+            adj[s2[i]].push_back(s1[i]);
+        }
+        string ans = "";
+        for (auto i : base)
+        {
+            vector<int> vis(26, 0);
+            ans += dfs(i, adj, vis);
         }
         return ans;
     }
