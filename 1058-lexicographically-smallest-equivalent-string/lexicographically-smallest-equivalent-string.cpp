@@ -1,37 +1,41 @@
 class Solution {
 public:
-    // DFS to find the smallest lex character in the component
-    char dfs(unordered_map<char, vector<char>>& adj, char cur, vector<int>& vis) {
-        vis[cur - 'a'] = 1;
-        char minChar = cur;
-        for (char neighbor : adj[cur]) {
-            if (vis[neighbor - 'a'] == 0) {
-                minChar = min(minChar, dfs(adj, neighbor, vis));
+    //METHOD-1
+    //DFS..
+    //TC= O(M* (E+V))
+    void dfs(char ch, unordered_map<int,vector<int>>&adj, char &mini, vector<int>&vis)
+    {
+        if(vis[ch-'a']==1)
+        {
+            return;
+        }
+        vis[ch-'a']=1;//mark as visted;
+        mini= min(mini,ch);//update min elment...
+        for(auto i:adj[ch])
+        {
+            if(vis[i-'a']==0)
+            {
+                dfs(i,adj,mini,vis);
             }
         }
-        return minChar;
     }
-
-    string smallestEquivalentString(string s1, string s2, string baseStr) {
-        int n = s1.length();
-        unordered_map<char, vector<char>> adj;
-
-        // Step 1: Build the equivalence graph
-        for (int i = 0; i < n; ++i) {
-            char u = s1[i];
-            char v = s2[i];
-            adj[u].push_back(v);
-            adj[v].push_back(u);
+    string smallestEquivalentString(string s1, string s2, string base) 
+    {
+        unordered_map<int,vector<int>>adj;
+        int n= s1.size();
+        for(int i=0;i<n;i++)
+        {
+            adj[s1[i]].push_back(s2[i]);
+            adj[s2[i]].push_back(s1[i]);
         }
-
-        // Step 2: Replace each character in baseStr with the smallest equivalent
-        string result;
-        for (char ch : baseStr) {
-            vector<int> vis(26, 0);
-            char minChar = dfs(adj, ch, vis);
-            result.push_back(minChar);
+        string ans="";
+        for(auto i:base)
+        {
+            char mini= i;
+            vector<int>vis(26,0);
+            dfs(i,adj,mini,vis);
+            ans+= mini;
         }
-
-        return result;
+        return ans;
     }
 };
