@@ -1,44 +1,51 @@
 class Solution {
 public:
-    //METHOD-2
-    //BFS..
-    //TC= O(M* (E+V))
-    char bfs(char ch, unordered_map<char,vector<char>>&adj)
+    //METHOD-4
+    //DSU..
+    //TC= O(M+N)
+    int findpar(int node, vector<int>&par)
     {
-        char mini= ch;
-        queue<char>q;
-        q.push(ch);
-        vector<int>vis(26,0);
-        //vis[ch-'a']=1;
-        while(!q.empty())
+        if(par[node]==node)
         {
-            auto top= q.front();
-            q.pop();
-            for(auto i:adj[top])
-            {
-                if(vis[i-'a']==0)
-                {
-                    mini= min(mini,i);
-                    vis[i-'a']=1;
-                    q.push(i);
-                }
-            }
+            return node;
         }
-        return mini;
+        return par[node]= findpar(par[node],par);
+    }
+    void unionbyrank(int u,int v, vector<int>&par)
+    {
+        int pu= findpar(u,par);
+        int pv= findpar(v,par);
+        if(pu==pv)
+        {
+            return;
+        }
+        //no need of rank...
+        //make always smaller as parent
+        if(pu<pv)
+        {
+            par[pv]= pu;
+        }
+        else
+        {
+            par[pu]= pv;
+        }
     }
     string smallestEquivalentString(string s1, string s2, string base) 
     {
         int n= s1.size();
-        unordered_map<char,vector<char>>adj;
+        vector<int>par(26);
+        for(int i=0;i<26;i++)
+        {
+            par[i]=i;
+        }
         for(int i=0;i<n;i++)
         {
-            adj[s1[i]].push_back(s2[i]);
-            adj[s2[i]].push_back(s1[i]);
+            unionbyrank(s1[i]-'a',s2[i]-'a',par);
         }
         string ans="";
-        for(auto i:base)
+        for(int i=0;i<base.size();i++)
         {
-            ans+= bfs(i,adj);
+            ans+= findpar(base[i]-'a',par)+'a';
         }
         return ans;
     }
@@ -113,6 +120,48 @@ public:
         {
             vector<int> vis(26, 0);
             ans += dfs(i, adj, vis);
+        }
+        return ans;
+    }
+
+    //METHOD-3
+    //BFS..
+    //TC= O(M* (E+V))
+    char bfs(char ch, unordered_map<char,vector<char>>&adj)
+    {
+        char mini= ch;
+        queue<char>q;
+        q.push(ch);
+        vector<int>vis(26,0);
+        while(!q.empty())
+        {
+            auto top= q.front();
+            q.pop();
+            for(auto i:adj[top])
+            {
+                if(vis[i-'a']==0)
+                {
+                    mini= min(mini,i);
+                    vis[i-'a']=1;
+                    q.push(i);
+                }
+            }
+        }
+        return mini;
+    }
+    string smallestEquivalentString(string s1, string s2, string base) 
+    {
+        int n= s1.size();
+        unordered_map<char,vector<char>>adj;
+        for(int i=0;i<n;i++)
+        {
+            adj[s1[i]].push_back(s2[i]);
+            adj[s2[i]].push_back(s1[i]);
+        }
+        string ans="";
+        for(auto i:base)
+        {
+            ans+= bfs(i,adj);
         }
         return ans;
     }
