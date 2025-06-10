@@ -1,26 +1,45 @@
 class Solution {
 public:
     //METHOD-1
-    //Using StringStream
-    string reverseWords(string str) 
+    //BRUTE FORCE...
+    string reverseWords(string s) 
     {
-        stringstream ss(str);
-        string temp;
-        vector<string>vec;
-
-        //it will ignore leading and trailing spaces... as we are not uing getline()
-        while(ss>>temp)
+        int n= s.size();
+        string temp="";
+        string ans;
+        for(int i=n-1;i>=0;i--)
         {
-            vec.push_back(temp);
+            if(s[i]==' ')
+            {
+                if(temp!="")
+                {
+                    reverse(temp.begin(),temp.end());
+                    if(!ans.empty())
+                    {
+                        ans+=' ';
+                    }
+                    ans+= temp;
+                    temp="";
+                }
+                else
+                {
+                    continue;
+                }
+            }
+            else
+            {
+                temp+= s[i];
+            }
         }
-        string ans="";
-        while(vec.size()>1)
-        {
-            ans+= vec.back();
-            ans+=' ';
-            vec.pop_back();
+        if(temp!="")
+        {       
+            reverse(temp.begin(),temp.end());
+            if(!ans.empty())
+            {
+                ans+=' ';
+            }
+            ans+= temp;
         }
-        ans+= vec.back();
         return ans;
     }
 };
