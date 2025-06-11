@@ -1,5 +1,26 @@
 class Solution {
 public:
+    //METHOD-2
+    //Using Stringstream..
+    string reverseWords(string str) 
+    {
+        int n= str.size();
+        //it will automatically cut all leading and trailing spaces..
+        stringstream ss(str);
+        string ans="";
+        string temp;
+        while(ss>>temp)
+        {
+            ans= temp+" "+ans;
+        }
+        if(ans.back()==' ')
+        {
+            ans.pop_back();
+        }
+        return ans;
+    }
+};
+/*
     //METHOD-1
     //BRUTE FORCE...
     string reverseWords(string s) 
@@ -42,4 +63,4 @@ public:
         }
         return ans;
     }
-};
+*/
