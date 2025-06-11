@@ -2,20 +2,31 @@ class Solution {
 public:
     //METHOD-1
     //Using stringstream..
-    string reverseWords(string str) 
+    string reverseWords(string s) 
     {
-        stringstream ss(str);
-        string temp;
         string ans="";
-        while(ss>>temp)
+        string temp="";
+        for(auto i:s)
+        {
+            if(i!=' ')
+            {
+                temp+=i;
+            }
+            else
+            {
+                if(temp!="")
+                {
+                    reverse(temp.begin(),temp.end());
+                    ans+= temp;
+                    ans+=' ';
+                    temp="";
+                }
+            }
+        }
+        if(temp!="")
         {
             reverse(temp.begin(),temp.end());
             ans+= temp;
-            ans+= ' ';
-        }
-        if(ans.back()==' ')
-        {
-            ans.pop_back();
         }
         return ans;
     }
