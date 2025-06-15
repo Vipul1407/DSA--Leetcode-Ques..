@@ -1,29 +1,57 @@
 class Solution {
 public:
-    vector<vector<int>> buildList(const vector<vector<int>>& edges) {
-        vector<vector<int>> adj(edges.size() + 1);
-        for (auto &e : edges) {
-            adj[e[0]].push_back(e[1]);
-            adj[e[1]].push_back(e[0]);
+    int dfs(int i, unordered_map<int,vector<int>>&adj2, vector<int>&vis2, int k, int &n)
+    {
+        if(k<0)
+        {
+            return 0;
         }
-        return adj;
-    }
-    
-    int dfs(const vector<vector<int>>& adj, int u, int p, int k) {
-        if (k < 0) return 0;
-        int cnt = 1;
-        for (int v : adj[u])
-            if (v != p) cnt += dfs(adj, v, u, k-1);
+        if(vis2[i]==1)
+        {
+            return 0;
+        }
+        int cnt=1;//curr node..
+        vis2[i]=1;
+        for(auto &neigh: adj2[i])
+        {
+            if(!vis2[neigh])
+            {
+                cnt+= dfs(neigh,adj2,vis2,k-1,n);
+            }
+        }
         return cnt;
     }
-    
-    vector<int> maxTargetNodes(vector<vector<int>>& edges1, vector<vector<int>>& edges2, int k) {
-        auto adj1 = buildList(edges1), adj2 = buildList(edges2);
-        int n = adj1.size(), m = adj2.size(), maxiB = 0;
-        vector<int> res(n);
-
-        for (int i = 0; i < m; i++) maxiB = max(maxiB, dfs(adj2, i, -1, k - 1));
-        for (int i = 0; i < n; i++) res[i] = dfs(adj1, i, -1, k) + maxiB;
-        return res;
+    vector<int> maxTargetNodes(vector<vector<int>>& edges1, vector<vector<int>>& edges2, int k) 
+    {
+        //tree2....
+        int n= edges2.size()+1;
+        unordered_map<int,vector<int>>adj2;
+        for(auto i:edges2)
+        {
+            adj2[i[0]].push_back(i[1]);
+            adj2[i[1]].push_back(i[0]);
+        }
+        int maxi=0;
+        for(int i=0;i<n;i++)
+        {
+            vector<int>vis2(n,0);
+            maxi= max(maxi,dfs(i,adj2,vis2,k-1,n));//we want k-1 distance nodes only as we will connect 1edge to tree1 
+        }
+        
+        //tree1...
+        n= edges1.size()+1;
+        vector<int>ans(n,0);
+        unordered_map<int,vector<int>>adj1;
+        for(auto i:edges1)
+        {
+            adj1[i[0]].push_back(i[1]);
+            adj1[i[1]].push_back(i[0]);
+        }
+        for(int i=0;i<n;i++)
+        {
+            vector<int>vis1(n,0);
+            ans[i]= dfs(i,adj1,vis1,k,n)+ maxi;//we want all k nodes..
+        }
+        return ans;
     }
 };
