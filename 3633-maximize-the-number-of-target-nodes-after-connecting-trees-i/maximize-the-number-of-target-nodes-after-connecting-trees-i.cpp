@@ -1,5 +1,61 @@
 class Solution {
 public:
+    //METHOD-2
+    //DFS... NOT Using visited..
+    //TC= O(N*(V+E))
+    int dfs(int i, unordered_map<int,vector<int>>&adj2, int k, int &n, int parent)
+    {
+        if(k<0)
+        {
+            return 0;
+        }
+        int cnt=1;//curr node..
+        for(auto &neigh: adj2[i])
+        {
+            if(neigh!=parent)
+            {
+                cnt+= dfs(neigh,adj2,k-1,n,i);
+            }
+        }
+        return cnt;
+    }
+    vector<int> maxTargetNodes(vector<vector<int>>& edges1, vector<vector<int>>& edges2, int k) 
+    {
+        //tree2....
+        int n= edges2.size()+1;
+        unordered_map<int,vector<int>>adj2;
+        for(auto i:edges2)
+        {
+            adj2[i[0]].push_back(i[1]);
+            adj2[i[1]].push_back(i[0]);
+        }
+        int maxi=0;
+        for(int i=0;i<n;i++)
+        {
+            maxi= max(maxi,dfs(i,adj2,k-1,n,-1));//we want k-1 distance nodes only as we will connect 1edge to tree1 
+        }
+        
+        //tree1...
+        n= edges1.size()+1;
+        vector<int>ans(n,0);
+        unordered_map<int,vector<int>>adj1;
+        for(auto i:edges1)
+        {
+            adj1[i[0]].push_back(i[1]);
+            adj1[i[1]].push_back(i[0]);
+        }
+        for(int i=0;i<n;i++)
+        {
+            ans[i]= dfs(i,adj1,k,n,-1)+ maxi;//we want all k nodes..
+        }
+        return ans;
+    }
+};
+
+/*
+    //METHOD-1
+    //DFS... Using visited..
+    //TC= O(N*(V+E))
     int dfs(int i, unordered_map<int,vector<int>>&adj2, vector<int>&vis2, int k, int &n)
     {
         if(k<0)
@@ -54,4 +110,4 @@ public:
         }
         return ans;
     }
-};
+*/
