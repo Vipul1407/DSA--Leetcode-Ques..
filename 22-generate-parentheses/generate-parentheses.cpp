@@ -1,5 +1,36 @@
 class Solution {
 public:
+    //METHOD-2
+    //OPTIMIZED...
+    //TC= O(2^(N))  where N= 2*n
+    void solve(string curr, int n, int open, int close, vector<string>&ans)
+    {
+        if(open==n && close==n)
+        {
+            ans.push_back(curr);
+            return;
+        }
+        if(open<n)
+        {
+            curr.push_back('(');
+            solve(curr,n,open+1,close,ans);
+            curr.pop_back();
+        }
+        if(close<open)
+        {
+            curr.push_back(')');
+            solve(curr,n,open,close+1,ans);
+            curr.pop_back();
+        }
+    }
+    vector<string> generateParenthesis(int n) 
+    {
+        vector<string>ans;
+        solve("",n,0,0,ans);
+        return ans;
+    }
+};
+/*
     //METHOD-1
     //Backtracking..
     //TC= O(N* 2^(N))  where N= 2*n
@@ -48,4 +79,4 @@ public:
         solve("",n,0,ans);
         return ans;
     }
-};
+*/
