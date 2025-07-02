@@ -14,7 +14,7 @@ public:
         {
             return true;
         }
-        for(int len=0;len<s.size();len++)
+        for(int len=0;len+i<=s.size();len++)
         {
             string temp= s.substr(i,len);
             //curr string mil gyi and aage ke recursion se bhi all remaining strings mili then return true
