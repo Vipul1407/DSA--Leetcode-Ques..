@@ -1,5 +1,23 @@
 class Solution {
 public:
+    //METHOD-2
+    //ITERATIVE..
+    char kthCharacter(int k) 
+    {
+        string ans="a";
+        while(ans.size()<k)
+        {
+            string temp;
+            for(auto i:ans)
+            {
+                temp+= (i+1-'a')%26 + 'a';
+            }
+            ans+= temp;
+        }
+        return ans[k-1];
+    }
+};
+/*
     //METHOD-1
     //RECURSIVE..
     //TC= O(1+2+4+8+..2^N)= O(2^N -1)= O(K)
@@ -26,4 +44,4 @@ public:
         solve(k,"a",ans);
         return ans[k-1];//since k is 1 based
     }
-};
+*/
