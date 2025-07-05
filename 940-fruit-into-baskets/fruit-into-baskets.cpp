@@ -8,7 +8,8 @@ public:
         while(r<n)
         {
             mp[fruits[r]]++;
-            while(l<r && mp.size()>2)
+            //while(l<r && mp.size()>2)
+            if(l<r && mp.size()>2)
             {
                 if(--mp[fruits[l]]==0)
                 {
@@ -16,7 +17,10 @@ public:
                 }
                 l++;
             }
-            ans= max(ans,r-l+1);
+            if(mp.size()<=2)
+            {
+                ans= max(ans,r-l+1);
+            }       
             r++;
         }
         return ans;
