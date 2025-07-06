@@ -1,21 +1,39 @@
 class Solution {
 public:
+    //METHOD-1
+    //BRUTE FORCE..
     vector<int> nextGreaterElements(vector<int>& nums) 
     {
         int n= nums.size();
-        vector<int>ans(n,0);
-        stack<int>st;
-        for(int i=(2*n)-1; i>=0;i--)
+        vector<int>ans;
+        for(int i=0;i<n;i++)
         {
-            while(!st.empty() && st.top()<= nums[i%n])
+            bool flag= false;
+            for(int j=i+1;j<n;j++)
             {
-                st.pop();
+                if(nums[j]>nums[i])
+                {
+                    ans.push_back(nums[j]);
+                    flag= true;
+                    break;
+                }
             }
-            if(i<n)
+            if(!flag)
             {
-                ans[i]= st.empty() ?-1:st.top();
+                for(int j=0;j<i;j++)
+                {
+                    if(nums[j]>nums[i])
+                    {
+                        ans.push_back(nums[j]);
+                        flag= true;
+                        break;
+                    }
+                }
             }
-            st.push(nums[i%n]);
+            if(!flag)
+            {
+                ans.push_back(-1);
+            }
         }
         return ans;
     }
