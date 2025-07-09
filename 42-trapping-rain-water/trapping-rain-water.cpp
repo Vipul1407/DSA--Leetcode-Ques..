@@ -1,25 +1,38 @@
 class Solution {
 public:
-    //METHOD-1
-    //PREFIX METHOD USING 1VECTORS..
+    //METHOD-3
+    //2 POINTERS..
     int trap(vector<int>& height) 
     {
         int n= height.size();
-        vector<int>leftmax(n,0);
-        leftmax[0]= height[0];
-    
-        for(int i=1;i<n;i++)
+        int ans=0,l=0,r=n-1;
+        int lmax=0,rmax=0;
+        while(l<r)
         {
-            leftmax[i]= max(leftmax[i-1],height[i]);
-        }
-
-        int ans=0;
-        int rightmax=0;
-        for(int i=n-1;i>=0;i--)
-        {
-            int val= min(leftmax[i],rightmax);
-            ans+= max(0,val-height[i]);
-            rightmax= max(rightmax,height[i]);
+            if(height[l]<=height[r])
+            {
+                if(lmax>height[l])
+                {
+                    ans+= lmax-height[l];
+                }
+                else
+                {
+                    lmax= max(lmax,height[l]);
+                }
+                l++;
+            }
+            else
+            {
+                if(rmax>height[r])
+                {
+                    ans+= rmax-height[r];
+                }
+                else
+                {
+                    rmax= max(rmax,height[r]);
+                }
+                r--;
+            }
         }
         return ans;
     }
@@ -49,6 +62,30 @@ public:
         {
             int val= min(rightmax[i],leftmax[i]);
             ans+= max(0,val-height[i]);
+        }
+        return ans;
+    }
+
+    //METHOD-2
+    //PREFIX METHOD USING 1VECTORS..
+    int trap(vector<int>& height) 
+    {
+        int n= height.size();
+        vector<int>leftmax(n,0);
+        leftmax[0]= height[0];
+    
+        for(int i=1;i<n;i++)
+        {
+            leftmax[i]= max(leftmax[i-1],height[i]);
+        }
+
+        int ans=0;
+        int rightmax=0;
+        for(int i=n-1;i>=0;i--)
+        {
+            int val= min(leftmax[i],rightmax);
+            ans+= max(0,val-height[i]);
+            rightmax= max(rightmax,height[i]);
         }
         return ans;
     }
