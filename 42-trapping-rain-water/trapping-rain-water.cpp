@@ -1,85 +1,30 @@
 class Solution {
 public:
-    //METHOD-3
-    //SPACE OPTIMIZED..
-    //WITHOUT USING ANY VECTOR..
-    int trap(vector<int>& arr) 
-    {
-        int n= arr.size();
-        int l=0,r=n-1;
-        int leftmax=0;
-        int rightmax=0;
-        int water=0;
-    
-        while(l<r)
-        {
-            leftmax= max(leftmax,arr[l]);
-            rightmax= max(rightmax,arr[r]);
-            if(leftmax<=rightmax)
-            {
-                water+= leftmax-arr[l];
-                l++;
-            }
-            else
-            {
-                water+= rightmax-arr[r];
-                r--;
-            }
-        }
-        return water;
-    }
-};
-/*
     //METHOD-1
-    //USING 2 VECTORS..
-    int trap(vector<int>& arr) 
+    //PREFIX METHOD USING 2VECTORS..
+    int trap(vector<int>& height) 
     {
-        int n= arr.size();
+        int n= height.size();
         vector<int>leftmax(n,0);
-        leftmax[0]= arr[0];
+        leftmax[0]= height[0];
         vector<int>rightmax(n,0);
-        rightmax[n-1]= arr[n-1];
+        rightmax[n-1]= height[n-1];
+
         for(int i=1;i<n;i++)
         {
-            leftmax[i]= max(leftmax[i-1],arr[i]);
+            leftmax[i]= max(leftmax[i-1],height[i]);
         }
         for(int i=n-2;i>=0;i--)
         {
-            rightmax[i]= max(rightmax[i+1],arr[i]);
-        }
-        int water=0;
-        for(int i=0;i<n;i++)
-        {
-            if(arr[i]<leftmax[i] && arr[i]<rightmax[i])
-            {
-                water+= min(leftmax[i],rightmax[i])-arr[i];
-            }
-        }
-        return water;
-    }
-
-    //METHOD-2
-    //USING 1 VECTOR..
-    int trap(vector<int>& arr) 
-    {
-        int n= arr.size();
-        vector<int>rightmax(n,0);
-        rightmax[n-1]= arr[n-1];
-        for(int i=n-2;i>=0;i--)
-        {
-            rightmax[i]= max(rightmax[i+1],arr[i]);
+            rightmax[i]= max(rightmax[i+1],height[i]);
         }
 
-        int water=0;
-        int leftmax= arr[0];
+        int ans=0;
         for(int i=0;i<n;i++)
         {
-            leftmax= max(leftmax,arr[i]);
-            if(arr[i]<leftmax && arr[i]<rightmax[i])
-            {
-                water+= min(leftmax,rightmax[i])-arr[i];
-            }
+            int val= min(rightmax[i],leftmax[i]);
+            ans+= max(0,val-height[i]);
         }
-        return water;
+        return ans;
     }
-*/
+};
