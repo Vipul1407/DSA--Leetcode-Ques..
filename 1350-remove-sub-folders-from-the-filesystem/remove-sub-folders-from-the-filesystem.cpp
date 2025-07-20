@@ -1,5 +1,29 @@
 class Solution {
 public:
+    //METHOD-2
+    //using Sorting..
+    vector<string> removeSubfolders(vector<string>& folder) 
+    {
+        vector<string>ans;
+        sort(folder.begin(),folder.end());
+        ans.push_back(folder[0]);
+        int n= folder.size();
+
+        for(int i=1;i<n;i++)
+        {
+            string curr= folder[i];
+            string prev= ans.back();
+            prev+="/";
+            //prev ni mila curr me jo index=0 se start ho..
+            if(curr.find(prev)!=0)
+            {
+                ans.push_back(curr);
+            }
+        }
+        return ans;
+    }
+};
+/*
     //METHOD-1
     //using unordered set..
     vector<string> removeSubfolders(vector<string>& folder) 
@@ -30,4 +54,4 @@ public:
         }
         return ans;
     }
-};
+*/
