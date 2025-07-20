@@ -1,36 +1,31 @@
 class Solution {
 public:
+    //METHOD-1
+    //using unordered set..
     vector<string> removeSubfolders(vector<string>& folder) 
     {
         vector<string>ans;
-        unordered_set<string>uset(folder.begin(),folder.end());
-        for(auto str:folder)
+        unordered_set<string>st(folder.begin(),folder.end());
+        for(auto &s:folder)
         {
-            bool include=true;
-            int n=str.size();
-            int i=n-1;
-            while(i>=0)
+            string str= s;
+            bool flag= false;
+            int i= str.size()-1;
+            for(i;i>=0;i--)
             {
-                while(i>=0 && str[i]!='/')
+                if(str[i]=='/')
                 {
-                    i--;
-                }
-                string sub= str.substr(0,i);
-                //agar set me mila to ans me vo string ko include ni krenge..
-                if(uset.find(sub)!=uset.end())
-                {
-                    include=false;
-                    break;
-                }
-                //set me ni mila..
-                else
-                {
-                    i--;
+                    string tofind= str.substr(0,i);
+                    if(st.find(tofind)!=st.end())
+                    {
+                        flag= true;
+                        break;
+                    }
                 }
             }
-            if(include)
+            if(!flag)
             {
-                ans.push_back(str);
+                ans.push_back(s);
             }
         }
         return ans;
