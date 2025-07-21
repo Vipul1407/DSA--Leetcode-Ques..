@@ -2,22 +2,18 @@ class Solution {
 public:
     string makeFancyString(string s) 
     {
-        string ans="";
-        int n=s.size();
-        int cnt=0;
-        for(auto c:s)
+        int n= s.size();
+        string ans;
+        ans+= s[0];
+        for(int i=1;i<n;i++)
         {
-            if(ans=="" || ans.back()==c)
+            if(s[i-1]==s[i] && s[i+1]==s[i])
             {
-                cnt++;
+                continue;
             }
             else
             {
-                cnt=1;
-            }
-            if(cnt<=2)
-            {
-                ans+=c;
+                ans+= s[i];
             }
         }
         return ans;
