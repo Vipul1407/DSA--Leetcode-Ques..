@@ -1,9 +1,9 @@
 class Solution {
 public:
-    vector<int> asteroidCollision(vector<int>& aster) 
+    vector<int> asteroidCollision(vector<int>& asteroids) 
     {
         stack<int>st;
-        for(auto i:aster)
+        for(auto i:asteroids)
         {
             if(st.empty() || i>0)
             {
@@ -11,15 +11,15 @@ public:
             }
             else
             {
-                while(!st.empty() && st.top()>0 && st.top()< abs(i))
+                while(st.size() && st.top()>0 && st.top()<abs(i))
                 {
                     st.pop();
                 }
-                if(!st.empty() && st.top()==abs(i))
+                if(st.size() && st.top()==abs(i))
                 {
                     st.pop();
                 }
-                else //st.top()> abs(i) then no need to pop from stack
+                else
                 {
                     if(st.empty() || st.top()<0)
                     {
@@ -28,13 +28,14 @@ public:
                 }
             }
         }
-        int n=st.size();
-        vector<int>res(n);
-        for(int i=n-1;i>=0;i--)
+        int n= st.size();
+        vector<int>ans(n,0);
+        while(n>0)
         {
-            res[i]=st.top();
+            ans[n-1]= st.top();
             st.pop();
+            n--;
         }
-        return res;
+        return ans;
     }
 };
