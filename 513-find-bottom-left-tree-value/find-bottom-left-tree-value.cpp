@@ -11,6 +11,36 @@
  */
 class Solution {
 public:
+    //METHOD-2
+    //Simple BFS.. Without level order
+    int findBottomLeftValue(TreeNode* root) 
+    {
+        queue<TreeNode*>q;
+        q.push(root);
+        int curr=-1;
+
+        while(q.size())
+        {
+            curr= q.front()->val;
+            auto top= q.front();
+            q.pop();
+
+            //first push right... then left 
+            if(top->right)
+            {
+                q.push(top->right);
+            }
+            if(top->left)
+            {
+                q.push(top->left);
+            }
+        }
+        return curr;
+    }
+};
+/*
+    //METHOD-1
+    //Level order traversal..
     int findBottomLeftValue(TreeNode* root) 
     {
         queue<TreeNode*>q;
@@ -40,4 +70,4 @@ public:
         }
         return ans;
     }
-};
+*/
