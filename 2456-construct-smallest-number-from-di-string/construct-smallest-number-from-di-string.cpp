@@ -1,17 +1,17 @@
 class Solution {
 public:
     //METHOD-2
-    //Using STACK..
+    //OPTIMIZED..
     string smallestNumber(string pattern) 
     {
         int n= pattern.size();
-        int cnt=1;
         stack<int>st;
+        int num=1;
         string ans="";
         for(int i=0;i<=n;i++)
         {
-            st.push(cnt);
-            cnt++;
+            st.push(num);
+            num++;
             if(i==n || pattern[i]=='I')
             {
                 while(st.size())
@@ -30,7 +30,7 @@ public:
     }
 };
 /*
-//METHOD-1
+    //METHOD-1
     //BRUTE FORCE
     //Using Next Permutation..
     bool match_pattern(string num, string &pattern)
