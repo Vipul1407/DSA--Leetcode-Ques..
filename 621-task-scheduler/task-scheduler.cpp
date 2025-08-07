@@ -1,7 +1,40 @@
 class Solution {
 public:
+    //METHOD-2
+    //WITHOUT USING HEAP..
+    //TC= O(N) assuming sorting in O(1)
+    int leastInterval(vector<char>& tasks, int n) 
+    {
+        vector<int>freq(26,0);
+        for(auto i:tasks)
+        {
+            freq[i-'A']++;
+        }
+        sort(begin(freq),end(freq));
+        int gadhe= freq[25]-1;
+        int idle= gadhe*n;
+        for(int i=24;i>=0;i--)
+        {
+            if(freq[i]==0)
+            {
+                continue;
+            }
+            idle-= min(gadhe,freq[i]);
+        }
+        if(idle>0)
+        {
+            return tasks.size()+idle;
+        }
+        else
+        {
+            return tasks.size();
+        }
+    }
+};
+/*
     //METHOD-1
     //MAX HEAP..
+    //TC= O(N*LOG(26))
     int leastInterval(vector<char>& tasks, int n) 
     {
         vector<int>freq(26,0);
@@ -57,4 +90,4 @@ public:
         }
         return time;
     }
-};
+*/
