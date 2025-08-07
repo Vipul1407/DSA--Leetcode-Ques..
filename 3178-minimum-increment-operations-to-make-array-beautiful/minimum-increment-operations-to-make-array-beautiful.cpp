@@ -1,24 +1,27 @@
 class Solution {
 public:
-    //METHOD-2
-    //BUA APPROACH..
+    //METHOD-4
+    //SPACE OPTIMIZED APPROACH..
     long long minIncrementOperations(vector<int>& nums, int k)
     {
         int n= nums.size();
     
-        vector<long long>dp(n+3,0);
+        long long x=0,y=0,z=0;
         for(int i=0;i<n;i++)
         {
             nums[i]= max(0,k-nums[i]);
         }
         for(int i=n-1;i>=0;i--)
         {
-            long long a= nums[i]+ dp[i+1];
-            long long b= nums[i]+ dp[i+2];
-            long long c= nums[i]+ dp[i+3];
-            dp[i]= min(a,min(b,c));
+            long long a= nums[i]+ x;
+            long long b= nums[i]+ y;
+            long long c= nums[i]+ z;
+            long long curr= min(a,min(b,c));
+            z=y;
+            y=x;
+            x=curr;
         }
-        return min(dp[0],min(dp[1],dp[2]));
+        return min(x,min(y,z));
     }
 };
 /*
@@ -78,5 +81,26 @@ public:
         ans= min(ans,rec(1,nums,k,dp));
         ans= min(ans,rec(2,nums,k,dp));
         return ans;
+    }
+
+    //METHOD-3
+    //BUA APPROACH..
+    long long minIncrementOperations(vector<int>& nums, int k)
+    {
+        int n= nums.size();
+    
+        vector<long long>dp(n+3,0);
+        for(int i=0;i<n;i++)
+        {
+            nums[i]= max(0,k-nums[i]);
+        }
+        for(int i=n-1;i>=0;i--)
+        {
+            long long a= nums[i]+ dp[i+1];
+            long long b= nums[i]+ dp[i+2];
+            long long c= nums[i]+ dp[i+3];
+            dp[i]= min(a,min(b,c));
+        }
+        return min(dp[0],min(dp[1],dp[2]));
     }
 */
