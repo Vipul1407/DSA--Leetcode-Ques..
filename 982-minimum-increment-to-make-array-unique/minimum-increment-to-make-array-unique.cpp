@@ -1,7 +1,28 @@
 class Solution {
 public:
+    //METHOD-2
+    //SORTING APPROACH..
+    //TC= O(NLOGN)
+    int minIncrementForUnique(vector<int>& nums) 
+    {
+        int n= nums.size();
+        sort(nums.begin(),nums.end());
+        int ans=0;
+        for(int i=1;i<n;i++)
+        {
+            if(nums[i]<=nums[i-1])
+            {
+                ans+= nums[i-1]-nums[i]+1;
+                nums[i]= nums[i-1]+1;
+            }
+        }
+        return ans;
+    }
+};
+/*
     //METHOD-1
     //SORTING APPROACH..
+    //TC= O(NLOGN)
     int minIncrementForUnique(vector<int>& nums) 
     {
         int n= nums.size();
@@ -17,4 +38,4 @@ public:
         }
         return ans;
     }
-};
+*/
