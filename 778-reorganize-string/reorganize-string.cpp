@@ -1,5 +1,52 @@
 class Solution {
 public:
+    //METHOD-2
+    //Without Max Heap..
+    string reorganizeString(string s) 
+    {
+        vector<int>freq(26,0);
+        int n= s.size();
+        string ans(n,' ');
+        int maxfreq=0; 
+        char ch;
+        for(auto i:s)
+        {
+            freq[i-'a']++;
+            if(freq[i-'a']> (n+1)/2)
+            {
+                return ""; 
+            }
+            if(freq[i-'a']>maxfreq)
+            {
+                maxfreq= freq[i-'a'];
+                ch= i;
+            }
+        }
+        int idx=0;
+        while(maxfreq-- && idx<n)
+        {
+            ans[idx]= ch;
+            idx+=2;
+        }
+        freq[ch-'a']= maxfreq;
+
+        for(int i=0;i<26;i++)
+        {
+            while(freq[i]>0)
+            {
+                if(idx>=n)
+                {
+                    idx=1;
+                }
+                ans[idx]= i+'a';
+                freq[i]--;
+                idx+=2;
+            }
+        }
+        return ans;
+    }
+};
+/*
     //METHOD-1
     //Max Heap..
     string reorganizeString(string s) 
@@ -47,4 +94,4 @@ public:
         }
         return ans;
     }
-};
+*/
