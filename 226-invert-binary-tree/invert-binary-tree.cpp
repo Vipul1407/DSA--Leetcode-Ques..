@@ -11,6 +11,23 @@
  */
 class Solution {
 public:
+    //METHOD-2
+    //DFS..
+    TreeNode* invertTree(TreeNode* root) 
+    {
+        if(!root)
+        {
+            return root;
+        }
+        swap(root->left,root->right);
+        invertTree(root->left);
+        invertTree(root->right);
+        return root;
+    }
+};
+/*
+    //METHOD-1
+    //DFS..
     TreeNode* invertTree(TreeNode* root) 
     {
         if(!root)
@@ -24,4 +41,4 @@ public:
         invertTree(root->right);
         return root;
     }
-};
+*/
