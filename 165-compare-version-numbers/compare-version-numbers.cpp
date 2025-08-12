@@ -1,84 +1,42 @@
 class Solution {
 public:
+    //METHOD-1
+    //Using stringstream Approach
+    vector<string>fun(string &v)
+    {
+        stringstream ss(v);
+        vector<string>store;
+        string token="";
+        while(getline(ss,token,'.'))
+        {
+            store.push_back(token);
+        }
+        return store;
+    }
     int compareVersion(string v1, string v2) 
     {
-        int n= v1.size();
-        int m= v2.size();
+        vector<string>arr1= fun(v1);
+        vector<string>arr2= fun(v2);
+        int n= arr1.size();
+        int m= arr2.size();
         int i=0;
-        int j=0;
-        int a=0;
-        int b=0;
-        while(i<n || j<m)
+        while(i<n || i<m)
         {
-            while(i<n && v1[i]!='.')
-            {
-                a= a*10+(v1[i++]-'0');
-            }
-            while(j<m && v2[j]!='.')
-            {
-                b=b*10+(v2[j++]-'0');
-            }
-            if(a>b)
-            {
-                return 1;
-            }
-            else if(a<b)
+            int x= (i<n)? stoi(arr1[i]):0;
+            int y= (i<m)? stoi(arr2[i]):0;
+            if(x<y)
             {
                 return -1;
             }
-            //for next iteration i.e after '.'
-            i++;
-            j++;
-            a=0;
-            b=0;
-        }
-        return 0;
-    }
-};
-/*
-//METHOD-2
-// Using String Stream + Getline
-// BEATS 100%
-class Solution {
-public:
-    int compareVersion(string v1, string v2) 
-    {
-        stringstream ss1(v1);
-        stringstream ss2(v2);
-        string word;
-        vector<int>a;
-        vector<int>b;
-        while(getline(ss1,word,'.'))
-        {
-            a.push_back(stoi(word));
-        }
-        while(getline(ss2,word,'.'))
-        {
-            b.push_back(stoi(word));
-        }
-        int n= max(a.size(),b.size());
-        int i=0;
-        int j=0;
-        while(i<n || j<n)
-        {
-            int op1= i<a.size()? a[i]:0;
-            int op2= j<b.size()? b[j]:0;
-            if(op1==op2)
+            else if(x>y)
+            {
+                return 1;
+            }
+            else
             {
                 i++;
-                j++;
-                continue;
-            }
-            else if(op1>op2)
-            {
-                return 1;
-            }
-            else if(op1<op2)
-            {
-                return -1;
             }
         }
         return 0;
     }
 };
-*/
