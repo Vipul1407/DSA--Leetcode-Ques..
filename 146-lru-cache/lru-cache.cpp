@@ -1,19 +1,20 @@
 class LRUCache {
 public:
-    class node
+    struct node
     {
         public:
-        int key,val;
-        node* prev;
         node* next;
+        node* prev;
+        int key,val;
         node(int key,int val)
         {
             this->key= key;
-            this->val= val;
+            this->val=val;
             prev=NULL;
             next=NULL;
         }
     };
+
     int cap;
     unordered_map<int,node*>mp;
     node* head= new node(-1,-1);
@@ -26,19 +27,22 @@ public:
         tail->prev= head;
     }
     
-    void addnode(node* newnode)
+    //adding node b/w head and head->next...
+    void addnode(node* toadd)
     {
         node* temp= head->next;
-        newnode->next=temp;
-        newnode->prev=head;
-        head->next= newnode;
-        temp->prev= newnode;
+        toadd->next= temp;
+        toadd->prev= head;
+        head->next= toadd;
+        temp->prev= toadd;
     }
-
-    void deletenode(node* delnode)
+   
+    //deleting node b/w todelete->next and todelete->prev
+    //where todelete is the node to delete..
+    void deletenode(node* todelete)
     {
-        node* delprev= delnode->prev;
-        node* delnext= delnode->next;
+        node *delprev= todelete->prev;
+        node* delnext= todelete->next;
         delprev->next= delnext;
         delnext->prev= delprev;
     }
@@ -47,7 +51,7 @@ public:
     {
         if(mp.find(key)!=mp.end())
         {
-            node* node= mp[key];
+            node* node= mp[key]; 
             int val= node->val;
             deletenode(node);
             mp.erase(key);
@@ -58,7 +62,7 @@ public:
         return -1;
     }
     
-    void put(int key, int value) 
+    void put(int key, int value)
     {
         if(mp.find(key)!=mp.end())
         {
