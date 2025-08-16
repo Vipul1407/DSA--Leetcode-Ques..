@@ -1,36 +1,36 @@
 class Solution {
 public:
-    //MINIMIZE THE MAXIMUM TIME TAKEN FROM ALL CASES...
-    //BINARY SEARCH..
-    bool possi(long long mid,vector<int>& ranks, int cars)
+    bool possi(vector<int>& ranks, int cars, long long mid)
     {
-        //no of cars that can be manufactured within given time..
-        long long cnt=0;
-        //since t= r*n^2
-        // n= sqrt(t/r)--> no of cars 
-        //mid is the that max time..
-        for(int i=0;i<ranks.size();i++)
+        //t= r*n^2 
+        //n= sqrt(t/r)
+        int cnt=0;
+        for(auto r:ranks)
         {
-            //given that ranks[i]>=1 always..
-            cnt+= (long long)sqrt(mid/ranks[i]);
+            //mid is t and r is rank
+            cnt+= sqrt(mid/r);
+            if(cnt>=cars)
+            {
+                return true;
+            }
         }
-        return cnt>= cars;
+        return false;
     }
     long long repairCars(vector<int>& ranks, int cars) 
     {
-        //maxtime...
-        long long r= 1LL* (*max_element(ranks.begin(),ranks.end()))*cars*cars;
-    
-        //mintime... will not be min_element*cars*cars as we can do the work simultaneously.. so we can get minimum..
-        long long l= 1;
-        long long ans=r;
+        int n= ranks.size();
+        long long l=1;
+        long long r= *max_element(begin(ranks),end(ranks));
+        r*= cars;
+        r*= cars;
+        long long ans= r;
         while(l<=r)
         {
             long long mid= l+(r-l)/2;
-            if(possi(mid,ranks,cars))
+            if(possi(ranks,cars,mid))
             {
                 ans= mid;
-                r= mid-1;//to get smaller ans..
+                r= mid-1;//searching for smaller minutes...
             }
             else
             {
