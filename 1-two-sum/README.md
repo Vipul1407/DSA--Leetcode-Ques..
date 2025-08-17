@@ -13,7 +13,7 @@
 <strong>Explanation:</strong> Because nums[0] + nums[1] == 9, we return [0, 1].
 </pre>
 
-<p><strong class="example">Example 2:</strong></p>
+<p><strong class="example..">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [3,2,4], target = 6
