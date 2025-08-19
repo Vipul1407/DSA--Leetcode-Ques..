@@ -9,7 +9,7 @@
  */
 class Solution {
 public:
-    void findparent(TreeNode* root, unordered_map<TreeNode*,TreeNode*>&mp)
+    void inorder(TreeNode* root, unordered_map<TreeNode*,TreeNode*>&mp)
     {
         if(!root)
         {
@@ -18,57 +18,58 @@ public:
         if(root->left)
         {
             mp[root->left]= root;
-            findparent(root->left,mp);
+            inorder(root->left,mp);
         }
         if(root->right)
         {
             mp[root->right]= root;
-            findparent(root->right,mp);
+            inorder(root->right,mp);
         }
     }
-    vector<int> distanceK(TreeNode* root, TreeNode* tar, int k) 
+    vector<int> distanceK(TreeNode* root, TreeNode* target, int k) 
     {
+        if(!root)
+        {
+            return {};
+        }
+        if(k==0)
+        {
+            return {target->val};
+        }
         unordered_map<TreeNode*,TreeNode*>mp;
-        findparent(root,mp);
+        inorder(root,mp);
         unordered_set<int>st;
         queue<TreeNode*>q;
-        q.push(tar);
-        st.insert(tar->val);
-        while(!q.empty())
-        {
-            if(k==0)
-            {
-                break;
-            }
-            int size= q.size();
-            for(int i=0;i<size;i++)
-            {
-                TreeNode* curr= q.front();
-                q.pop();
+        q.push(target);
+        st.insert(target->val);
 
-                //left
-                if(curr->left && st.find(curr->left->val)==st.end())
+        while(!q.empty() && k>0)
+        {
+            int n= q.size();
+            while(n--)
+            {
+                auto top= q.front();
+                if(top->left and st.find(top->left->val)==st.end())
                 {
-                    q.push(curr->left);
-                    st.insert(curr->left->val);
+                    q.push(top->left);
+                    st.insert(top->left->val);
                 }
-                //right 
-                if(curr->right && st.find(curr->right->val)==st.end())
+                if(top->right and st.find(top->right->val)==st.end())
                 {
-                    q.push(curr->right);
-                    st.insert(curr->right->val);
+                    q.push(top->right);
+                    st.insert(top->right->val);
                 }
-                //parent
-                if(mp.count(curr) && st.find(mp[curr]->val)==st.end())
+                if(mp[top] && st.find(mp[top]->val)==st.end())
                 {
-                    q.push(mp[curr]);
-                    st.insert(mp[curr]->val);
+                    st.insert(mp[top]->val);
+                    q.push(mp[top]);
                 }
+                q.pop();
             }
             k--;
         }
         vector<int>ans;
-        while(!q.empty())
+        while(q.size())
         {
             ans.push_back(q.front()->val);
             q.pop();
