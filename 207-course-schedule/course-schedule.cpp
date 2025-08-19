@@ -1,95 +1,40 @@
 class Solution {
 public:
-    // METHOD-2
-    // CYCLE DETECTION IN DIRECTED GRAPH USING BFS..(KAHN ALGO..)   
-    bool canFinish(int course, vector<vector<int>>& pre) 
+    //METHOD-1
+    //BFS using Kahn Algo..
+    bool canFinish(int n, vector<vector<int>>& prerequisites) 
     {
-        queue<int>q;
         unordered_map<int,vector<int>>adj;
-        vector<int>indegree(course,0);
-        int cnt=0;
-        for(auto i:pre)
+        vector<int>indegree(n,0);
+        for(auto i:prerequisites)
         {
-            // 0->1
-            // then 1 should come before 0..
             adj[i[1]].push_back(i[0]);
             indegree[i[0]]++;
         }
-        for(int i=0;i<course;i++)
+        queue<int>q;
+        vector<int>topo;
+        for(int i=0;i<n;i++)
         {
             if(indegree[i]==0)
             {
                 q.push(i);
-                cnt++;
+                topo.push_back(i);
             }
         }
         while(q.size())
         {
-            auto i= q.front();
+            auto top=q.front();
             q.pop();
-            for(auto &neigh: adj[i])
+            for(auto neigh: adj[top])
             {
                 indegree[neigh]--;
                 if(indegree[neigh]==0)
                 {
                     q.push(neigh);
-                    cnt++;
+                    topo.push_back(neigh);
                 }
             }
         }
-        //means cnt==n we not get cycle , hence return true...
-        return cnt==course? true:false;
+        return topo.size()==n;
     }
 };
-/*
-// METHOD-1
-// CYCLE DETECTION IN DIRECTED GRAPH USING DFS..
-bool dfs(int curr, unordered_map<int, vector<int>> &adj, vector<int> &vis, vector<int> &pathvis)
-{
-    vis[curr] = 1;
-    pathvis[curr] = 1;
-    for (auto neigh : adj[curr])
-    {
-        // cycle mil gyi.. becoz pathvis bhi h and vis bhi h..
-        if (vis[neigh] && pathvis[neigh])
-        {
-            return true;
-        }
-        if (!vis[neigh])
-        {
-            if (dfs(neigh, adj, vis, pathvis))
-            {
-                return true;
-            }
-        }
-    }
-    // backtracking..
-    pathvis[curr] = 0;
-    return false;
-}
-bool canFinish(int course, vector<vector<int>> &pre)
-{
-    unordered_map<int, vector<int>> adj;
-    for (auto i : pre)
-    {
-        // 0->1
-        // then 1 should come before 0..
-        adj[i[1]].push_back(i[0]);
-    }
-    vector<int> vis(course, 0);
-    vector<int> pathvis(course, 0);
-    for (int i = 0; i < course; i++)
-    {
-        if (!vis[i])
-        {
-            // cycle mil gyi mtlb situation possible ni h...
-            if (dfs(i, adj, vis, pathvis))
-            {
-                return false;
-            }
-        }
-    }
-    // cycle ni mili mtlb situation possible h..
-    return true;
-}
-*/
