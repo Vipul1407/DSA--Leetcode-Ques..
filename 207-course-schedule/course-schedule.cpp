@@ -12,13 +12,13 @@ public:
             indegree[i[0]]++;
         }
         queue<int>q;
-        vector<int>topo;
+        int cnt=0;
         for(int i=0;i<n;i++)
         {
             if(indegree[i]==0)
             {
                 q.push(i);
-                topo.push_back(i);
+                cnt++;
             }
         }
         while(q.size())
@@ -31,10 +31,10 @@ public:
                 if(indegree[neigh]==0)
                 {
                     q.push(neigh);
-                    topo.push_back(neigh);
+                    cnt++;
                 }
             }
         }
-        return topo.size()==n;
+        return cnt==n;
     }
 };
