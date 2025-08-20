@@ -1,5 +1,29 @@
 class Solution {
 public:
+    //METHOD-2
+    //BUA APPROACH..
+    int countSquares(vector<vector<int>>& mat) 
+    {
+        int cnt=0;
+        int m= mat.size();
+        int n= mat[0].size();
+        vector<vector<int>>dp(m+1,vector<int>(n+1,0));
+
+        for(int i=m-1;i>=0;i--)
+        {
+            for(int j=n-1;j>=0;j--)
+            {
+                if(mat[i][j]==1)
+                {
+                    dp[i][j]= 1+min({dp[i+1][j],dp[i][j+1],dp[i+1][j+1]});
+                }               
+                cnt+= dp[i][j];
+            }
+        }
+        return cnt;
+    }
+};
+/*
     //METHOD-1
     //TDA APPROACH..
     int countSquares(vector<vector<int>>& mat) 
@@ -33,4 +57,4 @@ public:
         }
         return cnt;
     }
-};
+*/
