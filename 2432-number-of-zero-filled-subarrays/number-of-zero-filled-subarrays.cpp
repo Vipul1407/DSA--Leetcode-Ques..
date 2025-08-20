@@ -1,5 +1,26 @@
 class Solution {
 public:
+    //METHOD-2
+    long long zeroFilledSubarray(vector<int>& nums) 
+    {
+        long long ans=0;
+        int prefix=0;
+        for(auto i:nums)
+        {
+            if(i==0)
+            {
+                prefix++;
+                ans+= prefix;
+            }
+            else
+            {
+                prefix=0;
+            }
+        }
+        return ans;
+    }
+};
+/*
     //METHOD-1
     //NO. OF SUBARRAYS= n*(n+1)/2
     long long zeroFilledSubarray(vector<int>& nums) 
@@ -21,4 +42,4 @@ public:
         ans+= 1LL*prefix*(prefix+1)/2;
         return ans;
     }
-};
+*/
