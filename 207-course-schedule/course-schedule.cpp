@@ -1,31 +1,34 @@
 class Solution {
 public:
-    //METHOD-2
+    //METHOD-3
     //DFS... Cycle detection in directed graph;;
-    bool dfs(int i, unordered_map<int,vector<int>>&adj, vector<int>&vis)
+    //Using Pathvisited..
+    bool dfs(int i, unordered_map<int,vector<int>>&adj, vector<int>&vis, vector<int>&pathvis)
     {
         vis[i]=1;
+        pathvis[i]=1;
         for(auto &neigh: adj[i])
         {
-            if(vis[neigh]==1)
-            {
-                return false;
-            }
             if(vis[neigh]==0)
             {
-                if(!dfs(neigh,adj,vis))
+                if(dfs(neigh,adj,vis,pathvis))
                 {
-                    return false;
+                    return true;   
                 }
             }
+            else if(pathvis[neigh]==1)
+            {
+                return true;
+            }
         }
-        vis[i]=2;
-        return true;
+        pathvis[i]=0;
+        return false;
     }
     bool canFinish(int n, vector<vector<int>>& prerequisites) 
     {
         unordered_map<int,vector<int>>adj;
         vector<int>vis(n,0);
+        vector<int>pathvis(n,0);
         for(auto i:prerequisites)
         {
             adj[i[1]].push_back(i[0]);
@@ -33,9 +36,10 @@ public:
 
         for(int i=0;i<n;i++)
         {
-            if(!vis[i])
+            if(vis[i]==0)
             {
-                if(!dfs(i,adj,vis))
+                //cycle exist==> no topo exist..
+                if(dfs(i,adj,vis,pathvis))
                 {
                     return false;
                 }
@@ -81,5 +85,49 @@ public:
             }
         }
         return cnt==n;
+    }
+
+    //METHOD-2
+    //DFS... Cycle detection in directed graph;;
+    bool dfs(int i, unordered_map<int,vector<int>>&adj, vector<int>&vis)
+    {
+        vis[i]=1;
+        for(auto &neigh: adj[i])
+        {
+            if(vis[neigh]==1)
+            {
+                return false;
+            }
+            if(vis[neigh]==0)
+            {
+                if(!dfs(neigh,adj,vis))
+                {
+                    return false;
+                }
+            }
+        }
+        vis[i]=2;
+        return true;
+    }
+    bool canFinish(int n, vector<vector<int>>& prerequisites) 
+    {
+        unordered_map<int,vector<int>>adj;
+        vector<int>vis(n,0);
+        for(auto i:prerequisites)
+        {
+            adj[i[1]].push_back(i[0]);
+        }
+
+        for(int i=0;i<n;i++)
+        {
+            if(!vis[i])
+            {
+                if(!dfs(i,adj,vis))
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 */
