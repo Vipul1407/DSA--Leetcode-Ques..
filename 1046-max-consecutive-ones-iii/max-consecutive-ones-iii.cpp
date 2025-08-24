@@ -11,7 +11,9 @@ public:
             {
                 k--;
             }
-            while(l<r && k<0)
+            //optimization...using if
+            //while(l<r && k<0)
+            if(l<r && k<0)
             {
                 if(nums[l]==0)
                 {
