@@ -1,42 +1,26 @@
 class Solution {
 public:
-    //METHOD-3
-    //BFS approach
-    //Only chnage is that we are pushing into ans earlier....
-    //TC= O(M*N) since we are inserting every element if not want to insert then O(M+N)
+    //METHOD-4
+    //Unordered_Map approach
+    //TC= O(M*N)
     vector<int> findDiagonalOrder(vector<vector<int>>& mat) 
     {
         int m= mat.size();
         int n= mat[0].size();
-        vector<int>ans;
-        queue<pair<int,int>>q;
-        vector<vector<int>>vis(m,vector<int>(n,0));
-        q.push({0,0});
-        vis[0][0]=1;
-        bool flip= 0;
-
-        while(!q.empty())
+        unordered_map<int,vector<int>>mp;
+        for(int i=0;i<m;i++)
         {
-            vector<int>vec;
-            int size= q.size();
-            while(size--)
+            for(int j=0;j<n;j++)
             {
-                int x= q.front().first;
-                int y= q.front().second;
-                vec.push_back(mat[x][y]);
-
-                if(x+1<m && vis[x+1][y]==0)
-                {
-                    q.push({x+1,y});
-                    vis[x+1][y]=1;
-                } 
-                if(y+1<n && vis[x][y+1]==0)
-                {
-                    q.push({x,y+1});
-                    vis[x][y+1]=1;
-                }
-                q.pop();
-            } 
+                mp[i+j].push_back(mat[i][j]);
+            }
+        }
+        vector<int>ans;
+        bool flip= 1;
+        int dia=0;
+        while(mp.find(dia)!=mp.end())
+        {
+            vector<int>vec= mp[dia];
             if(flip)
             {
                 reverse(vec.begin(),vec.end());
@@ -46,6 +30,7 @@ public:
                 ans.push_back(j);
             }
             flip= !flip;
+            dia++;
         }
         return ans;
     }
@@ -117,6 +102,56 @@ public:
                 if(y+1<n && vis[x][y+1]==0)
                 {
                     vec.push_back(mat[x][y+1]);
+                    q.push({x,y+1});
+                    vis[x][y+1]=1;
+                }
+                q.pop();
+            } 
+            if(flip)
+            {
+                reverse(vec.begin(),vec.end());
+            }
+            for(auto &j:vec)
+            {
+                ans.push_back(j);
+            }
+            flip= !flip;
+        }
+        return ans;
+    }
+
+    //METHOD-3
+    //BFS approach
+    //Only chnage is that we are pushing into ans earlier....
+    //TC= O(M*N) since we are inserting every element if not want to insert then O(M+N)
+    vector<int> findDiagonalOrder(vector<vector<int>>& mat) 
+    {
+        int m= mat.size();
+        int n= mat[0].size();
+        vector<int>ans;
+        queue<pair<int,int>>q;
+        vector<vector<int>>vis(m,vector<int>(n,0));
+        q.push({0,0});
+        vis[0][0]=1;
+        bool flip= 0;
+
+        while(!q.empty())
+        {
+            vector<int>vec;
+            int size= q.size();
+            while(size--)
+            {
+                int x= q.front().first;
+                int y= q.front().second;
+                vec.push_back(mat[x][y]);
+
+                if(x+1<m && vis[x+1][y]==0)
+                {
+                    q.push({x+1,y});
+                    vis[x+1][y]=1;
+                } 
+                if(y+1<n && vis[x][y+1]==0)
+                {
                     q.push({x,y+1});
                     vis[x][y+1]=1;
                 }
