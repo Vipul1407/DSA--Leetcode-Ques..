@@ -2,30 +2,30 @@ class Solution {
 public:
     vector<int> findDiagonalOrder(vector<vector<int>>& mat) 
     {
-        int n= mat.size();
-        int m= mat[0].size();
-        vector<int>ans;
-        //have to take sorted map becoz both type of maps do not hold the same order....
+        int m= mat.size();
+        int n= mat[0].size();
         map<int,vector<int>>mp;
-        for(int i=0;i<n;i++)
+        for(int i=0;i<m;i++)
         {
-            for(int j=0;j<m;j++)
+            for(int j=0;j<n;j++)
             {
                 mp[i+j].push_back(mat[i][j]);
             }
         }
-        bool flip= true;
+        vector<int>ans;
+        bool flip= 1;
         for(auto &i:mp)
         {
+            vector<int>vec= i.second;
             if(flip)
             {
-                reverse(i.second.begin(),i.second.end());
+                reverse(vec.begin(),vec.end());
             }
-            for(auto j:i.second)
+            for(auto &j:vec)
             {
                 ans.push_back(j);
             }
-            flip=!flip;
+            flip= !flip;
         }
         return ans;
     }
