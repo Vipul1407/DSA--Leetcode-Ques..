@@ -2,40 +2,38 @@ class Solution {
 public:
     vector<int> findOrder(int n, vector<vector<int>>& prerequisites) 
     {
-        queue<int> q;
-        unordered_map<int, vector<int>> adj;
-        vector<int> indegree(n, 0);
-        vector<int> ans;
-        for (auto i : prerequisites)
+        unordered_map<int,vector<int>>adj;
+        vector<int>indegree(n,0);
+        for(auto i:prerequisites)
         {
-            // 0->1
-            // then 1 should come before 0..
             adj[i[1]].push_back(i[0]);
             indegree[i[0]]++;
         }
-        for (int i = 0; i < n ; i++)
+        vector<int>ans;
+        queue<int>q;
+        for(int i=0;i<n;i++)
         {
-            if (indegree[i] == 0)
+            if(indegree[i]==0)
             {
                 q.push(i);
                 ans.push_back(i);
             }
         }
-        while (q.size())
+        while(!q.empty())
         {
-            auto i = q.front();
+            auto top= q.front();
             q.pop();
-            for (auto &neigh : adj[i])
+            for(auto &neigh: adj[top])
             {
                 indegree[neigh]--;
-                if (indegree[neigh] == 0)
+                if(indegree[neigh]==0)
                 {
                     q.push(neigh);
                     ans.push_back(neigh);
                 }
             }
         }
-        if (ans.size() != n)
+        if(ans.size()!=n)
         {
             return {};
         }
