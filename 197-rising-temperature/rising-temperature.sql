@@ -1,0 +1,2 @@
+# Write your MySQL query statement below
+select today.id from Weather today inner join Weather yesterday on DATEDIFF(today.recordDate,yesterday.recordDate)=1 and today.temperature > yesterday.temperature;
