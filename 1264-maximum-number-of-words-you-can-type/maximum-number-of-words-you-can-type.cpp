@@ -12,7 +12,8 @@ public:
         }
         string str;
         int cnt=0;
-        while(ss>>str)
+        //while(ss>>str)
+        while(getline(ss,str,' '))
         {
             int flag=0;
             for(auto i:str)
