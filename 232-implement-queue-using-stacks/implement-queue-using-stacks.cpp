@@ -1,5 +1,55 @@
 class MyQueue {
 public:
+    //METHOD-2
+    //Using 1 stack..
+
+    stack<int>st;
+    MyQueue() {
+    }
+    
+    void push(int x) {
+        st.push(x);
+    }
+    
+    int pop() 
+    {
+        //Using recursion..
+        int x= st.top();
+        st.pop();
+        if(st.empty())
+        {
+            return x;
+        }
+        int y= pop();
+        st.push(x);
+        return y;
+    }
+    
+    int peek() 
+    {
+        //Using recursion..
+        int x= st.top();
+        st.pop();
+        if(st.empty())
+        {
+            st.push(x);
+            return x;
+        }
+        int y= peek();
+        st.push(x);
+        return y;
+    }
+    
+    bool empty() {
+        return st.empty();
+    }
+};
+/*
+    class MyQueue {
+    public:
+    //METHOD-1
+    //Using 2 stacks..
+
     stack<int>s1;
     stack<int>s2;
     MyQueue() {
@@ -37,12 +87,4 @@ public:
         return s1.empty();
     }
 };
-
-/**
- * Your MyQueue object will be instantiated and called as such:
- * MyQueue* obj = new MyQueue();
- * obj->push(x);
- * int param_2 = obj->pop();
- * int param_3 = obj->peek();
- * bool param_4 = obj->empty();
- */
+*/
