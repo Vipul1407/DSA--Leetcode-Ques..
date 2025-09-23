@@ -1,34 +1,31 @@
 class Solution {
 public:
-    //METHOD-1
-    //Using stringstream Approach
-    vector<string>fun(string &v)
+    void fun(string &v, vector<string>&ans)
     {
         stringstream ss(v);
-        vector<string>store;
         string token="";
         while(getline(ss,token,'.'))
         {
-            store.push_back(token);
+            ans.push_back(token);
         }
-        return store;
     }
     int compareVersion(string v1, string v2) 
     {
-        vector<string>arr1= fun(v1);
-        vector<string>arr2= fun(v2);
-        int n= arr1.size();
-        int m= arr2.size();
+        vector<string>ans1;
+        vector<string>ans2;
+        fun(v1,ans1);
+        fun(v2,ans2);
         int i=0;
+        int n= ans1.size(), m= ans2.size();
         while(i<n || i<m)
         {
-            int x= (i<n)? stoi(arr1[i]):0;
-            int y= (i<m)? stoi(arr2[i]):0;
-            if(x<y)
+            int a= i>=n? 0:stoi(ans1[i]);
+            int b= i>=m? 0:stoi(ans2[i]);
+            if(a<b)
             {
                 return -1;
             }
-            else if(x>y)
+            else if(a>b)
             {
                 return 1;
             }
