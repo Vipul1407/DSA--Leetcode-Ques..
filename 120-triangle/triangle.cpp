@@ -1,96 +1,61 @@
 class Solution {
 public:
-    //METHOD-4
-    //OPTIMIZED APPROCH..
-    int minimumTotal(vector<vector<int>>& tri) 
+    //METHOD-3
+    //BUA
+    int minimumTotal(vector<vector<int>>& triangle) 
     {
-        int n= tri.size();
-        vector<int>next(n,0);
-        vector<int>curr(n,0);
-
+        int n= triangle.size();
+        vector<vector<int>>dp(n,vector<int>(n,0));
         //base case..
         for(int j=0;j<n;j++)
         {
-            next[j]= tri[n-1][j];
+            dp[n-1][j]= triangle[n-1][j];
         }
         for(int i=n-2;i>=0;i--)
         {
-            for(int j=0;j<=i;j++)
+            for(int j=i;j>=0;j--)
             {
-                //down,diagonal
-                curr[j]= tri[i][j]+ min(next[j],next[j+1]);
+                dp[i][j]= triangle[i][j]+ min(dp[i+1][j],dp[i+1][j+1]);
             }
-            next= curr;
         }
-        return next[0];
+        return dp[0][0];
     }
 };
 /*
-
-// METHOD-1
-// RECURSIVE APPROACH..
-int rec(int i, int j, vector<vector<int>> &tri)
-{
-    if (i == tri.size() - 1)
+    //METHOD-1
+    //RECURSIVE APPROACH..
+    int solve(int i,int j,vector<vector<int>>& triangle)
     {
-        return tri[i][j];
-    }
-    // No need to explicitly handle this as j can go from 0 to i as only max i+1 cols in a row
-    //  if(j>=tri[i].size())
-    //  {
-    //      return 0;
-    //  }
-    return tri[i][j] + min(rec(i + 1, j, tri), rec(i + 1, j + 1, tri));
-}
-int minimumTotal(vector<vector<int>> &tri)
-{
-    return rec(0, 0, tri);
-}
-
-// METHOD-2
-// TDA APPROACH
-int tda(int i, int j, vector<vector<int>> &tri, vector<vector<int>> &dp)
-{
-    // last row then return the value..
-    // no need to handle for j as j max go to i+1 i.e 0<=j<=i
-    if (i == tri.size() - 1)
-    {
-        return tri[i][j];
-    }
-    if (dp[i][j] != -1)
-    {
-        return dp[i][j];
-    }
-    // down,diagonal
-    return dp[i][j] = tri[i][j] + min(tda(i + 1, j, tri, dp), tda(i + 1, j + 1, tri, dp));
-}
-int minimumTotal(vector<vector<int>> &tri)
-{
-    int n = tri.size();
-    vector<vector<int>> dp(n, vector<int>(n, -1));
-    return tda(0, 0, tri, dp);
-}
-
-// METHOD-3
-// BUA
-int minimumTotal(vector<vector<int>> &tri)
-{
-    int n = tri.size();
-    vector<vector<int>> dp(n, vector<int>(n, 0));
-
-    // base case..
-    for (int j = 0; j < n; j++)
-    {
-        dp[n - 1][j] = tri[n - 1][j];
-    }
-    for (int i = n - 2; i >= 0; i--)
-    {
-        for (int j = 0; j <= i; j++)
+        if(i== triangle.size()-1)
         {
-            // down,diagonal
-            dp[i][j] = tri[i][j] + min(dp[i + 1][j], dp[i + 1][j + 1]);
+            return triangle[i][j];
         }
+        return triangle[i][j]+ min(solve(i+1,j,triangle),solve(i+1,j+1,triangle));
     }
-    return dp[0][0];
-}
+    int minimumTotal(vector<vector<int>>& triangle) 
+    {
+        return solve(0,0,triangle);
+    }
+
+    //METHOD-2
+    //TDA
+    //Gving TLE...
+    int solve(int i,int j,vector<vector<int>>& triangle,vector<vector<int>>&dp)
+    {
+        if(i== triangle.size()-1)
+        {
+            return triangle[i][j];
+        }
+        if(dp[i][j]!=-1)
+        {
+            return dp[i][j];
+        }
+        return dp[i][j]= triangle[i][j]+ min(solve(i+1,j,triangle,dp),solve(i+1,j+1,triangle,dp));
+    }
+    int minimumTotal(vector<vector<int>>& triangle) 
+    {
+        int n= triangle.size();
+        vector<vector<int>>dp(n,vector<int>(n,-1));
+        return solve(0,0,triangle,dp);
+    }
 */
