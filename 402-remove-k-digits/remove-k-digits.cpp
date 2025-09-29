@@ -3,14 +3,15 @@ public:
     string removeKdigits(string num, int k) 
     {
         stack<char>st;
-        for(char i:num)
+        string ans="";
+
+        for(auto i:num)
         {
-            while(!st.empty() && k>0 && st.top()>i)
+            while(st.size() && k>0 && st.top()>i)
             {
                 st.pop();
                 k--;
             }
-            //to handle that case where no. is like 12345
             st.push(i);
         }
         while(k>0)
@@ -18,15 +19,12 @@ public:
             st.pop();
             k--;
         }
-        string ans="";
-        while(!st.empty())
+        while(st.size())
         {
-            ans+= st.top();//to get reversed string so that can access back element and pop it 
+            ans+= st.top();
             st.pop();
         }
-        //to remove leading zeros in final string 
-        //we have reversed string so if any leading zero present then it will be at back
-        while(!ans.empty() && ans.back()=='0')
+        while(ans.size() && ans.back()=='0')
         {
             ans.pop_back();
         }
@@ -34,7 +32,7 @@ public:
         {
             return "0";
         }
-        reverse(ans.begin(), ans.end());
+        reverse(begin(ans),end(ans));
         return ans;
     }
 };
