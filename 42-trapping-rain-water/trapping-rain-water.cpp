@@ -1,5 +1,31 @@
 class Solution {
 public:
+    //METHOD-2
+    //BETTER FORCE..
+    int trap(vector<int>& height) 
+    {
+        int n= height.size();
+        vector<int>rightmax(n,0);
+        int leftmax=0;
+        rightmax[n-1]= height[n-1];
+        for(int i=n-2;i>=0;i--)
+        {
+            rightmax[i]= max(height[i],rightmax[i+1]);
+        }
+        int ans=0;
+        for(int i=0;i<n;i++)
+        {
+            int mini= min(leftmax,rightmax[i]);
+            if(mini>height[i])
+            {
+                ans+= mini-height[i];
+            }
+            leftmax= max(leftmax,height[i]);
+        }
+        return ans;
+    }
+};
+/*
     //METHOD-1
     //BRUTE FORCE..
     int trap(vector<int>& height) 
@@ -28,4 +54,4 @@ public:
         }
         return ans;
     }
-};
+*/
