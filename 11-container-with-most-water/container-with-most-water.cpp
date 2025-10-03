@@ -1,19 +1,20 @@
 class Solution {
 public:
     //METHOD-2
-    //2 POINTERS OPTIMZED..
+    //OPTIMIZED 2 POINTERS..
     int maxArea(vector<int>& height) 
     {
         int n= height.size();
-        int l=0,r=n-1,ans=0;
+        int ans=0;
+        int l=0,r=n-1;
         while(l<r)
         {
-            ans= max(ans, (r-l)*min(height[r],height[l]));
-            if(height[l]<=height[r])
+            ans= max(ans, min(height[l],height[r])*(r-l));
+            if(height[l]<height[r])
             {
                 l++;
             }
-            else
+            else 
             {
                 r--;
             }
@@ -32,8 +33,9 @@ public:
         {
             for(int j=i+1;j<n;j++)
             {
-                ans= max(ans,(j-i)*min(height[i],height[j]));
+                ans= max(ans, min(height[i],height[j])*(j-i));
             }
         }
         return ans;
-    }*/
+    }
+*/
