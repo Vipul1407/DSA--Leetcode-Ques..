@@ -7,7 +7,7 @@ public:
         {
             if(i==')')
             {
-                if(!st.empty() && st.top()=='(')
+                if(st.size() && st.top()=='(')
                 {
                     st.pop();
                 }
@@ -18,7 +18,7 @@ public:
             }
             else if(i=='}')
             {
-                if(!st.empty() && st.top()=='{')
+                if(st.size() && st.top()=='{')
                 {
                     st.pop();
                 }
@@ -29,7 +29,7 @@ public:
             }
             else if(i==']')
             {
-                if(!st.empty() && st.top()=='[')
+                if(st.size() && st.top()=='[')
                 {
                     st.pop();
                 }
@@ -40,8 +40,8 @@ public:
             }
             else
             {
-                st.push(i);
-            }  
+                st.push(i);  
+            }
         }
         return st.empty();
     }
