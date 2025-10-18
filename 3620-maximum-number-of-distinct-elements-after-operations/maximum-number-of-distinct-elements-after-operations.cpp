@@ -3,25 +3,24 @@ public:
     int maxDistinctElements(vector<int>& nums, int k) 
     {
         int n= nums.size();
-        sort(nums.begin(),nums.end());
+        int ans=0;
         int demand= INT_MIN;
-        int cnt=0;
+        sort(begin(nums),end(nums));
         for(auto i:nums)
         {
-            int lower= i-k;
-            int higher= i+k;
-            if(demand<lower)
+            int low= i-k;
+            int high= i+k;
+            if(demand<low)
             {
-                demand= lower;
-                cnt++;
+                demand= low;
+                ans++;
             }
-            //lies b/w range then give demand value 1more than last given..
-            else if(demand<higher)
+            else if(demand<high)
             {
                 demand++;
-                cnt++;
+                ans++;
             }
         }
-        return cnt;
+        return ans;
     }
 };
