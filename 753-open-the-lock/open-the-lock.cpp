@@ -1,7 +1,7 @@
 class Solution {
 public:
-    //METHOD-2
-    //BFS..
+    //METHOD-3
+    //OPTIMIZED LEVEL WISE BFS..
     //TC= O(V+E) as we need to find shortest path..
     int openLock(vector<string>& deadends, string tar)
     {
@@ -18,29 +18,33 @@ public:
 
         while(q.size())
         {
-            string curr= q.front().first;
-            int cnt= q.front().second;
-            if(curr==tar)
+            int n= q.size();
+            while(n--)
             {
-                ans= min(ans,cnt);
-            }
-            q.pop();
-
-            for(int k=0;k<4;k++)
-            {
-                string temp1= curr;
-                string temp2= curr;
-                temp1[k]= ((temp1[k]-'0'+1)%10)+'0';
-                if(!st.count(temp1) && !vis.count(temp1))
+                string curr= q.front().first;
+                int cnt= q.front().second;
+                q.pop();
+                if(curr==tar)
                 {
-                    q.push({temp1,cnt+1});
-                    vis.insert(temp1);
+                    ans= min(ans,cnt);
                 }
-                temp2[k]= ((temp2[k]-'0'-1+10)%10)+'0';
-                if(!st.count(temp2) && !vis.count(temp2))
+
+                for(int k=0;k<4;k++)
                 {
-                    q.push({temp2,cnt+1});
-                    vis.insert(temp2);
+                    string temp1= curr;
+                    string temp2= curr;
+                    temp1[k]= ((temp1[k]-'0'+1)%10)+'0';
+                    if(!st.count(temp1) && !vis.count(temp1))
+                    {
+                        q.push({temp1,cnt+1});
+                        vis.insert(temp1);
+                    }
+                    temp2[k]= ((temp2[k]-'0'-1+10)%10)+'0';
+                    if(!st.count(temp2) && !vis.count(temp2))
+                    {
+                        q.push({temp2,cnt+1});
+                        vis.insert(temp2);
+                    }
                 }
             }
         }
@@ -105,5 +109,52 @@ public:
         string curr="0000";
         dfs(curr,tar,st,vis,0,ans);
         return ans==INT_MAX ? -1:ans; 
+    }
+
+    //METHOD-2
+    //BFS..
+    //TC= O(V+E) as we need to find shortest path..
+    int openLock(vector<string>& deadends, string tar)
+    {
+        unordered_set<string>st(begin(deadends),end(deadends));
+        unordered_set<string>vis;
+        if(st.count(tar) || st.count("0000"))
+        {
+            return -1;
+        }
+        vis.insert("0000");
+        queue<pair<string,int>>q;
+        q.push({"0000",0});
+        int ans=INT_MAX;
+
+        while(q.size())
+        {
+            string curr= q.front().first;
+            int cnt= q.front().second;
+            if(curr==tar)
+            {
+                ans= min(ans,cnt);
+            }
+            q.pop();
+
+            for(int k=0;k<4;k++)
+            {
+                string temp1= curr;
+                string temp2= curr;
+                temp1[k]= ((temp1[k]-'0'+1)%10)+'0';
+                if(!st.count(temp1) && !vis.count(temp1))
+                {
+                    q.push({temp1,cnt+1});
+                    vis.insert(temp1);
+                }
+                temp2[k]= ((temp2[k]-'0'-1+10)%10)+'0';
+                if(!st.count(temp2) && !vis.count(temp2))
+                {
+                    q.push({temp2,cnt+1});
+                    vis.insert(temp2);
+                }
+            }
+        }
+        return ans==INT_MAX?-1:ans;
     }
 */
