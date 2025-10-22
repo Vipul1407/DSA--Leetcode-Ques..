@@ -1,5 +1,30 @@
 class Solution {
 public:
+    //METHOD-2
+    //SLIDING WINDOW OPTIMIZED...
+    int maxFrequency(vector<int>& nums, int k) 
+    {
+        int n= nums.size();
+        sort(begin(nums),end(nums));
+        int l=0,r=0;
+        long prefix=0;
+        int ans=1;
+        while(r<n)
+        {
+            long tar= nums[r];
+            prefix+= nums[r];
+            //while(prefix-(r-l+1)*nums[r] > k)
+            if(1LL*(r-l+1)*tar - prefix > k)
+            {
+                prefix-= nums[l++];
+            }
+            ans= max(ans,r-l+1);
+            r++;
+        }
+        return ans;
+    }
+};
+/*
     //METHOD-1
     //BINARY SEARCH..
     int binary(int i, vector<int>&nums, vector<long>&prefix, int &k)
@@ -41,4 +66,4 @@ public:
         }
         return ans;
     }
-};
+*/
