@@ -1,24 +1,27 @@
 class Solution {
 public:
-    int maxFrequency(vector<int>& nums, int k, int numOperations) {
-        int maxVal = *max_element(nums.begin(), nums.end()) + k + 2;
-        int* count = new int[maxVal]();
-
-        for (int v : nums)
-            count[v]++;
-
-        for (int i = 1; i < maxVal; i++)
-            count[i] += count[i - 1];
-
-        int res = 0;
-        for (int i = 0; i < maxVal; i++) {
-            int left = max(0, i - k);
-            int right = min(maxVal - 1, i + k);
-            int total = count[right] - (left ? count[left - 1] : 0);
-            int freq = count[i] - (i ? count[i - 1] : 0);
-            res = max(res, freq + min(numOperations, total - freq));
+    int maxFrequency(vector<int>& nums, int k, int numOperations) 
+    {
+        int ans= 1;
+        int n= *max_element(begin(nums),end(nums));
+        vector<int>freq(n+1,0);
+        for(auto i:nums)
+        {
+            freq[i]++;
         }
-
-        return res;
+        for(int i=1;i<=n;i++)
+        {
+            freq[i]+= freq[i-1];
+        }
+        for(int i=0;i<=n;i++)
+        {
+            int freqcnt= freq[i]- ((i>0)?freq[i-1]:0);
+            int l= max(0,i-k);
+            int r= min(n,i+k);
+            int total= freq[r]- ((l>0)?freq[l-1]:0);
+            int newans= freqcnt + min(numOperations, total-freqcnt);
+            ans= max(ans,newans);
+        }
+        return ans;
     }
 };
