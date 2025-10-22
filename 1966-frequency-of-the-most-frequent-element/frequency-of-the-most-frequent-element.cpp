@@ -1,45 +1,20 @@
 class Solution {
 public:
-    // METHOD-3
-    // SLIDING WINDOW OPTIMIZED..
-    int maxFrequency(vector<int>& nums, int k) 
+    //METHOD-1
+    //BINARY SEARCH..
+    int binary(int i, vector<int>&nums, vector<long>&prefix, int &k)
     {
-        int n = nums.size();
-        sort(nums.begin(), nums.end());
-        long currsum= 0;
-        int ans=0,l=0;
-        for(int r=0;r<n;r++)
-        {
-            long tar= nums[r];
-            currsum+= nums[r];
-            //if is used as e get consition false then no need to shrink upto full size as we need max size window..
-            if((r-l+1)*tar-currsum>k)
-            {
-                currsum-=nums[l++];
-            }
-            ans= max(ans,r-l+1);
-        }
-        return ans;
-    }
-};
-/*
-    // METHOD-1
-    // BINARY SEARCH..
-    int solve(vector<int> &nums, vector<long> &prefsum, int k, int i)
-    {
-        int l=0;
-        int r=i;
-        int best_idx=i;
-        int tar= nums[i];
+        int l= 0;
+        int r= i;
+        int best=i;
         while(l<=r)
         {
             int mid= l+(r-l)/2;
-            long size= i-mid+1;
-            long expectedsum= size*tar;
-            long originalsum= prefsum[i]-prefsum[mid]+nums[mid];
-            if(expectedsum-originalsum<=k)
+            long curr= prefix[i]- ((mid>0)? prefix[mid-1]:0);
+            long expect= 1LL* (i-mid+1)* nums[i];
+            if(expect-curr<=k)
             {
-                best_idx= mid;
+                best= mid;
                 r= mid-1;
             }
             else
@@ -47,46 +22,23 @@ public:
                 l= mid+1;
             }
         }
-        return i-best_idx+1;
+        return i-best+1;
     }
     int maxFrequency(vector<int>& nums, int k) 
     {
-        int n = nums.size();
-        sort(nums.begin(), nums.end());
-        int ans = 0;
-        vector<long> prefsum(n, 0);
-        prefsum[0] = nums[0];
-        for (int i = 1; i < n; i++)
+        int n= nums.size();
+        sort(begin(nums),end(nums));
+        vector<long>prefix(n,0);
+        prefix[0]= nums[0];
+        for(int i=1;i<n;i++)
         {
-            prefsum[i] = prefsum[i - 1] + nums[i];
+            prefix[i]= prefix[i-1]+nums[i];
         }
-        for (int i = 0; i < n; i++)
+        int ans=1;
+        for(int i=0;i<n;i++)
         {
-            ans = max(ans, solve(nums, prefsum, k, i));
-        }
-        return ans;
-    }
-
-    // METHOD-2
-    // SLIDING WINDOW..
-    int maxFrequency(vector<int>& nums, int k) 
-    {
-        int n = nums.size();
-        sort(nums.begin(), nums.end());
-        long currsum= 0;
-        int ans=0;
-        int l=0;
-        for(int r=0;r<n;r++)
-        {
-            long tar= nums[r];
-            currsum+= nums[r];
-            while((r-l+1)*tar-currsum>k)
-            {
-                currsum-= nums[l];
-                l++;
-            }
-            ans= max(ans,r-l+1);
+            ans= max(ans,binary(i,nums,prefix,k));
         }
         return ans;
     }
-*/
+};
