@@ -1,22 +1,25 @@
 class Solution {
 public:
-    //METHOD-3
-    //Modifying the array..
+    //METHOD-4
+    //Cycle detection in directed graph..
     int findDuplicate(vector<int>& nums) 
     {
         int n= nums.size();
-        int idx=0;
-        while(true)
+        int slow=0,fast=0;
+        do
         {
-            //if already negative value..
-            if(nums[idx]<0)
-            {
-                return idx;
-            }
-            nums[idx]= -nums[idx];
-            idx= -nums[idx];
+            slow= nums[slow];
+            fast= nums[nums[fast]];
         }
-        return -1;
+        while(slow!=fast);
+        
+        slow=0;
+        while(slow!=fast)
+        {
+            slow= nums[slow];
+            fast= nums[fast];
+        }
+        return slow;
     }
 };
 /*
@@ -48,6 +51,25 @@ public:
             {
                 return i;
             }
+        }
+        return -1;
+    }
+
+    //METHOD-3
+    //Modifying the array..
+    int findDuplicate(vector<int>& nums) 
+    {
+        int n= nums.size();
+        int idx=0;
+        while(true)
+        {
+            //if already negative value..
+            if(nums[idx]<0)
+            {
+                return idx;
+            }
+            nums[idx]= -nums[idx];
+            idx= -nums[idx];
         }
         return -1;
     }
