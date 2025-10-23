@@ -1,5 +1,31 @@
 class Solution {
 public:
+    //METHOD-2
+    //2 Pointers..
+    void sortColors(vector<int>& nums) 
+    {
+        int l=0,r=nums.size()-1;
+        int mid=0;
+
+        while(mid<=r)
+        {
+            if(nums[mid]==0)
+            {
+                swap(nums[l++],nums[mid++]);
+            }
+            else if(nums[mid]==1)
+            {
+                mid++;
+            }  
+            //do not increase mid here..  
+            else
+            {
+                swap(nums[mid],nums[r--]);
+            }    
+        }
+    }
+};
+/*
     //METHOD-1
     //Uisng extra space..
     void sortColors(vector<int>& nums) 
@@ -39,4 +65,4 @@ public:
             }    
         }
     }
-};
+*/
