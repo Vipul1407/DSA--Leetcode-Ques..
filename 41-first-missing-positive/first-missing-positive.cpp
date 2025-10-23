@@ -1,18 +1,41 @@
 class Solution {
 public:
+    //METHOD-1
+    //Make the correct position negative..
     int firstMissingPositive(vector<int>& nums) 
     {
         int n= nums.size();
+        bool one= false;
         for(int i=0;i<n;i++)
         {
-            while(nums[i]>0 && nums[i]<=n && nums[nums[i]-1]!=nums[i])
+            //number should be in [1,..n] range only
+            if(nums[i]<=0 || nums[i]>n)
             {
-                swap(nums[i],nums[nums[i]-1]);
+                nums[i]=1;//make it 1..
             }
+            else if(nums[i]==1)
+            {
+                one= true;
+            }
+        }
+        //1 is not present in array
+        if(one==false)
+        {
+            return 1;
         }
         for(int i=0;i<n;i++)
         {
-            if(nums[i]!=i+1)
+            int idx= abs(nums[i]);
+            if(nums[idx-1]<0)
+            {
+                continue;
+            }
+            //mkaing it negative..
+            nums[idx-1]*=-1;
+        }
+        for(int i=0;i<n;i++)
+        {
+            if(nums[i]>0)
             {
                 return i+1;
             }
@@ -20,6 +43,3 @@ public:
         return n+1;
     }
 };
-// 8 5 -1 1 2 3 6 4   ,n=8
-// 4 5 -1 1 2 3 6 8   ,swap(8,4)
-// 1 5 -1 4 2 3 6 8   
