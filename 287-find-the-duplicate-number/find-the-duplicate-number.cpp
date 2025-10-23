@@ -1,5 +1,24 @@
 class Solution {
 public:
+    //METHOD-2
+    //Unordered Map..
+    int findDuplicate(vector<int>& nums) 
+    {
+        unordered_map<int,int>mp;
+        for(auto i:nums)
+        {
+            mp[i]++;
+            if(mp[i]>1)
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+};
+/*
+    //METHOD-1
+    //SORTING..
     int findDuplicate(vector<int>& nums) 
     {
         sort(begin(nums),end(nums));
@@ -13,4 +32,4 @@ public:
         }
         return -1;
     }
-};
+*/
