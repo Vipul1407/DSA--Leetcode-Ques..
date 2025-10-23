@@ -1,17 +1,20 @@
 class Solution {
 public:
-    //METHOD-2
-    //Unordered Map..
+    //METHOD-3
+    //Modifying the array..
     int findDuplicate(vector<int>& nums) 
     {
-        unordered_map<int,int>mp;
-        for(auto i:nums)
+        int n= nums.size();
+        int idx=0;
+        while(true)
         {
-            mp[i]++;
-            if(mp[i]>1)
+            //if already negative value..
+            if(nums[idx]<0)
             {
-                return i;
+                return idx;
             }
+            nums[idx]= -nums[idx];
+            idx= -nums[idx];
         }
         return -1;
     }
@@ -28,6 +31,22 @@ public:
             if(nums[i-1]==nums[i])
             {
                 return nums[i];
+            }
+        }
+        return -1;
+    }
+
+    //METHOD-2
+    //Unordered Map..
+    int findDuplicate(vector<int>& nums) 
+    {
+        unordered_map<int,int>mp;
+        for(auto i:nums)
+        {
+            mp[i]++;
+            if(mp[i]>1)
+            {
+                return i;
             }
         }
         return -1;
