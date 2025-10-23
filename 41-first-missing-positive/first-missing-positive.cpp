@@ -1,5 +1,30 @@
 class Solution {
 public:
+    //METHOD-2
+    //Swapping elements at their coorect position..
+    int firstMissingPositive(vector<int>& nums) 
+    {
+        int n= nums.size();
+
+        //numbers should be at their coorect position of i+1, [1..n]
+        for(int i=0;i<n;i++)
+        {
+            while(nums[i]>=1 && nums[i]<n && nums[nums[i]-1]!=nums[i])
+            {
+                swap(nums[i],nums[nums[i]-1]);
+            }
+        }
+        for(int i=0;i<n;i++)
+        {
+            if(nums[i]!=i+1)
+            {
+                return i+1;
+            }
+        }
+        return n+1;
+    }
+};
+/*
     //METHOD-1
     //Make the correct position negative..
     int firstMissingPositive(vector<int>& nums) 
@@ -42,4 +67,4 @@ public:
         }
         return n+1;
     }
-};
+*/
