@@ -1,37 +1,42 @@
 class Solution {
 public:
-    void sortColors(vector<int>& arr) 
+    //METHOD-1
+    //Uisng extra space..
+    void sortColors(vector<int>& nums) 
     {
-        int n = arr.size();
-        int c0 = 0;
-        int c1 = 0;
-        int c2 = 0;
-        for (auto i : arr)
+        int zero=0,one=0,two=0;
+        for(auto i:nums)
         {
-            if (i == 0)
+            if(i==0)
             {
-                c0++;
+                zero++;
             }
-            else if (i == 1)
+            else if(i==1)
             {
-                c1++;
+                one++;
             }
             else
             {
-                c2++;
+                two++;
             }
         }
-        for (int i = 0; i < c0; i++)
+        int n= nums.size();
+        for(int i=0;i<n;i++)
         {
-            arr[i] = 0;
-        }
-        for (int i = c0; i < c0 + c1; i++)
-        {
-            arr[i] = 1;
-        }
-        for (int i = c0 + c1; i < n; i++)
-        {
-            arr[i] = 2;
+            if(zero>0)
+            {
+                nums[i]=0;
+                zero--;
+            }
+            else if(one>0)
+            {
+                nums[i]=1;
+                one--;
+            }    
+            else
+            {
+                nums[i]=2;
+            }    
         }
     }
 };
