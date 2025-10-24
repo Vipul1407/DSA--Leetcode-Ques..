@@ -1,11 +1,12 @@
 class Solution {
 public:
-    //METHOD-3
-    //BUA..
+    //METHOD-4
+    //SPACE OPTIMIZATION..
     int lengthOfLIS(vector<int>& nums) 
     {
         int n= nums.size();
-        vector<vector<int>>dp(n+1,vector<int>(n+1,0));
+        vector<int>curr(n+1,0);
+        vector<int>next(n+1,0);
         for(int i=n-1;i>=0;i--)
         {
             for(int previdx=n-1;previdx>=-1;previdx--)
@@ -13,13 +14,14 @@ public:
                 int take=0;
                 if(previdx==-1 || nums[previdx]<nums[i])
                 {
-                    take= 1+dp[i+1][i+1];//making it y= i+1 
+                    take= 1+next[i+1];//making it y= i+1 
                 }
-                int notake= dp[i+1][previdx+1];
-                dp[i][previdx+1]= max(take,notake);
+                int notake= next[previdx+1];
+                curr[previdx+1]= max(take,notake);
             }
+            next= curr;
         }
-        return dp[0][0];
+        return next[0];
     }
 };
 /*
@@ -70,5 +72,27 @@ public:
         int n= nums.size();
         vector<vector<int>>dp(n,vector<int>(n+1,-1));
         return rec(0,-1,nums,dp);
+    }
+
+    //METHOD-3
+    //BUA..
+    int lengthOfLIS(vector<int>& nums) 
+    {
+        int n= nums.size();
+        vector<vector<int>>dp(n+1,vector<int>(n+1,0));
+        for(int i=n-1;i>=0;i--)
+        {
+            for(int previdx=n-1;previdx>=-1;previdx--)
+            {
+                int take=0;
+                if(previdx==-1 || nums[previdx]<nums[i])
+                {
+                    take= 1+dp[i+1][i+1];//making it y= i+1 
+                }
+                int notake= dp[i+1][previdx+1];
+                dp[i][previdx+1]= max(take,notake);
+            }
+        }
+        return dp[0][0];
     }
 */
