@@ -1,27 +1,26 @@
 class Solution {
 public:
     //METHOD-4
-    //SPACE OPTIMIZATION..
+    //MORE SPACE OPTIMIZATION..
+    //1D dp array only, this way also used for printing also..
     int lengthOfLIS(vector<int>& nums) 
     {
         int n= nums.size();
-        vector<int>curr(n+1,0);
-        vector<int>next(n+1,0);
-        for(int i=n-1;i>=0;i--)
+        //initalizing with 1 since each element can be part of subsequence alone..
+        vector<int>dp(n+1,1);
+        int maxi=1;
+        for(int i=0;i<n;i++)
         {
-            for(int previdx=n-1;previdx>=-1;previdx--)
+            for(int previdx=0;previdx<=i-1;previdx++)
             {
-                int take=0;
-                if(previdx==-1 || nums[previdx]<nums[i])
+                if(nums[previdx]<nums[i])
                 {
-                    take= 1+next[i+1];//making it y= i+1 
+                    dp[i]= max(dp[i],dp[previdx]+1);
+                    maxi= max(maxi,dp[i]);
                 }
-                int notake= next[previdx+1];
-                curr[previdx+1]= max(take,notake);
             }
-            next= curr;
         }
-        return next[0];
+        return maxi;
     }
 };
 /*
@@ -94,5 +93,29 @@ public:
             }
         }
         return dp[0][0];
+    }
+
+    //METHOD-4
+    //SPACE OPTIMIZATION..
+    int lengthOfLIS(vector<int>& nums) 
+    {
+        int n= nums.size();
+        vector<int>curr(n+1,0);
+        vector<int>next(n+1,0);
+        for(int i=n-1;i>=0;i--)
+        {
+            for(int previdx=n-1;previdx>=-1;previdx--)
+            {
+                int take=0;
+                if(previdx==-1 || nums[previdx]<nums[i])
+                {
+                    take= 1+next[i+1];//making it y= i+1 
+                }
+                int notake= next[previdx+1];
+                curr[previdx+1]= max(take,notake);
+            }
+            next= curr;
+        }
+        return next[0];
     }
 */
