@@ -44,9 +44,9 @@ public:
                 if(issubseq(words[previdx],words[i]))
                 {
                     dp[i]= max(dp[i],1+dp[previdx]);
+                    ans= max(ans,dp[i]);
                 }
             }
-            ans= max(ans,dp[i]);
         }
         return ans;
     }
