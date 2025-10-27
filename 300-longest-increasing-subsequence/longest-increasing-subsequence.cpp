@@ -1,26 +1,29 @@
 class Solution {
 public:
-    //METHOD-4
-    //MORE SPACE OPTIMIZATION..
-    //1D dp array only, this way also used for printing also..
+    //METHOD-5
+    //BINARY SEARCH..
+    //TC= O(NLOGN)
+    //Only length is preserved not the actual sequence..
     int lengthOfLIS(vector<int>& nums) 
     {
         int n= nums.size();
-        //initalizing with 1 since each element can be part of subsequence alone..
-        vector<int>dp(n+1,1);
-        int maxi=1;
-        for(int i=0;i<n;i++)
+        vector<int>ans;
+        ans.push_back(nums[0]);
+        for(int i=1;i<n;i++)
         {
-            for(int previdx=0;previdx<=i-1;previdx++)
-            {
-                if(nums[previdx]<nums[i])
-                {
-                    dp[i]= max(dp[i],dp[previdx]+1);
-                    maxi= max(maxi,dp[i]);
-                }
-            }
+           if(nums[i]>ans.back())
+           {
+                ans.push_back(nums[i]);
+           }
+           else
+           {
+                //lower bound nikal nums[i] ka ans vector me..
+                int just_greater_index= lower_bound(begin(ans),end(ans),nums[i])- begin(ans);
+                ans[just_greater_index]= nums[i];
+           }
         }
-        return maxi;
+        //only length is corect but the order is wrong...
+        return ans.size();
     }
 };
 /*
@@ -117,5 +120,28 @@ public:
             next= curr;
         }
         return next[0];
+    }
+
+    //METHOD-4
+    //MORE SPACE OPTIMIZATION..
+    //1D dp array only, this way also used for printing also..
+    int lengthOfLIS(vector<int>& nums) 
+    {
+        int n= nums.size();
+        //initalizing with 1 since each element can be part of subsequence alone..
+        vector<int>dp(n+1,1);
+        int maxi=1;
+        for(int i=0;i<n;i++)
+        {
+            for(int previdx=0;previdx<=i-1;previdx++)
+            {
+                if(nums[previdx]<nums[i])
+                {
+                    dp[i]= max(dp[i],dp[previdx]+1);
+                    maxi= max(maxi,dp[i]);
+                }
+            }
+        }
+        return maxi;
     }
 */
