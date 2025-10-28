@@ -1,6 +1,5 @@
 class Solution {
 public:
-    //MY WRONG APPROACH..
     int countValidSelections(vector<int>& nums) 
     {
         int n= nums.size();
