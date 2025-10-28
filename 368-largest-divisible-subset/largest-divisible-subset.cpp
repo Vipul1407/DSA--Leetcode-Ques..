@@ -1,5 +1,7 @@
 class Solution {
 public:
+    //METHOD-1
+    //1D LIS Approach..
     vector<int> largestDivisibleSubset(vector<int>& nums) 
     {
         int n= nums.size();
@@ -34,3 +36,36 @@ public:
         return ans;
     }
 };
+/*
+    //METHOD-2
+    //Recursive backtracking Approach..
+    //TLE...
+    //TC= O(2^n)
+    void tda(int i, int prev, vector<int>&temp, vector<int>&ans, vector<int>& nums)
+    {
+        if(i>=nums.size())
+        {
+            if(temp.size()>ans.size())
+            {
+                ans= temp;
+            }
+            return;
+        }
+        if(prev==-1 || nums[i]%prev==0)
+        {
+            temp.push_back(nums[i]);
+            tda(i+1,nums[i],temp,ans,nums);
+            temp.pop_back();//backtracking..
+        }
+        tda(i+1,prev,temp,ans,nums);
+    }
+    vector<int> largestDivisibleSubset(vector<int>& nums) 
+    {
+        int n= nums.size();
+        sort(begin(nums),end(nums));
+        vector<int>ans,temp;
+        tda(0,-1,temp,ans,nums);
+        return ans;
+    }
+    
+*/
