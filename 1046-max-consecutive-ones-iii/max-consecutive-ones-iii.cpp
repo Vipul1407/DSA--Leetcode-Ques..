@@ -1,18 +1,17 @@
 class Solution {
 public:
-    //Slding Window==> Asked in Salescode.ai OA
     int longestOnes(vector<int>& nums, int k) 
     {
         int n= nums.size();
-        int l=0,r=0,ans=0;
+        int l=0;
+        int r=0;
+        int ans=0;
         while(r<n)
         {
             if(nums[r]==0)
             {
                 k--;
             }
-            //optimization...using if
-            //while(l<r && k<0)
             if(l<r && k<0)
             {
                 if(nums[l]==0)
