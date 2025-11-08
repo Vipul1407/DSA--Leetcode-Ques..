@@ -1,42 +1,41 @@
 class Solution {
 public:
-    //METHOD-3
-    //BUA..
+    //METHOD-4
+    //SPACE OPTIMIZED..
     int minDistance(string a, string b) 
     {
         int m= a.size(),n=b.size();   
-        vector<vector<int>>dp(m+1,vector<int>(n+1,0));
-        for(int j=0;j<n;j++)
+        vector<int>curr(n+1,0);
+        vector<int>next(n+1,0);
+        for(int j=0;j<=n;j++)
         {
-            dp[m][j]= n-j;
-        }
-        for(int i=0;i<m;i++)
-        {
-            dp[i][n]= m-i;
+            next[j]= n-j;
         }
         for(int i=m-1;i>=0;i--)
         {
             int ans=0;
+            curr[n]= m-i;
             for(int j=n-1;j>=0;j--)
             {
                 if(a[i]==b[j])
                 {
-                    ans= dp[i+1][j+1];
+                    ans= next[j+1];
                 }
                 else
                 {
                     //insert
-                    int insert= dp[i][j+1];
+                    int insert= curr[j+1];
                     //delete
-                    int del= dp[i+1][j];
+                    int del= next[j];
                     //replace
-                    int replace= dp[i+1][j+1];
+                    int replace= next[j+1];
                     ans= 1+ min(insert,min(del,replace));
                 }
-                dp[i][j]= ans;
+                curr[j]= ans;
             }
+            next= curr;
         }
-        return dp[0][0];
+        return next[0];
     }
 };
 /*
@@ -107,5 +106,44 @@ public:
     {
         vector<vector<int>>dp(a.size(),vector<int>(b.size(),-1));
         return rec(0,0,a,b,dp);
+    }
+
+    //METHOD-3
+    //BUA..
+    int minDistance(string a, string b) 
+    {
+        int m= a.size(),n=b.size();   
+        vector<vector<int>>dp(m+1,vector<int>(n+1,0));
+        for(int j=0;j<n;j++)
+        {
+            dp[m][j]= n-j;
+        }
+        for(int i=0;i<m;i++)
+        {
+            dp[i][n]= m-i;
+        }
+        for(int i=m-1;i>=0;i--)
+        {
+            int ans=0;
+            for(int j=n-1;j>=0;j--)
+            {
+                if(a[i]==b[j])
+                {
+                    ans= dp[i+1][j+1];
+                }
+                else
+                {
+                    //insert
+                    int insert= dp[i][j+1];
+                    //delete
+                    int del= dp[i+1][j];
+                    //replace
+                    int replace= dp[i+1][j+1];
+                    ans= 1+ min(insert,min(del,replace));
+                }
+                dp[i][j]= ans;
+            }
+        }
+        return dp[0][0];
     }
 */
