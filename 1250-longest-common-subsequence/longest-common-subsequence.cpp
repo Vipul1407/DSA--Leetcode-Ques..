@@ -1,5 +1,61 @@
 class Solution {
 public:
+
+    //METHOD-3
+    //BUA..
+    int longestCommonSubsequence(string a, string b) 
+    {
+        vector<vector<int>>dp(a.length()+1,vector<int>(b.length()+1,0));
+        for(int i=a.length()-1;i>=0;i--)
+        {
+            for(int j=b.length()-1;j>=0;j--)
+            {
+                int ans=0;
+                if(a[i]==b[j])
+                {
+                   ans= 1+dp[i+1][j+1];
+                }
+                else
+                {
+                    ans= max(dp[i+1][j],dp[i][j+1]);
+                }
+                dp[i][j]= ans;
+            }
+        }
+        //PRINT LCS CODE....
+        //--------
+        string ans="";
+        int i= 0;
+        int j= 0;
+        while(i<a.length() && j<b.length())
+        {
+            if(a[i]==b[j])
+            {
+                ans+= a[i];
+                i++;
+                j++;
+            }
+            else
+            {
+                if(dp[i+1]>=dp[j+1])
+                {
+                    i++;
+                }
+                else
+                {
+                    j++;
+                }
+            }
+        }
+        for(auto i:ans)
+        {
+            cout<<i<<" ";
+        }
+        //-------------
+        return dp[0][0];
+    }
+};
+/*
     //METHOD-4
     //SPACE OPTIMIZED..
     int longestCommonSubsequence(string a, string b) 
