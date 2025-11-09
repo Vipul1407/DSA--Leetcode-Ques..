@@ -1,5 +1,52 @@
 class Solution {
 public:
+    //METHOD-3
+    //BUA..
+    int longestCommonSubsequence(string a, string b) 
+    {
+        vector<vector<int>>dp(a.length()+1,vector<int>(b.length()+1,0));
+        for(int i=a.length()-1;i>=0;i--)
+        {
+            for(int j=b.length()-1;j>=0;j--)
+            {
+                int ans=0;
+                if(a[i]==b[j])
+                {
+                   ans= 1+dp[i+1][j+1];
+                }
+                else
+                {
+                    ans= max(dp[i+1][j],dp[i][j+1]);
+                }
+                dp[i][j]= ans;
+            }
+        }
+        return dp[0][0];
+    }
+};
+/*
+    //METHOD-1
+    //RECURSIVE..
+    int rec(int i,int j,string &a, string &b)
+    {
+        if(i==a.length() || j==b.length())
+        {
+            return 0;
+        }
+        if(a[i]==b[j])
+        {
+            return 1+rec(i+1,j+1,a,b);
+        }
+        else
+        {
+            return max(rec(i+1,j,a,b),rec(i,j+1,a,b));
+        }
+    }
+    int longestCommonSubsequence(string a, string b) 
+    {
+        return rec(0,0,a,b);
+    }
+
     //METHOD-1
     //TDA..
     int rec(int i,int j,string &a, string &b, vector<vector<int>>&dp)
@@ -25,28 +72,5 @@ public:
     {
         vector<vector<int>>dp(a.length(),vector<int>(b.length(),-1));
         return rec(0,0,a,b,dp);
-    }
-};
-/*
-    //METHOD-1
-    //RECURSIVE..
-    int rec(int i,int j,string &a, string &b)
-    {
-        if(i==a.length() || j==b.length())
-        {
-            return 0;
-        }
-        if(a[i]==b[j])
-        {
-            return 1+rec(i+1,j+1,a,b);
-        }
-        else
-        {
-            return max(rec(i+1,j,a,b),rec(i,j+1,a,b));
-        }
-    }
-    int longestCommonSubsequence(string a, string b) 
-    {
-        return rec(0,0,a,b);
     }
 */
