@@ -18,12 +18,12 @@ public:
                 //last row=> can go only right.. j+1
                 if(i==m-1)
                 {
-                    ans= min(ans, dp[i][j+1]);
+                    ans= dp[i][j+1];
                 }
                 //last col=> can gol only down.. i+1
                 else if(j==n-1)
                 {
-                    ans= min(ans, dp[i+1][j]);
+                    ans= dp[i+1][j];
                 }
                 else
                 {
