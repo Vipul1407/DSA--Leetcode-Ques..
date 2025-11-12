@@ -1,13 +1,14 @@
 class Solution {
 public:
-    //METHOD-3
-    //BUA..
+    //METHOD-4
+    //SPACE OPTMIZED..
     int minFallingPathSum(vector<vector<int>>& mat) 
     {
         int m= mat.size();
         int n= mat[0].size();
 
-        vector<vector<int>>dp(m+1,vector<int>(n+1,0));
+       vector<int>curr(n+1,0);
+       vector<int>next(n+1,0);
         
         for(int i=m-1;i>=0;i--)
         {
@@ -15,7 +16,7 @@ public:
             {
                 if(i==m-1)
                 {
-                    dp[i][j]= mat[i][j];
+                    curr[j]= mat[i][j];
                 }
                 int ans= INT_MAX;
                 for(int shift=-1;shift<=1;shift++)
@@ -23,17 +24,18 @@ public:
                     int newj= j+shift;
                     if(newj>=0 && newj<n)
                     {
-                        ans= min(ans,dp[i+1][newj]);
+                        ans= min(ans,next[newj]);
                     }
                 }
-                dp[i][j]= mat[i][j]+ans;
+                curr[j]= mat[i][j]+ans;
             }
+            next= curr;
         }
         //returning the max ans from last row of dp table..
         int ans= INT_MAX;
         for(int j=0;j<n;j++)
         {
-            ans= min(ans,dp[0][j]);
+            ans= min(ans,next[j]);
         }
         return ans;
     }
@@ -110,6 +112,44 @@ public:
         for(int j=0;j<n;j++)
         {
             ans= min(ans,rec(0,j,mat,dp));
+        }
+        return ans;
+    }
+
+    //METHOD-3
+    //BUA..
+    int minFallingPathSum(vector<vector<int>>& mat) 
+    {
+        int m= mat.size();
+        int n= mat[0].size();
+
+        vector<vector<int>>dp(m+1,vector<int>(n+1,0));
+        
+        for(int i=m-1;i>=0;i--)
+        {
+            for(int j=n-1;j>=0;j--)
+            {
+                if(i==m-1)
+                {
+                    dp[i][j]= mat[i][j];
+                }
+                int ans= INT_MAX;
+                for(int shift=-1;shift<=1;shift++)
+                {
+                    int newj= j+shift;
+                    if(newj>=0 && newj<n)
+                    {
+                        ans= min(ans,dp[i+1][newj]);
+                    }
+                }
+                dp[i][j]= mat[i][j]+ans;
+            }
+        }
+        //returning the max ans from last row of dp table..
+        int ans= INT_MAX;
+        for(int j=0;j<n;j++)
+        {
+            ans= min(ans,dp[0][j]);
         }
         return ans;
     }
