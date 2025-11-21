@@ -1,40 +1,32 @@
 class Solution {
 public:
-    int countPalindromicSubsequence(string s) 
-    {
-        int n= s.size();
-        unordered_map<char,pair<int,int>>mp;
-        for(int i=0;i<n;i++)
-        {
-            //char ni mila map me..
-            //map me daal start,ending index..
-            if(mp.find(s[i])==mp.end())
-            {
-                mp[s[i]]={i,i};
+    int countPalindromicSubsequence(string s) {
+        vector<int> first = vector(26, -1);
+        vector<int> last = vector(26, -1);
+        
+        for (int i = 0; i < s.size(); i++) {
+            int curr = s[i] - 'a';
+            if (first[curr] == - 1) {
+                first[curr] = i;
             }
-            //phle se map me h to update kr bss ending element..
-            else
-            {
-                mp[s[i]].second=i;
-            }
+            
+            last[curr] = i;
         }
-        int cnt=0;
-        for(auto i:mp)
-        {
-            if(i.second.first==i.second.second)
-            {
+        
+        int ans = 0;
+        for (int i = 0; i < 26; i++) {
+            if (first[i] == -1) {
                 continue;
             }
-            unordered_set<int>st;
-            int l= i.second.first;
-            int r= i.second.second;
-            //finding unique element b/w the range..
-            for(int k=l+1;k<r;k++)
-            {
-                st.insert(s[k]);
+            
+            unordered_set<char> between;
+            for (int j = first[i] + 1; j < last[i]; j++) {
+                between.insert(s[j]);
             }
-            cnt+= st.size();
+            
+            ans += between.size();
         }
-        return cnt;
+        
+        return ans;
     }
 };
