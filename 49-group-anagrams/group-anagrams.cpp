@@ -1,56 +1,58 @@
 class Solution {
 public:
-
     //METHOD-2
-    //WITHOUT USING SORTING
-    //TC= O(N*(K+26)) where K is the length of largest word..
-    vector<vector<string>> groupAnagrams(vector<string>& arr) 
+    //TC= O(N*(K+26))
+    string func(string &s)
     {
-        int n= arr.size();
-        unordered_map<string,vector<string>>mp;
-        for(auto i:arr)
+        string str="";
+        vector<int>vec(26,0);
+        for(auto i:s)
         {
-            vector<int>cnt(26,0);
-            for(auto j:i)
-            {
-                cnt[j-'a']++;
-            }
-            string temp="";
-            for(int i=0;i<26;i++)
-            {
-                while(cnt[i]--)
-                {
-                    temp+= i+'a';
-                }
-            }
-            mp[temp].push_back(i);
+            vec[i-'a']++;
         }
-        vector<vector<string>>ans;
-        for(auto i:mp)
+        for(int i=0;i<26;i++)
         {
-            ans.push_back(i.second);
+            while(vec[i]--)
+            {
+                str+= (i+'a');
+            }
+        }
+        return str;
+    }
+    vector<vector<string>> groupAnagrams(vector<string>& strs) 
+    {
+        int n= strs.size();
+        vector<vector<string>>ans;
+        unordered_map<string,vector<string>>mp;
+        for(auto s:strs)
+        {
+            string key= func(s);
+            mp[key].push_back(s);
+        }
+        for(auto it:mp)
+        {
+            ans.push_back(it.second);
         }
         return ans;
     }
 };
 /*
     //METHOD-1
-    //USING SORTING
-    //TC= O(N*KLOGK) where K is the length of largest word..
-    vector<vector<string>> groupAnagrams(vector<string>& arr) 
+    //TC= O(N* K*(LOG K))
+    vector<vector<string>> groupAnagrams(vector<string>& strs) 
     {
-        int n= arr.size();
-        unordered_map<string,vector<string>>mp;
-        for(int i=0;i<n;i++)
-        {
-            auto str= arr[i];
-            sort(str.begin(),str.end());
-            mp[str].push_back(arr[i]);
-        }
+        int n= strs.size();
         vector<vector<string>>ans;
-        for(auto i:mp)
+        unordered_map<string,vector<string>>mp;
+        for(auto s:strs)
         {
-            ans.push_back(i.second);
+            string key= s;
+            sort(begin(key),end(key));
+            mp[key].push_back(s);
+        }
+        for(auto it:mp)
+        {
+            ans.push_back(it.second);
         }
         return ans;
     }
