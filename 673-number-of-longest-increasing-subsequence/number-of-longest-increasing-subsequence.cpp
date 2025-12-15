@@ -3,25 +3,24 @@ public:
     int findNumberOfLIS(vector<int>& nums) 
     {
         int n= nums.size();
-        int ans=0;
         vector<int>dp(n,1);
-        int LIS=-1;
         vector<int>cnt(n,1);
-        
+        int LIS=-1;
+        int ans=0;
         for(int i=0;i<n;i++)
         {
-            for(int j=0;j<i;j++)
+            for(int prev=0;prev<i;prev++)
             {
-                if(nums[j]<nums[i])
+                if(nums[prev]<nums[i])
                 {
-                    if(dp[i]< 1+dp[j])
+                    if(1+dp[prev]>dp[i])
                     {
-                        dp[i]= 1+dp[j];
-                        cnt[i]= cnt[j];
+                        dp[i]= 1+dp[prev];
+                        cnt[i]= cnt[prev];
                     }
-                    else if(dp[i]==1+dp[j])
+                    else if(1+dp[prev]==dp[i])
                     {
-                        cnt[i]+= cnt[j];
+                        cnt[i]+=cnt[prev];
                     }
                 }
             }
