@@ -11,7 +11,7 @@
  */
 class Solution {
 public:
-    //METHOD-3
+    //METHOD-2
     //BFS..
     TreeNode* invertTree(TreeNode* root) 
     {
@@ -21,18 +21,24 @@ public:
         }
         queue<TreeNode*>q;
         q.push(root);
-        while(!q.empty())
+        while(q.size())
         {
-            auto top= q.front();
-            q.pop();
-            swap(top->left,top->right);
-            if(top->left)
+            int size= q.size();
+            while(size--)
             {
-                q.push(top->left);
-            }
-            if(top->right)
-            {
-                q.push(top->right);
+                auto top= q.front();
+                q.pop();
+                TreeNode* temp= top->left;
+                top->left= top->right;
+                top->right= temp;
+                if(top->left)
+                {
+                    q.push(top->left);
+                }
+                if(top->right)
+                {
+                    q.push(top->right);
+                }
             }
         }
         return root;
@@ -47,24 +53,10 @@ public:
         {
             return root;
         }
-        TreeNode* temp= root->left;
-        root->left= root->right;
-        root->right= temp;
-        invertTree(root->left);
-        invertTree(root->right);
-        return root;
-    }
-    //METHOD-2
-    //DFS..
-    TreeNode* invertTree(TreeNode* root) 
-    {
-        if(!root)
-        {
-            return root;
-        }
-        swap(root->left,root->right);
-        invertTree(root->left);
-        invertTree(root->right);
+        TreeNode* left= invertTree(root->left);
+        TreeNode* right= invertTree(root->right);
+        root->left= right;
+        root->right= left;
         return root;
     }
 */
