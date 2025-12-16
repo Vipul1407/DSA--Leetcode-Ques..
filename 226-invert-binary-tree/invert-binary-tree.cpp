@@ -28,9 +28,10 @@ public:
             {
                 auto top= q.front();
                 q.pop();
-                TreeNode* temp= top->left;
-                top->left= top->right;
-                top->right= temp;
+                // TreeNode* temp= top->left;
+                // top->left= top->right;
+                // top->right= temp;
+                swap(top->left,top->right);
                 if(top->left)
                 {
                     q.push(top->left);
