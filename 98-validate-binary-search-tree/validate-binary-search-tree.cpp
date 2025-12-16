@@ -11,6 +11,34 @@
  */
 class Solution {
 public:
+
+    //SC= O(N) INORDER IS ALWAYS SORTED..
+    void inorder(TreeNode*root, vector<int>&ans)
+    {
+        if(!root)
+        {
+            return;
+        }
+        inorder(root->left,ans);
+        ans.push_back(root->val);
+        inorder(root->right,ans);
+    }
+    bool isValidBST(TreeNode* root) 
+    {
+        vector<int>ans;
+        inorder(root,ans);
+        int n=ans.size();
+        for(int i=0;i<n-1;i++)
+        {
+            if(ans[i]>=ans[i+1])
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+};
+/*
     //SC= O(1) OPTIMIZED..
     bool solve(TreeNode* root, long long mini, long long maxi)
     {
@@ -34,4 +62,4 @@ public:
         long long maxi= LLONG_MAX;
         return solve(root,mini,maxi);
     }
-};
+*/
