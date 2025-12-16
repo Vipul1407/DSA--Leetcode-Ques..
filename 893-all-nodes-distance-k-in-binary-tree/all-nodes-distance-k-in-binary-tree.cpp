@@ -9,21 +9,21 @@
  */
 class Solution {
 public:
-    void inorder(TreeNode* root, unordered_map<TreeNode*,TreeNode*>&mp)
+    void solve(TreeNode* root, unordered_map<TreeNode*,TreeNode*>&mp)
     {
         if(!root)
         {
             return;
         }
-        if(root->left)
-        {
-            mp[root->left]= root;
-            inorder(root->left,mp);
-        }
         if(root->right)
         {
             mp[root->right]= root;
-            inorder(root->right,mp);
+            solve(root->right,mp);
+        }
+        if(root->left)
+        {
+            mp[root->left]= root;
+            solve(root->left,mp);
         }
     }
     vector<int> distanceK(TreeNode* root, TreeNode* target, int k) 
@@ -37,38 +37,38 @@ public:
             return {target->val};
         }
         unordered_map<TreeNode*,TreeNode*>mp;
-        inorder(root,mp);
-        unordered_set<int>st;
+        solve(root,mp);
+        vector<int>ans;
         queue<TreeNode*>q;
+        unordered_set<TreeNode*>st;
         q.push(target);
-        st.insert(target->val);
-
-        while(!q.empty() && k>0)
+        st.insert(target);
+        while(q.size() && k>0)
         {
             int n= q.size();
             while(n--)
             {
                 auto top= q.front();
-                if(top->left and st.find(top->left->val)==st.end())
+                q.pop();
+    
+                if(top->left && !st.count(top->left))
                 {
                     q.push(top->left);
-                    st.insert(top->left->val);
+                    st.insert(top->left);
                 }
-                if(top->right and st.find(top->right->val)==st.end())
+                if(top->right && !st.count(top->right))
                 {
                     q.push(top->right);
-                    st.insert(top->right->val);
+                    st.insert(top->right);
                 }
-                if(mp[top] && st.find(mp[top]->val)==st.end())
+                if(mp[top] && !st.count(mp[top]))
                 {
-                    st.insert(mp[top]->val);
                     q.push(mp[top]);
+                    st.insert(mp[top]);
                 }
-                q.pop();
             }
             k--;
         }
-        vector<int>ans;
         while(q.size())
         {
             ans.push_back(q.front()->val);
