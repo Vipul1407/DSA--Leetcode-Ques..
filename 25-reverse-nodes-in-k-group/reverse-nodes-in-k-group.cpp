@@ -26,7 +26,6 @@ public:
         {
             return head;
         }
-
         //step1- reverse k nodes..
         ListNode* curr= head;
         ListNode* prev= NULL;
@@ -40,13 +39,11 @@ public:
             curr= forward;
             cnt++;
         }
-
-        //step2- recusion..
         if(forward!=NULL)
         {
             head->next= solve(forward,k,len-k);
         }
-        return prev;//head of new reversed segment..
+        return prev;
     }
     ListNode* reverseKGroup(ListNode* head, int k) 
     {
