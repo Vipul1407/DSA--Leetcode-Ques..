@@ -11,6 +11,36 @@
  */
 class Solution {
 public:
+    //METHOD-2
+    //DFS..
+    void dfs(TreeNode* L, TreeNode* R, int level)
+    {
+        if(!L)
+        {
+            return;
+        }
+        if(!R)
+        {
+            return;
+        }
+        if(level%2==1)
+        {
+            swap(L->val,R->val);
+        }
+        dfs(L->left,R->right,level+1);
+        dfs(L->right,R->left,level+1);
+    }
+    TreeNode* reverseOddLevels(TreeNode* root) 
+    {
+        if(!root)
+        {
+            return root;
+        }
+        dfs(root->left,root->right,1);
+        return root;
+    }
+};
+/*
     //METHOD-1
     //BFS..
     TreeNode* reverseOddLevels(TreeNode* root) 
@@ -58,4 +88,4 @@ public:
         }
         return root;
     }
-};
+*/
