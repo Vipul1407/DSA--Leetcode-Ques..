@@ -11,23 +11,51 @@
  */
 class Solution {
 public:
-    TreeNode* dfs(TreeNode* ll, TreeNode* rr, int level)
-    {
-        if(!ll || !rr)
-        {
-            return NULL;
-        }
-        if(level%2!=0)
-        {
-           swap(ll->val,rr->val);
-        }
-        dfs(ll->left,rr->right,level+1);
-        dfs(ll->right,rr->left,level+1);
-        return NULL;
-    }
+    //METHOD-1
+    //BFS..
     TreeNode* reverseOddLevels(TreeNode* root) 
     {
-        dfs(root->left,root->right,1);  
+        if(!root)
+        {
+            return root;
+        }
+        queue<TreeNode*>q;
+        q.push(root);
+        int level=0;
+        while(q.size())
+        {
+            int n= q.size();
+            //vec is storing address of nodes...
+            vector<TreeNode*>vec;
+            while(n--)
+            {
+                TreeNode* top= q.front();
+                vec.push_back(top);
+                q.pop();
+
+                if(top->left)
+                {
+                    q.push(top->left);
+                }
+                if(top->right)
+                {
+                    q.push(top->right);
+                }
+            }
+            if(level%2==1)
+            {
+                int i=0;
+                int j= vec.size()-1;
+                while(i<=j)
+                {
+                    //we are swapping the address values..
+                    swap(vec[i]->val,vec[j]->val);
+                    i++;
+                    j--;
+                }
+            }
+            level++;
+        }
         return root;
     }
 };
