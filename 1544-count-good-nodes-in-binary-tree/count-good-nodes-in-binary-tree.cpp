@@ -11,6 +11,28 @@
  */
 class Solution {
 public:
+    //METHOD-2..
+    int dfs(TreeNode* root, int maxi)
+    {
+        if(!root)
+        {
+            return 0;
+        }
+        if(root->val>= maxi)
+        {
+            maxi= max(maxi,root->val);
+            return 1+ dfs(root->left,maxi)+ dfs(root->right,maxi);
+        }
+        maxi= max(maxi,root->val);
+        return dfs(root->left,maxi)+dfs(root->right,maxi);
+    }
+    int goodNodes(TreeNode* root) 
+    {
+       return dfs(root,root->val);
+    }
+};
+/*
+    //METHOD-1..
     void dfs(TreeNode* root, int maxi, int &cnt)
     {
         if(!root)
@@ -31,4 +53,4 @@ public:
        dfs(root,root->val,cnt);
        return cnt;
     }
-};
+*/
