@@ -11,6 +11,37 @@
  */
 class Solution {
 public:
+    //METHOD-2
+    //TC= O(N)
+    int dfs(TreeNode* root)
+    {
+        if(!root)
+        {
+            return 0;
+        }
+        int left= dfs(root->left);
+        if(left==-1)
+        {
+            return -1;
+        }
+        int right= dfs(root->right);
+        if(right==-1)
+        {
+            return -1;
+        }
+        if(abs(left-right)>1)
+        {
+            return -1;
+        }
+        return 1+max(left,right);
+    }
+    bool isBalanced(TreeNode* root) 
+    {
+        return dfs(root)!=-1;
+    }
+};
+/*
+    //METHOD-1
     //TC= O(N^2)
     int height(TreeNode* root)
     {
@@ -36,4 +67,4 @@ public:
         }
         return isBalanced(root->left) && isBalanced(root->right);
     }
-};
+*/
