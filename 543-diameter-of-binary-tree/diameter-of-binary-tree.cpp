@@ -11,21 +11,29 @@
  */
 class Solution {
 public:
-    int solve(TreeNode* root, int &dia)
+    //METHOD-1
+    //TC= O(N^2)
+    int height(TreeNode* root) 
     {
         if(!root)
         {
             return 0;
         }
-        int leftht= solve(root->left,dia);
-        int rightht= solve(root->right,dia);
-        dia= max(dia, leftht+rightht+1);
-        return max(leftht,rightht)+1;
+        int lht= height(root->left);
+        int rht= height(root->right);
+        return 1+ max(lht,rht);
     }
     int diameterOfBinaryTree(TreeNode* root) 
     {
-        int dia=0;
-        solve(root,dia);
-        return dia-1;//becoz we are counting edges    
+        if(!root)
+        {
+            return 0;
+        }
+        int lht= height(root->left);
+        int rht= height(root->right);
+        int maxi= lht+rht;
+        int left= diameterOfBinaryTree(root->left);
+        int right= diameterOfBinaryTree(root->right);
+        return max(maxi,max(left,right));
     }
 };
