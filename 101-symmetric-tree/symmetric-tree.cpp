@@ -11,21 +11,21 @@
  */
 class Solution {
 public:
-    bool dfs(TreeNode* L, TreeNode* R)
+    bool dfs(TreeNode* L, TreeNode* R) 
     {
         if(!L && !R)
         {
             return true;
         }
-        if(!L)
+        if(!L && R)
         {
             return false;
         }
-        if(!R)
+        if(!R && L)
         {
             return false;
         }
-        if(L->val != R->val)
+        if(L->val!=R->val)
         {
             return false;
         }
