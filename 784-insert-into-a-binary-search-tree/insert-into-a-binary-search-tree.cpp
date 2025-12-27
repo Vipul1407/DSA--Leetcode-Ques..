@@ -11,6 +11,7 @@
  */
 class Solution {
 public:
+    //TC=O(LOG2 N)
     TreeNode* insertIntoBST(TreeNode* root, int val) 
     {
         if(!root)
