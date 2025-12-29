@@ -1,35 +1,23 @@
 class Solution {
 public:
-    //METHOD-2
-    //TDA APPROACH..
-    int tda(int i,vector<int>& coins, int amount, vector<vector<int>>&dp) 
-    {
-        if(amount==0)
-        {
-            return 0;
-        }
-        if(amount<0 || i>=coins.size())
-        {
-            return INT_MAX;
-        }
-        if(dp[i][amount]!=-1)
-        {
-            return dp[i][amount];
-        }
-        int sub= tda(i,coins,amount-coins[i],dp);
-        int take= INT_MAX;
-        if(sub!=INT_MAX)
-        {
-            take= 1+sub;
-        }
-        int notake= tda(i+1,coins,amount,dp);
-        return dp[i][amount]= min(take,notake);
-    }
+    
+    //METHOD-3
+    //BUA..
     int coinChange(vector<int>& coins, int amount) 
     {
-        vector<vector<int>>dp(coins.size()+1,vector<int>(amount+1,-1));
-        int ans= tda(0,coins,amount,dp);
-        return ans==INT_MAX ? -1:ans;
+        vector<int>dp(amount+1,INT_MAX);
+        dp[0]=0;
+        for(auto coin:coins)
+        {
+            for(int j=coin;j<=amount;j++)
+            {
+                if(dp[j-coin]!=INT_MAX)
+                {
+                    dp[j]= min(dp[j],1+dp[j-coin]);
+                }
+            }
+        }
+        return dp[amount]==INT_MAX ? -1:dp[amount];
     }
 };
 
@@ -148,6 +136,38 @@ public:
     int coinChange(vector<int>& coins, int amount) 
     {
         int ans= rec(0,coins,amount);
+        return ans==INT_MAX ? -1:ans;
+    }
+
+    //METHOD-2
+    //TDA APPROACH..
+    int tda(int i,vector<int>& coins, int amount, vector<vector<int>>&dp) 
+    {
+        if(amount==0)
+        {
+            return 0;
+        }
+        if(amount<0 || i>=coins.size())
+        {
+            return INT_MAX;
+        }
+        if(dp[i][amount]!=-1)
+        {
+            return dp[i][amount];
+        }
+        int sub= tda(i,coins,amount-coins[i],dp);
+        int take= INT_MAX;
+        if(sub!=INT_MAX)
+        {
+            take= 1+sub;
+        }
+        int notake= tda(i+1,coins,amount,dp);
+        return dp[i][amount]= min(take,notake);
+    }
+    int coinChange(vector<int>& coins, int amount) 
+    {
+        vector<vector<int>>dp(coins.size()+1,vector<int>(amount+1,-1));
+        int ans= tda(0,coins,amount,dp);
         return ans==INT_MAX ? -1:ans;
     }
 */
