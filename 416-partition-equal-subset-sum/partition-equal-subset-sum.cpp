@@ -14,7 +14,11 @@ public:
         vector<vector<int>>dp(n+1,vector<int>(tar+1,0));
         //base case..
         //if(tar==0) return 1
-        dp[n][0]=1;
+        for(int i=0;i<=n;i++)
+        {
+            dp[i][0]=1;
+        }
+        
         for(int i=n-1;i>=0;i--)
         {
             for(int j=0;j<=tar;j++)
