@@ -1,7 +1,7 @@
 class Solution {
 public:
-    //METHOD-3
-    //BUA..
+    //METHOD-4
+    //SPACE OPTIMIZED..
     int findTargetSumWays(vector<int>& nums, int tar) 
     {
         int s=0;
@@ -14,24 +14,26 @@ public:
         {
             return 0;
         }
-        vector<vector<int>>dp(nums.size()+1,vector<int>(2*s+1,0));
+        vector<int>curr(2*s+1,0);
+        vector<int>next(2*s+1,0);
         //base case..
         //tar==0 return 1;
         // so we do target+s= 0+s= s to avoid runtime ..
         for(int i=0;i<=n;i++)
         {
-            dp[i][s]=1;
+            next[s]=1;
         }
         for(int i=n-1;i>=0;i--)
         {
             for(int j=-s;j<=s;j++)
             {
-                int plus= (j-nums[i]>=-s)? dp[i+1][j-nums[i]+s]:0;
-                int neg= (j+nums[i]<=s)? dp[i+1][j+nums[i]+s]:0;
-                dp[i][j+s]= plus + neg;
+                int plus= (j-nums[i]>=-s)? next[j-nums[i]+s]:0;
+                int neg= (j+nums[i]<=s)? next[j+nums[i]+s]:0;
+                curr[j+s]= plus + neg;
             }
+            next= curr;
         }
-        return dp[0][tar+s];
+        return curr[tar+s];
     }
 };
 /*
@@ -115,5 +117,39 @@ public:
         }
         vector<vector<int>>dp(nums.size(),vector<int>(2*s+1,-1));
         return rec(0,nums,target,dp);
+    }
+
+    //METHOD-3
+    //BUA..
+    int findTargetSumWays(vector<int>& nums, int tar) 
+    {
+        int s=0;
+        int n= nums.size();
+        for(auto i:nums)
+        {
+            s+=i;
+        }
+        if(tar>s || tar<-s)
+        {
+            return 0;
+        }
+        vector<vector<int>>dp(nums.size()+1,vector<int>(2*s+1,0));
+        //base case..
+        //tar==0 return 1;
+        // so we do target+s= 0+s= s to avoid runtime ..
+        for(int i=0;i<=n;i++)
+        {
+            dp[i][s]=1;
+        }
+        for(int i=n-1;i>=0;i--)
+        {
+            for(int j=-s;j<=s;j++)
+            {
+                int plus= (j-nums[i]>=-s)? dp[i+1][j-nums[i]+s]:0;
+                int neg= (j+nums[i]<=s)? dp[i+1][j+nums[i]+s]:0;
+                dp[i][j+s]= plus + neg;
+            }
+        }
+        return dp[0][tar+s];
     }
 */
