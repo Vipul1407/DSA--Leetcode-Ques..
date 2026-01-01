@@ -1,44 +1,66 @@
 class Solution {
 public:
-    #define ll long long
-    const int x= pow(10,9)+7;
+    typedef pair<long long,int>p;
+    const int mod= 1000000007;
     int countPaths(int n, vector<vector<int>>& roads) 
     {
-        //min heap storing distance,node..
-        priority_queue<pair<ll,int>,vector<pair<ll,int>>,greater<pair<ll,int>>>pq;
-        vector<ll>dist(n,LLONG_MAX);
-        vector<int>cnt(n,0);
         unordered_map<int,vector<pair<int,int>>>adj;
+        vector<int>cnt(n,0);
+        vector<long long>dist(n,LLONG_MAX);
+
         for(auto i:roads)
         {
+            //src dest cost
             adj[i[0]].push_back({i[1],i[2]});
             adj[i[1]].push_back({i[0],i[2]});
         }
-        //assuming 0 is source..
+
+        priority_queue<p,vector<p>,greater<p>>pq;
         pq.push({0,0});
         dist[0]=0;
         cnt[0]=1;
         while(pq.size())
         {
+            long long cost= pq.top().first;
             int node= pq.top().second;
-            ll prevdis= pq.top().first;
             pq.pop();
             for(auto i:adj[node])
             {
-                int no= i.first;
-                ll wt= i.second;
-                if(prevdis+wt < dist[no])
+                long long d= i.second;
+                int neigh= i.first;
+                if(d+cost< dist[neigh])
                 {
-                    dist[no]= prevdis+wt;
-                    pq.push({dist[no],no});
-                    cnt[no]= cnt[node];
+                    dist[neigh]= d+cost;
+                    pq.push({d+cost,neigh});
+                    cnt[neigh]=cnt[node];
                 }
-                else if(prevdis+wt == dist[no])
+                else if(d+cost==dist[neigh])
                 {
-                    cnt[no]= (cnt[no]+cnt[node])%x;
+                    cnt[neigh]= (cnt[neigh]+cnt[node])%mod;
                 }
             }
         }
-        return cnt[n-1]%x;
+        return cnt[n-1]%mod;
     }
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
