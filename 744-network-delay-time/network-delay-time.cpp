@@ -20,6 +20,20 @@ public:
                 }
             }
         }
+        /*
+            //-ve cycle detection..
+            //add 1 more relaxation path..
+            for(auto neigh:times)
+            {
+                int u= neigh[0];
+                int v= neigh[1];
+                int w= neigh[2];
+                if(dist[u]!=INT_MAX && dist[v]>dist[u]+w)
+                {
+                    return -1;//-ve cyle detected..
+                }
+            }
+        */
         int ans= -1;
         for(int i=1;i<=n;i++)
         {
