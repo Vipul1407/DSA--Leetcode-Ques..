@@ -1,5 +1,38 @@
 class Solution {
 public:
+    //METHOD-3
+    //BELLMAN FORD..
+    int networkDelayTime(vector<vector<int>>& times, int n, int k) 
+    {
+        vector<int>dist(n+1,INT_MAX);
+        //k is the src node..
+        dist[k]=0;
+        for(int i=1;i<=n-1;i++)
+        {
+            for(auto neigh:times)
+            {
+                int u= neigh[0];
+                int v= neigh[1];
+                int w= neigh[2];
+                if(dist[u]!=INT_MAX && dist[v]>dist[u]+w)
+                {
+                    dist[v]= dist[u]+w;
+                }
+            }
+        }
+        int ans= -1;
+        for(int i=1;i<=n;i++)
+        {
+            if(dist[i]==INT_MAX)
+            {
+                return -1;
+            }
+            ans= max(ans,dist[i]);
+        }
+        return ans;
+    }
+};
+/*
     //METHOD-2
     //USING SET
     int networkDelayTime(vector<vector<int>>& times, int n, int k) 
