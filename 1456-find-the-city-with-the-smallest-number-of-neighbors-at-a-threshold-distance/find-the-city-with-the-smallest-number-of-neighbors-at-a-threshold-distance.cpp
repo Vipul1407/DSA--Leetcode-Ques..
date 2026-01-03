@@ -1,54 +1,56 @@
 class Solution {
 public:
-    int findTheCity(int n, vector<vector<int>>& edges, int td) 
+    //FLOYD WARSHAL'S ALGO..
+    int findTheCity(int n, vector<vector<int>>& edges, int threshold)
     {
-        vector<pair<int,int>>adj[n];
+        
+        vector<vector<int>>dist(n,vector<int>(n,INT_MAX));
         for(auto i:edges)
         {
-            adj[i[0]].push_back({i[1],i[2]});
-            adj[i[1]].push_back({i[0],i[2]});
+            int u= i[0];
+            int v= i[1];
+            int w= i[2];
+            dist[u][v]= w;
+            dist[v][u]= w;
         }
-        set<pair<int,int>>st;
-        int city=0;
-        int mincnt= n+1;
         for(int i=0;i<n;i++)
         {
-            vector<int>dis(n,INT_MAX);
-            st.insert({0,i});
-            dis[i]=0;
-            while(!st.empty())
+            dist[i][i]=0;
+        }
+
+        for(int k=0;k<n;k++)
+        {
+            for(int i=0;i<n;i++)
             {
-                auto top= *st.begin();
-                int d= top.first;
-                int node= top.second;
-                st.erase(top);
-                for(auto i:adj[node])
+                for(int j=0;j<n;j++)
                 {
-                    int neigh= i.first;
-                    int wt= i.second;
-                    if(d+wt< dis[neigh])
+                    if(i!=j && dist[i][k]!=INT_MAX && dist[k][j]!=INT_MAX)
                     {
-                        if(dis[neigh]!=INT_MAX)
-                        {
-                            st.erase({dis[neigh],neigh});
-                        }
-                        dis[neigh]= d+wt;
-                        st.insert({dis[neigh],neigh});
+                        dist[i][j]= min(dist[i][j],dist[i][k]+dist[k][j]);
                     }
                 }
             }
+        }
+
+        /*
+            //to detect -ve cycle check if dist[i][j]<0 means there exist a -ve cycle..
+        */
+        int ans= n+1;
+        int city=0;
+        for(int i=0;i<n;i++)
+        {
             int cnt=0;
-            for(int i=0;i<n;i++)
+            for(int j=0;j<n;j++)
             {
-                if(dis[i]<=td)
+                if(i!=j && dist[i][j]<=threshold)
                 {
                     cnt++;
                 }
             }
-            if(cnt<= mincnt)
+            if(cnt<=ans)
             {
-                mincnt= cnt;
                 city= i;
+                ans= cnt;
             }
         }
         return city;
