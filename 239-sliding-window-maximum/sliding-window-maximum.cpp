@@ -8,18 +8,23 @@ public:
         for(int i=0;i<n;i++)
         {
             //if front element idx is out of k range then remove that..
+            //front here-----
             if(!dq.empty() && dq.front()<=i-k)
             {
                 dq.pop_front();
             }
+
             //while back element of dq<= curr element then remove that..
             //to maintain montonic decreasing queue..
+            //back here------
             while(!dq.empty() && nums[dq.back()]<= nums[i])
             {
                 dq.pop_back();
             }
+
             //push curr idx in dq..
             dq.push_back(i);
+            
             //fill ans when we have traversed atleast k elements..
             if(i>=k-1)
             {
