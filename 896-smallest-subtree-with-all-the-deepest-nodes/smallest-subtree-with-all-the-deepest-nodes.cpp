@@ -11,50 +11,19 @@
  */
 class Solution {
 public:
-    //METHOD-2
-    //1PASS ONLY returning pair of <TreeNode*,int> without using map
-    pair<int,TreeNode*>LCA(TreeNode* root, int d)
-    {
-        if(!root)
-        {
-            return {0,NULL};
-        }
-        auto left= LCA(root->left,d+1);
-        auto right= LCA(root->right,d+1);
-        if(left.first>right.first)
-        {
-            return {left.first+1,left.second};
-        }
-        else if(right.first>left.first)
-        {
-            return {right.first+1,right.second};
-        }
-        else
-        {
-            return {right.first+1,root};
-        }
-    }
-    TreeNode* subtreeWithAllDeepest(TreeNode* root) 
-    {
-        return LCA(root,0).second;
-    }
-};
-/*
     //METHOD-1
-    //2PASS + unordered_map + maxdepth variable
-
-    void calculate_height(TreeNode* root, unordered_map<int,int>&mp, int d, int &maxdepth)
+    void storedepth(TreeNode* root, int depth, int &maxdepth, unordered_map<int,int>&mp)
     {
         if(!root)
         {
             return;
         }
-        mp[root->val]=d;
-        maxdepth= max(maxdepth,d);
-        calculate_height(root->left,mp,d+1,maxdepth);
-        calculate_height(root->right,mp,d+1,maxdepth);
+        mp[root->val]= depth;
+        maxdepth= max(maxdepth, depth);
+        storedepth(root->left,depth+1,maxdepth,mp);
+        storedepth(root->right,depth+1,maxdepth,mp);
     }
-    TreeNode* LCA(TreeNode* root, unordered_map<int,int>&mp, int &maxdepth)
+    TreeNode* solve(TreeNode* root, unordered_map<int,int>&mp, int &maxdepth)
     {
         if(!root)
         {
@@ -64,26 +33,26 @@ public:
         {
             return root;
         }
-        TreeNode*left= LCA(root->left,mp,maxdepth);
-        TreeNode*right= LCA(root->right,mp,maxdepth);
-        if(!left)
+        TreeNode* left= solve(root->left,mp,maxdepth);
+        TreeNode* right= solve(root->right,mp,maxdepth);
+        if(left!=NULL && right!=NULL)
         {
-            return right;
+            return root;
         }
-        else if(!right)
+        else if(left!=NULL)
         {
             return left;
         }
         else
         {
-            return root;
+            return right;
         }
     }
     TreeNode* subtreeWithAllDeepest(TreeNode* root) 
     {
-        int maxdepth=0;
         unordered_map<int,int>mp;
-        calculate_height(root,mp,0,maxdepth);
-        return LCA(root,mp,maxdepth);
+        int maxdepth=0;
+        storedepth(root,0,maxdepth,mp);
+        return solve(root,mp,maxdepth);
     }
-*/
+};
