@@ -11,6 +11,37 @@
  */
 class Solution {
 public:
+    //METHOD-2
+    pair<int,TreeNode*> solve(TreeNode* root)
+    {
+        if(!root)
+        {
+            return {0,NULL};
+        }
+        auto left= solve(root->left);
+        auto right= solve(root->right);
+        if(left.first > right.first)
+        {
+            return {left.first+1,left.second};
+        }
+        else if(right.first > left.first)
+        {
+            return {right.first+1,right.second};
+        }
+        //both are same..
+        else
+        {
+            return {left.first+1, root};
+        }
+    }
+    TreeNode* subtreeWithAllDeepest(TreeNode* root) 
+    {
+        unordered_map<int,int>mp;
+        int maxdepth=0;
+        return solve(root).second;
+    }  
+};
+/*
     //METHOD-1
     void storedepth(TreeNode* root, int depth, int &maxdepth, unordered_map<int,int>&mp)
     {
@@ -55,4 +86,4 @@ public:
         storedepth(root,0,maxdepth,mp);
         return solve(root,mp,maxdepth);
     }
-};
+*/
