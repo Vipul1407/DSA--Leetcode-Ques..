@@ -1,7 +1,31 @@
 class Solution {
 public:
+    //METHOD-2
+    //TC= O(N)
+    bool carPooling(vector<vector<int>>& trips, int capacity) 
+    {
+        int n= trips.size();
+        vector<int>vec(1001,0);
+        for(auto i:trips)
+        {
+           vec[i[1]]+= i[0];
+           vec[i[2]]+= -i[0];
+        }
+        for(auto i:vec)
+        {
+            capacity-= i;
+            if(capacity<0)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+};
+/*
     //METHOD-1
     //USING MIN HEAP..
+    //TC= O(NLOGN)
     bool carPooling(vector<vector<int>>& trips, int capacity) 
     {
         int n= trips.size();
@@ -24,4 +48,4 @@ public:
         }
         return true;
     }
-};
+*/
