@@ -1,22 +1,26 @@
 class Solution {
 public:
-    bool carPooling(vector<vector<int>>& trips, int capacity) {
-        vector<int> diff(1001, 0);
-
-        for (int i = 0; i < trips.size(); i++) {
-            int passengers = trips[i][0];
-            int from = trips[i][1];
-            int to = trips[i][2];
-
-            diff[from] += passengers;
-            diff[to] -= passengers;
+    //METHOD-1
+    //USING MIN HEAP..
+    bool carPooling(vector<vector<int>>& trips, int capacity) 
+    {
+        int n= trips.size();
+        priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>>pq;
+        for(auto i:trips)
+        {
+            pq.push({i[1],i[0]});
+            pq.push({i[2],-i[0]});
         }
+        while(pq.size())
+        {
+            auto top= pq.top().second;
+            pq.pop();
 
-        int curr = 0;
-        for (int i = 0; i <= 1000; i++) {
-            curr += diff[i];
-            if (curr > capacity)
+            capacity-= top;
+            if(capacity<0)
+            {
                 return false;
+            }
         }
         return true;
     }
