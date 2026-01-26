@@ -1,5 +1,31 @@
 class Solution {
 public:
+    //1 PASS SOL..
+    vector<vector<int>> minimumAbsDifference(vector<int>& arr) 
+    {
+        int mini= INT_MAX;
+        int n= arr.size();
+        sort(begin(arr),end(arr));
+
+        vector<vector<int>>ans;
+        for(int i=1;i<n;i++)
+        {
+            if(arr[i]-arr[i-1]<mini)
+            {
+                mini= arr[i]-arr[i-1];
+                ans.clear();
+                ans.push_back({arr[i-1],arr[i]});
+            }
+            else if(arr[i]-arr[i-1]==mini)
+            {
+                ans.push_back({arr[i-1],arr[i]});
+            }
+        }
+        return ans;
+    }
+};
+/*
+    //2 PASS SOL..
     vector<vector<int>> minimumAbsDifference(vector<int>& arr) 
     {
         int mini= INT_MAX;
@@ -19,4 +45,4 @@ public:
         }
         return ans;
     }
-};
+*/
