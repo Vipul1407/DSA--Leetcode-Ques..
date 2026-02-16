@@ -1,38 +1,30 @@
 class Solution {
 public:
-    string addBinary(string a, string b) {
-        int n1= a.length()-1;
-        int n2= b.length()-1;
+    string addBinary(string a, string b) 
+    {
+        int n= a.size()-1;
+        int m= b.size()-1;
+        int sum=0,carry=0;
+        string ans="";
 
-        int sum= 0, carry= 0;
-        string ans= "";
-        while(n1 >= 0 || n2 >= 0)
+        while(n>=0 || m>=0 || carry>0)
         {
             sum= carry;
-            if(n1 >= 0) 
+            if(n>=0)
             {
-                sum+= a[n1]-'0';
-                n1--;
+                sum+= (a[n]-'0');
+                n--;
             }
-
-            if(n2 >= 0)
+            if(m>=0)
             {
-                sum+= b[n2]-'0';
-                n2--;
+                sum+= (b[m]-'0');
+                m--;
             }
 
-            if(sum % 2 == 0) {
-                ans+= '0';
-            }
-            else{
-                ans+= '1';
-            }
-
+            ans+= (sum%2)+'0';
             carry= sum/2;
         }
-
-        if(carry > 0) ans+= '1';
-        reverse(ans.begin(),ans.end());
+        reverse(begin(ans),end(ans));
         return ans;
     }
 };
