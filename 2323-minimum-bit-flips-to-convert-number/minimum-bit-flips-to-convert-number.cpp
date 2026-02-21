@@ -1,17 +1,21 @@
 class Solution {
 public:
-    int minBitFlips(int start, int goal) 
+    int setbits(int n)
     {
         int cnt=0;
-        while(start>0 || goal>0)
+        while(n>0)
         {
-            if((start%2==0 && goal%2==1) || (start%2==1 && goal%2==0))
+            if(n&1)
             {
                 cnt++;
             }
-            start/=2;
-            goal/=2;
+            n>>=1;
         }
         return cnt;
+    }
+    int minBitFlips(int start, int goal) 
+    {
+        int n= start^goal;
+        return setbits(n);
     }
 };
