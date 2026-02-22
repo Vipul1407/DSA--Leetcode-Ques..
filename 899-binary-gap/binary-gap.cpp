@@ -1,5 +1,26 @@
 class Solution {
 public:
+    //METHOD-2
+    int binaryGap(int n) 
+    {
+        int prev=-1;
+        int ans=0;
+        for(int i=0;i<31;i++)
+        {
+            if((n>>i) & 1)
+            {
+                if(prev!=-1)
+                {
+                    ans= max(ans,i-prev);
+                }
+                prev=i;
+            } 
+        }
+        return ans;
+    }
+};
+/*
+    //METHOD-1
     int binaryGap(int n) 
     {
         string str="";
@@ -23,4 +44,4 @@ public:
         }
         return ans;
     }
-};
+*/
