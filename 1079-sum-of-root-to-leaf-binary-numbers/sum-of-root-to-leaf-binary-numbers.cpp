@@ -11,6 +11,31 @@
  */
 class Solution {
 public:
+    //METHOD-2
+    //int return type..
+    int rec(int curr,TreeNode* root)
+    {
+        if(!root)
+        {
+            return 0;
+        }
+        curr= (curr<<1) |root->val;
+        if(!root->left && !root->right)
+        {
+            return curr;
+        }
+        int left= rec(curr,root->left);
+        int right= rec(curr,root->right);
+        return left+right;
+    }
+    int sumRootToLeaf(TreeNode* root) 
+    {
+        return rec(0,root);
+    }
+};
+/*
+    //METHOD-1
+    //void return type..
     void rec(int curr,TreeNode* root,int &ans)
     {
         if(!root)
@@ -32,4 +57,4 @@ public:
         rec(0,root,ans);
         return ans;
     }
-};
+*/
