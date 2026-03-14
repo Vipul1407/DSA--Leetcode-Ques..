@@ -1,69 +1,30 @@
 class Solution {
 public:
-    // METHOD-1
-    // BRUTE FORCE Using vector to store all the strings..
-    void solve(string &str, int n, vector<string>&vec)
-    {
-        if(n==0)
-        {
-            vec.push_back(str);
-            return;
+    string getHappyString(int n, int k) {
+        int perCharCount=pow(2,n-1);
+        if(3*perCharCount<k)return "";
+        string ans="";
+        if(k<=perCharCount){
+            ans.push_back('a');
+        }else if(k<=2*perCharCount){
+            ans.push_back('b');
+            k-=perCharCount;
+        }else{
+            ans.push_back('c');
+            k-=2*perCharCount;
         }
-        for(char ch='a';ch<='c';ch++)
-        {
-            if(!str.empty() && str.back()==ch)
-            {
-                continue;
+        vector<string>options{"bc","ac","ab"};
+        for(int i=1;i<n;i++){
+            perCharCount/=2;
+            // perCharCount=pow(2,n-i-1);
+            string option=options[ans.back()-'a'];
+            if(k<=perCharCount){
+                ans.push_back(option[0]);
+            }else{
+                ans.push_back(option[1]);
+                k-=perCharCount;
             }
-            str.push_back(ch);
-            solve(str,n-1,vec);
-            str.pop_back();
         }
-    }
-    string getHappyString(int n, int k) 
-    {
-        vector<string>vec;
-        string str;
-        solve(str,n,vec);
-        if(k>vec.size())
-        {
-            return "";
-        }
-        return vec[k-1];
+        return ans;
     }
 };
-/*
-//  METHOD-2
-//  OPTIMIZED
-// Taking cnt in recursive calls...
-void solve(int &cnt, string str, string &ans, char prev, int n, int &k)
-{
-    if (n == 0)
-    {
-        cnt++;
-        if (cnt == k)
-        {
-            ans = str;
-        }
-        return;
-    }
-    for (char ch = 'a'; ch <= 'c'; ch++)
-    {
-        if (prev == ch)
-        {
-            continue;
-        }
-        str.push_back(ch);
-        solve(cnt, str, ans, ch, n - 1, k);
-        str.pop_back();
-    }
-}
-string getHappyString(int n, int k)
-{
-    string ans;
-    int cnt = 0;
-    solve(cnt, "", ans, '*', n, k);
-    return ans;
-}
-
-*/
