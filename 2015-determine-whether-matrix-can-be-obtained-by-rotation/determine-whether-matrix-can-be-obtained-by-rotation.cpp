@@ -1,5 +1,10 @@
 class Solution {
 public:
+    //METHOD-1
+    //90 Degree rotation==> transpose the matrix then reverse the col..
+
+    //METHOD-2
+    //90 Degree rotation==> using index swapping
     void rotate(vector<vector<int>>& mat)
     {
         int m= mat.size();
