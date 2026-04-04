@@ -1,47 +1,27 @@
 class Solution {
 public:
-    string decodeCiphertext(string encoded, int row) 
-    {
-        if(row==1)
-        {
-            return encoded;
-        }
-        int n= encoded.length();
-        int col= n/row;
-        vector<vector<char>>mat(row,vector<char>(col,' '));
-        int k=0;
-        for(int i=0;i<row;i++)
-        {
-            for(int j=0;j<col;j++)
-            {
-                mat[i][j]=encoded[k++];
-            }
-        }
-        string original="";
-        map<int,vector<char>>mp;
-        for(int i=0;i<row;i++)
-        {
-            for(int j=0;j<col;j++)
-            {
-                if(i-j<=0)
-                {
-                    mp[i-j].push_back(mat[i][j]);
-                }
-            }
-        }
-        for(auto i=mp.rbegin();i!=mp.rend();i++)
-        {
-            for(auto j:i->second)
-            {
-                original+=j;
+    string decodeCiphertext(string encodedText, int rows) {
+        int n = encodedText.size();
+        if (rows == 1)
+            return encodedText;
+
+        int cols = n / rows;
+        string res;
+        res.reserve(n);
+
+        for (int c = 0; c < cols; ++c) {
+            int r = 0, j = c;
+            while (r < rows && j < cols) {
+                res += encodedText[r * cols + j];
+                ++r;
+                ++j;
             }
         }
 
-        //to remove trailing spaces...
-        while(!original.empty() && original.back()==' ')
-        {
-            original.pop_back();
+        while (!res.empty() && res.back() == ' ') {
+            res.pop_back();
         }
-        return original;
+
+        return res;
     }
 };
