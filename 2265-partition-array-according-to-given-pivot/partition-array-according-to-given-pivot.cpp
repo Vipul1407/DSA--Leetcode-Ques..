@@ -1,58 +1,38 @@
 class Solution {
 public:
-    //METHOD-2
-    vector<int> pivotArray(vector<int>& nums, int pivot) 
-    {
-        int n= nums.size();
-        int i=0;
-        int j=n-1;
-        vector<int>ans(n,pivot);
-
-        for(int k=0;k<n;k++)
-        {
-            if(nums[k]<pivot)
-            {
-                ans[i++]= nums[k];
-            }
-        }   
-        for(int k=n-1;k>=0;k--)
-        {
-            if(nums[k]>pivot)
-            {
-                ans[j--]= nums[k];
-            }
-        }
-        return ans;
-    }
-};
-/*
     //METHOD-1
+    //2 Pass Sol
     vector<int> pivotArray(vector<int>& nums, int pivot) 
     {
-        vector<int>ans;
         int cnt=0;
-        for(auto i:nums)
+        int n= nums.size();
+        vector<int>ans;
+
+        for(int i=0;i<n;i++)
         {
-            if(i<pivot)
+            if(nums[i]<pivot)
             {
-                ans.push_back(i);
+                ans.push_back(nums[i]);
             }
-            else if(i==pivot)
+            else if(nums[i]==pivot)
             {
                 cnt++;
             }
         }
-        while(cnt--)
+
+         while(cnt--)
         {
             ans.push_back(pivot);
         }
-        for(auto i:nums)
+
+        for(int i=0;i<n;i++)
         {
-            if(i>pivot)
+            if(nums[i]>pivot)
             {
-                ans.push_back(i);
+                ans.push_back(nums[i]);
             }
         }
+
         return ans;
     }
-*/
+};
