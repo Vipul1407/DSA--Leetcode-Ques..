@@ -15,7 +15,9 @@ public:
                 ans.push_back(i);
                 ans.push_back(mp[k-nums[i]]);
             }
+            
             mp[nums[i]]=i;
+            
         }    
         return ans;
     }
