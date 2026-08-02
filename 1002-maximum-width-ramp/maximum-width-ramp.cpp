@@ -5,6 +5,7 @@ public:
         int n= nums.size();
         stack<int>st;
         int ans=0;
+        
         for(int i=0;i<n;i++)
         {
             if(st.empty() || nums[i]<nums[st.top()])
@@ -20,6 +21,7 @@ public:
                 st.pop();
             }
         }
+        
         return ans;
     }
 };
