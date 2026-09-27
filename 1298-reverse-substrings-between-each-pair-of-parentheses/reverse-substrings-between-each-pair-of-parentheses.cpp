@@ -1,35 +1,29 @@
 class Solution {
 public:
-    string reverseParentheses(string s) 
-    {
-        stack<char>st;
-        for(auto c:s)
-        {
-            if(c!=')')
-            {
-                st.push(c);
-            }
-            else
-            {
-                string temp="";
-                while(!st.empty() && st.top()!='(')
-                {
-                    temp+= st.top();
-                    st.pop();
-                }
-                st.pop();//to remove '('
-                for(auto i:temp)
-                {
-                    st.push(i);
-                }
+    string reverseParentheses(auto& s) {
+        int n = s.size();
+        vector<int> link(n), stk;
+
+        for (int i = 0; i < n; i++) {
+            if (s[i] == '(')
+                stk.push_back(i);
+            else if (s[i] == ')') {
+                link[i] = stk.back();
+                link[link[i]] = i;
+                stk.pop_back();
             }
         }
-        string ans="";
-        while(!st.empty())
-        {
-            ans= st.top()+ans;//to avoid reversal
-            st.pop();
+
+        string res;
+        for (int i = 0, dir = 1; i < n; i += dir) {
+            if (s[i] >= 'a')
+                res += s[i];
+            else {
+                i = link[i];
+                dir = -dir;
+            }
         }
-        return ans;
+
+        return res;
     }
 };
